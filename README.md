@@ -2,7 +2,9 @@
 
 Declarative-style SwiftUI wrapper around Asyncronous Image Loading 
 
-In-memory caching. Currently tested with basic `List` as seen in Example
+In-memory caching and image fetching done in background. Currently tested with basic `List` as seen in Example
+
+As everyone gets to understand SwiftUI more, this project will evolve and get more features.
 
 # Get it
 
