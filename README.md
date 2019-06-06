@@ -15,6 +15,8 @@ SwURL is available as a Swift Package, install guide coming soon, for now just G
 
 `RemoteImageView` is initialised with a `URL` and a placeholder `Image`. Upon initialisation, a resized image will be downloaded in the background and placeholder displayed as the image is loading.
 
+`LandmarkRow` is used in a `List`
+
 ```swift
 struct LandmarkRow: View {
     var landmark: Landmark
