@@ -40,4 +40,4 @@ struct LandmarkRow: View {
 
 ## Output
 
-https://gyazo.com/5809138f66ad03f762b45a2f673cf42f
+<iframe src="https://giphy.com/embed/WsXxMt7FOQf0HJBiX1" width="226" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/swurl-swiftui-WsXxMt7FOQf0HJBiX1">via GIPHY</a></p>
