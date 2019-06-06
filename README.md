@@ -14,7 +14,7 @@ struct LandmarkRow: View {
     var body: some View {
         HStack {
             RemoteImageView
-                .init(url: landmark.imageURL, placeholderImage: Image.init("user"))
+                .init(url: landmark.imageURL, placeholderImage: Image.init("placeholder_location"))
                 .frame(width: 30, height: 30, alignment: Alignment.center)
                 .clipShape(Ellipse().size(width: 30, height: 30))
                 .scaledToFit()
