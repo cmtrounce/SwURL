@@ -6,7 +6,7 @@ Declarative-style SwiftUI wrapper around asyncronous networking operations.
 
 SwURL is available as a Swift Package, install guide coming soon, for now just Google it.
 
-## RemoteImageView
+# RemoteImageView
 
 Asyncrounously download and display images delaritively.
 
@@ -14,7 +14,7 @@ In-memory caching and image fetching done in background. Currently tested with b
 
 As everyone gets to understand SwiftUI more, this project will evolve and get more features.
 
-# Example
+## Example
 
 `RemoteImageView` is initialised with a `URL` and a placeholder `Image`. Upon initialisation, a resized image will be downloaded in the background and placeholder displayed as the image is loading.
 
