@@ -14,6 +14,8 @@ In-memory caching and image fetching done in background. Currently tested with b
 
 As everyone gets to understand SwiftUI more, this project will evolve and get more features.
 
+![Asyncronous Images!](https://media.giphy.com/media/WsXxMt7FOQf0HJBiX1/giphy.gif)
+
 ## Example
 
 `RemoteImageView` is initialised with a `URL` and a placeholder `Image`. Upon initialisation, a resized image will be downloaded in the background and placeholder displayed as the image is loading.
@@ -37,6 +39,4 @@ struct LandmarkRow: View {
     }
 }
 ```
-
-## Output
 
