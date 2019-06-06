@@ -23,7 +23,7 @@ public struct RemoteImageView: View {
         return (remoteImage.load(url: url).image ?? placeholderImage)?.resizable()
     }
     
-    init(url: URL, placeholderImage: Image? = nil) {
+    public init(url: URL, placeholderImage: Image? = nil) {
         self.placeholderImage = placeholderImage
         self.url = url
     }
