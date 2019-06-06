@@ -38,3 +38,6 @@ struct LandmarkRow: View {
 }
 ```
 
+## Output
+
+https://gyazo.com/5809138f66ad03f762b45a2f673cf42f
