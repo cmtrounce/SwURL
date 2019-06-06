@@ -1,6 +1,10 @@
 # SwURL
 
-A Declarative-style SwiftUI wrapper around Asyncronous Image Loading 
+Declarative-style SwiftUI wrapper around Asyncronous Image Loading 
+
+# Get it
+
+SwURL is available as a Swift Package, install guide coming soon, for now just Google it.
 
 
 # Usage
