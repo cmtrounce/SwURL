@@ -20,7 +20,7 @@ class RemoteImage: BindableObject {
     var request: Cancellable?
     
     var image: Image? = nil {
-        didSet {
+        willSet {
             guard image == nil else { return }
             DispatchQueue.main.async {
                 self.didChange.send(self.image!)
