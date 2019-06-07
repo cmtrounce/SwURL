@@ -20,7 +20,10 @@ public struct RemoteImageView: View {
     var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
-        return (remoteImage.load(url: url).image ?? placeholderImage)?.resizable()
+        withAnimation {
+            (remoteImage.load(url: url).image ?? placeholderImage)?.resizable()
+        }
+       
     }
     
     public init(url: URL, placeholderImage: Image? = nil) {
