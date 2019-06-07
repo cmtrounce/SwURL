@@ -22,9 +22,7 @@ class RemoteImage: BindableObject {
     var image: Image? = nil {
         willSet {
             guard image == nil else { return }
-            DispatchQueue.main.async {
-                self.didChange.send(self.image!)
-            }
+            self.didChange.send(self.image)
         }
     }
     
@@ -32,7 +30,9 @@ class RemoteImage: BindableObject {
         request = ImageLoader.shared.load(url: url).map { cgImage -> Image in
             Image.init(cgImage, scale: 1, label: Text(url.lastPathComponent))
         }
+        .receive(on: )
         .assign(to: \RemoteImage.image, on: self)
+        
 
         return self
     }
