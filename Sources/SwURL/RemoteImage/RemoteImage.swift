@@ -22,7 +22,10 @@ class RemoteImage: BindableObject {
     var image: Image? = nil {
         willSet {
             guard image == nil else { return }
-            self.didChange.send(self.image)
+            DispatchQueue.main.async { [unowned self] in
+                self.didChange.send(self.image)
+            }
+          
         }
     }
     
