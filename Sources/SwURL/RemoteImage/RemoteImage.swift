@@ -32,7 +32,6 @@ class RemoteImage: BindableObject {
         request = ImageLoader.shared.load(url: url).map { cgImage -> Image in
             Image.init(cgImage, scale: 1, label: Text(url.lastPathComponent))
         }
-        .removeDuplicates()
         .assign(to: \RemoteImage.image, on: self)
 
         return self
