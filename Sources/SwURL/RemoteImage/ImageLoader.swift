@@ -20,6 +20,14 @@ class ImageLoader {
     
     private lazy var session = URLSession.init(configuration: .default)
     
+    public func load(url: URL) -> Publishers.Future<CGImage, Never> {
+        return Publishers.Future.init { [weak self] result in
+            self?.load(url: url, result: { image in
+                result(.success(image))
+            })
+        }
+    }
+    
     public func load(url: URL, result: @escaping ((CGImage) -> Void)) {
         
         if let cachedImage = cache.image(for: url) {

@@ -17,9 +17,10 @@ class RemoteImage: BindableObject {
 
     typealias PublisherType = PassthroughSubject<Image?, Never>
 
+    var request: Cancellable?
+    
     var image: Image? = nil {
         didSet {
-            guard oldValue != image else { return }
             DispatchQueue.main.async {
                 self.didChange.send(self.image!)
             }
@@ -27,11 +28,11 @@ class RemoteImage: BindableObject {
     }
 
     func load(url: URL) -> Self {
-        guard image == nil else { return self }
-        ImageLoader.shared.load(url: url) { [unowned self] (image) in
-            let final = Image.init(image, scale: 1, label: Text(url.lastPathComponent))
-            self.image = final
-        }
+        request = ImageLoader.shared.load(url: url).map { cgImage -> Image in
+            Image.init(cgImage, scale: 1, label: Text(url.lastPathComponent))
+        }.removeDuplicates()
+        .assign(to: \.image, on: self)
+        
         return self
     }
 }
