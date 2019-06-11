@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 @available(iOS 13.0, *)
 class ImageCache {
@@ -21,7 +22,21 @@ class ImageCache {
         }
     }
     
-    func image(for url: URL) -> CGImage? {
-        return cache.object(forKey: url as NSURL)
+    func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
+        return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
+            guard let self = self else {
+                seal(.failure(ImageLoadError.loaderDeallocated))
+                return
+            }
+            
+            self.queue.async {
+                if let cached = self.cache.object(forKey: url as NSURL) {
+                    seal(.success(cached))
+                    return
+                }
+                
+                seal(.failure(.cacheError))
+            }
+        }
     }
 }

@@ -47,13 +47,11 @@ private extension ImageLoader {
             .flatMap(handleDownload)
             .eraseToAnyPublisher()
         
-        if let cachedImage = cache.image(for: url) {
-            return Publishers.Optional
-                .init(cachedImage)
-                .eraseToAnyPublisher()
-        } else {
-            return asyncLoad
-        }
+        return cache
+            .image(for: url)
+            .catch { error -> ImageLoadPromise in
+                return asyncLoad
+        }.eraseToAnyPublisher()
     }
     
     /// Executes an asyncronous download task.
