@@ -9,8 +9,19 @@ import Foundation
 import SwiftUI
 import Combine
 
+public enum ImageLoadError: Error {
+    case loaderDeallocated
+    case malformedResponse
+    case invalidImageData
+    case cacheError
+    case generic(underlying: Error)
+}
+
+
 @available(iOS 13.0, *)
 class ImageLoader {
+    
+    public typealias ImageLoadPromise = AnyPublisher<CGImage, ImageLoadError>
     
     static let shared = ImageLoader()
     
@@ -20,48 +31,88 @@ class ImageLoader {
     
     private lazy var session = URLSession.init(configuration: .default)
     
-    public func load(url: URL) -> Publishers.Future<CGImage, Never> {
-        return Publishers.Future.init { [weak self] result in
-            self?.load(url: url, result: { image in
-                result(.success(image))
-            })
+    public func load(url: URL) -> ImageLoadPromise{
+        return retrieve(url: url)
+    }
+}
+
+@available(iOS 13.0, *)
+private extension ImageLoader {
+    
+    /// Retrieves image from URL
+    /// - Parameter url: url at which you require the image.
+    func retrieve(url: URL) -> ImageLoadPromise {
+        let asyncLoad = downloadTask(url: url)
+            .mapError(ImageLoadError.generic)
+            .flatMap { (response) -> ImageLoadPromise in
+                return self.handleDownload(response: response, location: url)
+        }.eraseToAnyPublisher()
+        
+        if let cachedImage = cache.image(for: url) {
+            return Publishers.Optional
+                .init(cachedImage)
+                .eraseToAnyPublisher()
+        } else {
+            return asyncLoad
         }
     }
     
-    public func load(url: URL, result: @escaping ((CGImage) -> Void)) {
-        
-        if let cachedImage = cache.image(for: url) {
-            result(cachedImage)
-            return
+    /// Executes an asyncronous download task.
+    /// - Parameter url: url you wish to retrieve data from.
+    func downloadTask(url: URL) -> Publishers.Future<URLResponse, Error> {
+        return Publishers.Future.init { [weak self] result in
+            let request = self?.session.downloadTask(with: url, completionHandler: { (_, response, error) in
+                if let error = error {
+                    result(.failure(error))
+                    return
+                }
+                
+                if let response = response {
+                    result(.success(response))
+                    return
+                }
+            })
+            
+            request?.resume()
         }
-        
-        let request = session.downloadTask(with: url, completionHandler: { [weak self] (downloadLocation, response, error) in
-            self?.handleDownload(response: response!, location: downloadLocation!, result: result)
-        })
-        
-        request.resume()
     }
-
-    func handleDownload(response: URLResponse, location: URL, result: @escaping ((CGImage) -> Void)) {
-        guard let url = response.url else { return }
-        do {
-            let directory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(location.lastPathComponent)
-            try fileManager.copyItem(at: location, to: directory)
-            
-            guard
-                let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
-                    fatalError("couldn't create image source")
-            }
-
-            guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
-                else {
-                    fatalError("Couldn't load image \(directory)")
+ 
+    /// Handles response of successful download response
+    /// - Parameter response: data response from request
+    /// - Parameter location: the url fthat was in the request.
+    func handleDownload(response: URLResponse, location: URL) -> ImageLoadPromise {
+        return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
+            guard let self = self else {
+                seal(.failure(.loaderDeallocated))
+                return
             }
             
-            cache.store(image: image, for: url)
-            result(image)
-        } catch {
-            fatalError(error.localizedDescription)
-        }
+            guard let url = response.url else {
+                seal(.failure(.malformedResponse))
+                return
+            }
+            
+            do {
+                let directory = try self.fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(location.lastPathComponent)
+                try self.fileManager.copyItem(at: location, to: directory)
+                
+                guard
+                    let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
+                        seal(.failure(.cacheError))
+                        return
+                }
+                
+                guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
+                    else {
+                        seal(.failure(.cacheError))
+                        return
+                }
+                
+                self.cache.store(image: image, for: url)
+                seal(.success(image))
+            } catch {
+                seal(.failure(.generic(underlying: error)))
+            }
+        }.eraseToAnyPublisher()
     }
 }
