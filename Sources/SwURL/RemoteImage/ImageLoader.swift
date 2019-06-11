@@ -44,9 +44,8 @@ private extension ImageLoader {
     func retrieve(url: URL) -> ImageLoadPromise {
         let asyncLoad = downloadTask(url: url)
             .mapError(ImageLoadError.generic)
-            .flatMap { (response) -> ImageLoadPromise in
-                return self.handleDownload(response: response, location: url)
-        }.eraseToAnyPublisher()
+            .flatMap(handleDownload)
+            .eraseToAnyPublisher()
         
         if let cachedImage = cache.image(for: url) {
             return Publishers.Optional
@@ -59,16 +58,16 @@ private extension ImageLoader {
     
     /// Executes an asyncronous download task.
     /// - Parameter url: url you wish to retrieve data from.
-    func downloadTask(url: URL) -> Publishers.Future<URLResponse, Error> {
+    func downloadTask(url: URL) -> Publishers.Future<(URLResponse, URL), Error> {
         return Publishers.Future.init { [weak self] result in
-            let request = self?.session.downloadTask(with: url, completionHandler: { (_, response, error) in
+            let request = self?.session.downloadTask(with: url, completionHandler: { (downloadLocation, response, error) in
                 if let error = error {
                     result(.failure(error))
                     return
                 }
                 
-                if let response = response {
-                    result(.success(response))
+                if let response = response, let downloadLocation = downloadLocation {
+                    result(.success((response, downloadLocation)))
                     return
                 }
             })
