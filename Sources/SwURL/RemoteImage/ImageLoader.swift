@@ -17,10 +17,8 @@ public enum ImageLoadError: Error {
     case generic(underlying: Error)
 }
 
-
 @available(iOS 13.0, *)
 class ImageLoader {
-    
     public typealias ImageLoadPromise = AnyPublisher<CGImage, ImageLoadError>
     
     static let shared = ImageLoader()
