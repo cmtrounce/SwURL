@@ -27,7 +27,9 @@ public struct RemoteImageView: View {
                                 transitionType: transitionType)
     }
     
-    public init(url: URL, placeholderImage: Image?, transition: ImageTransitionType = .none) {
+    public init(url: URL,
+                placeholderImage: Image? = nil,
+                transition: ImageTransitionType = .none) {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
