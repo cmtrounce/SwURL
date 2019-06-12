@@ -14,7 +14,7 @@ In-memory caching and image fetching done in background. Currently tested with b
 
 As everyone gets to understand SwiftUI more, this project will evolve and get more features.
 
-![Fading Transition!](https://media.giphy.com/media/H2230Hmtaxkk2E0fwW/giphy.gif)
+![Fading Transition!](https://media.giphy.com/media/kFCKkcURNhI0AVG19y/giphy.gif)
 
 ## Example
 
