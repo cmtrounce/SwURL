@@ -22,8 +22,8 @@ public struct RemoteImageView: View {
     var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
-        TransitioningImage.init(placeholder: placeholderImage,
-                                finalImage: remoteImage.load(url: url).image,
+        TransitioningImage.init(placeholder: placeholderImage?.resizable(),
+                                finalImage: remoteImage.load(url: url).image?.resizable(),
                                 transitionType: transitionType)
     }
     
