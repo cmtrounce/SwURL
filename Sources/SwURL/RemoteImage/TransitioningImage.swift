@@ -9,12 +9,15 @@ import Foundation
 import SwiftUI
 
 @available(iOS 13.0, *)
+public typealias TransitionType = (t: AnyTransition, animation: Animation)
+
+@available(iOS 13.0, *)
 struct TransitioningImage: View {
     
     var placeholder: Image?
     var finalImage: Image?
     
-    let transitionType: (t: AnyTransition, animation: Animation)
+    let transitionType: TransitionType
     
     public var body: some View {
         ZStack {

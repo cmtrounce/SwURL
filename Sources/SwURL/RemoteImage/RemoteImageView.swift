@@ -16,17 +16,14 @@ public struct RemoteImageView: View {
     
     var placeholderImage: Image?
     
+    let transitionType: TransitionType
+    
     @State
     var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
         TransitioningImage.init(placeholder: placeholderImage,
                                 finalImage: remoteImage.load(url: url).image,
-                                transitionType: (.opacity, .basic(duration: 0.5, curve: .easeOut)))
-    }
-    
-    public init(url: URL, placeholderImage: Image) {
-        self.placeholderImage = placeholderImage
-        self.url = url
+                                transitionType: transitionType)
     }
 }
