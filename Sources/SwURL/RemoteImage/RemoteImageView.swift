@@ -20,13 +20,31 @@ public struct RemoteImageView: View {
     var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
-        (remoteImage.load(url: url).image ?? placeholderImage)?.resizable()
-            .transition(.opacity)
-            .animation(.basic(duration: 0.5, curve: .easeOut))
+        CrossFadingImage.init(placeholder: placeholderImage, finalImage: remoteImage.load(url: url).image)
     }
     
-    public init(url: URL, placeholderImage: Image? = nil) {
+    public init(url: URL, placeholderImage: Image) {
         self.placeholderImage = placeholderImage
         self.url = url
+    }
+}
+
+@available(iOS 13.0, *)
+struct CrossFadingImage: View {
+    
+    var placeholder: Image?
+    
+    var finalImage: Image?
+    
+    public var body: some View {
+        ZStack {
+            if finalImage == nil {
+                placeholder.transition(.opacity)
+                    .animation(.basic(duration: 0.5, curve: .easeOut))
+            }
+            
+            finalImage.transition(.opacity)
+                .animation(.basic(duration: 0.5, curve: .easeOut))
+        }
     }
 }

@@ -32,8 +32,8 @@ class Networker {
                 }
             })
             
-            let observation = request?.progress.observe(\.fractionCompleted) { progress, _ in
-                print(progress.fractionCompleted)
+            let observation = request?.observe(\.progress) { progress, _ in
+                print(progress)
             }
             
             request?.resume()

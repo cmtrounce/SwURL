@@ -25,7 +25,6 @@ class RemoteImage: BindableObject {
             DispatchQueue.main.async { [unowned self] in
                 self.didChange.send(self.image)
             }
-          
         }
     }
     
