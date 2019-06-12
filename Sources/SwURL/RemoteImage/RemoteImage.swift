@@ -29,13 +29,16 @@ class RemoteImage: BindableObject {
     }
     
     func load(url: URL) -> Self {
-        request = ImageLoader.shared.load(url: url).map { cgImage -> Image in
-            Image.init(cgImage,
-                       scale: 1,
-                       label: Text(url.lastPathComponent))
+        DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
+            self.request = ImageLoader.shared.load(url: url).map { cgImage -> Image in
+                Image.init(cgImage,
+                           scale: 1,
+                           label: Text(url.lastPathComponent))
+                }
+                .replaceError(with: nil)
+                .assign(to: \RemoteImage.image, on: self)
         }
-        .replaceError(with: nil)
-        .assign(to: \RemoteImage.image, on: self)
+        
         return self
     }
 }
