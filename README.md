@@ -14,8 +14,6 @@ In-memory caching and image fetching done in background. Currently tested with b
 
 As everyone gets to understand SwiftUI more, this project will evolve and get more features.
 
-![Asyncronous Images!](https://media.giphy.com/media/WsXxMt7FOQf0HJBiX1/giphy.gif)
-
 ![Custom Transitions!](https://media.giphy.com/media/H2230Hmtaxkk2E0fwW/giphy.gif)
 
 ## Example
