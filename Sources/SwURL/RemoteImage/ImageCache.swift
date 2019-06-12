@@ -39,9 +39,10 @@ class ImageCache {
                 if let cached = self.cache.object(forKey: url as NSURL) {
                     seal(.success(cached))
                     return
+                } else {
+                    seal(.failure(.cacheError))
+                    return
                 }
-                
-                seal(.failure(.cacheError))
             }
         }
     }

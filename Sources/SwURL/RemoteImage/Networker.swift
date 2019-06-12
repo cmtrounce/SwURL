@@ -32,10 +32,6 @@ class Networker {
                 }
             })
             
-            let observation = request?.observe(\.progress) { progress, _ in
-                print(progress)
-            }
-            
             request?.resume()
         }
     }
