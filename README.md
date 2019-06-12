@@ -1,6 +1,6 @@
 # SwURL
 
-Declarative-style SwiftUI wrapper around asyncronous networking operations.
+Declarative-style SwiftUI wrapper around asyncronous image views
 
 # Get it
 
@@ -8,13 +8,15 @@ SwURL is available as a Swift Package, install guide coming soon, for now just G
 
 # RemoteImageView
 
-Asyncrounously download and display images delaritively.
+Asyncrounously download and display images delaritively. Supports placeholders and image transitions.
 
 In-memory caching and image fetching done in background. Currently tested with basic `List` as seen in Example
 
 As everyone gets to understand SwiftUI more, this project will evolve and get more features.
 
 ![Asyncronous Images!](https://media.giphy.com/media/WsXxMt7FOQf0HJBiX1/giphy.gif)
+
+![Custom Transitions!](https://media.giphy.com/media/H2230Hmtaxkk2E0fwW/giphy.gif)
 
 ## Example
 
@@ -28,11 +30,10 @@ struct LandmarkRow: View {
     
     var body: some View {
         HStack {
-            RemoteImageView
-                .init(url: landmark.imageURL, placeholderImage: Image.init("placeholder_location"))
-                .frame(width: 30, height: 30, alignment: Alignment.center)
-                .clipShape(Ellipse().size(width: 30, height: 30))
-                .scaledToFit()
+            RemoteImageView(url: landmark.imageURL,
+                            placeholderImage: Image.init("user"),
+                            transition: .custom(transition: .opacity,
+                                                animation: .basic(duration: 0.5, curve: .easeInOut)))
             Text(verbatim: landmark.name)
             Spacer()
         }
