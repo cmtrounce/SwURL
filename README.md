@@ -6,7 +6,7 @@ Declarative-style SwiftUI wrapper around asyncronous image views
 
 * Open Xcode
 * Go to `File > Swift Packages > Add Package Dependency...`
-* Paste in this Github Repo URL
+* Paste in this Github Repo URL ( https://github.com/cmtrounce/SwURL )
 * Select the latest release version or enter  `master`  or `develop`  branch for the most cutting edge version.
 * Confirm and enjoy!
 
