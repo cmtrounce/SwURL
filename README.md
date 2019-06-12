@@ -6,8 +6,9 @@ Declarative-style SwiftUI wrapper around asyncronous image views
 
 * Open Xcode
 * Go to `File > Swift Packages > Add Package Dependency...`
-* Paste in this Github Repo URL ( https://github.com/cmtrounce/SwURL )
-* Select the latest release version or enter  `master`  or `develop`  branch for the most cutting edge version.
+* Paste this Github Repo URL ( https://github.com/cmtrounce/SwURL ) into the search bar. 
+* Select the SwURL repo from the search results.
+* Choose the branch/version you want to clone. The most recent release is the most stable but you can choose branches  `master` and `develop` for the most up to date changes.
 * Confirm and enjoy!
 
 # RemoteImageView
