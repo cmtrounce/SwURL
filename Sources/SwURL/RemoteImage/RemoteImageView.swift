@@ -26,4 +26,10 @@ public struct RemoteImageView: View {
                                 finalImage: remoteImage.load(url: url).image,
                                 transitionType: transitionType)
     }
+    
+    public init(url: URL, placeholderImage: Image, transition: TransitionType) {
+        self.placeholderImage = placeholderImage
+        self.url = url
+        self.transitionType = transition
+    }
 }
