@@ -8,7 +8,7 @@ SwURL is available as a Swift Package, install guide coming soon, for now just G
 
 # RemoteImageView
 
-Asyncrounously download and display images delaritively.
+Asyncrounously download and display images declaratively.
 
 In-memory caching and image fetching done in background. Currently tested with basic `List` as seen in Example
 
