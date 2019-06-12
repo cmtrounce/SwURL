@@ -2,15 +2,6 @@
 
 Declarative-style SwiftUI wrapper around asyncronous image views
 
-# Get it
-
-* Open Xcode
-* Go to `File > Swift Packages > Add Package Dependency...`
-* Paste this Github Repo URL ( https://github.com/cmtrounce/SwURL ) into the search bar. 
-* Select the SwURL repo from the search results.
-* Choose the branch/version you want to clone. The most recent release is the most stable but you can choose branches  `master` and `develop` for the most up to date changes.
-* Confirm and enjoy!
-
 # RemoteImageView
 
 Asyncrounously download and display images declaratively. Supports placeholders and image transitions.
@@ -45,4 +36,15 @@ struct LandmarkRow: View {
     }
 }
 ```
+
+# Get it
+
+SwURL is available only through `Swift Package Manager`
+
+* Open Xcode
+* Go to `File > Swift Packages > Add Package Dependency...`
+* Paste this Github Repo URL ( https://github.com/cmtrounce/SwURL ) into the search bar. 
+* Select the SwURL repo from the search results.
+* Choose the branch/version you want to clone. The most recent release is the most stable but you can choose branches  `master` and `develop` for the most up to date changes.
+* Confirm and enjoy!
 
