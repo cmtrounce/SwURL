@@ -16,7 +16,7 @@ public struct RemoteImageView: View {
     
     var placeholderImage: Image?
     
-    let transitionType: TransitionType
+    let transitionType: ImageTransitionType
     
     @State
     var remoteImage: RemoteImage = RemoteImage()
@@ -27,7 +27,7 @@ public struct RemoteImageView: View {
                                 transitionType: transitionType)
     }
     
-    public init(url: URL, placeholderImage: Image, transition: TransitionType) {
+    public init(url: URL, placeholderImage: Image, transition: ImageTransitionType) {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
