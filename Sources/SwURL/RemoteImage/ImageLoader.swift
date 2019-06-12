@@ -17,10 +17,8 @@ public enum ImageLoadError: Error {
     case generic(underlying: Error)
 }
 
-
 @available(iOS 13.0, *)
 class ImageLoader {
-    
     public typealias ImageLoadPromise = AnyPublisher<CGImage, ImageLoadError>
     
     static let shared = ImageLoader()
@@ -29,7 +27,7 @@ class ImageLoader {
     
     private let cache = ImageCache()
     
-    private lazy var session = URLSession.init(configuration: .default)
+    private let networker = Networker()
     
     public func load(url: URL) -> ImageLoadPromise{
         return retrieve(url: url)
@@ -42,7 +40,7 @@ private extension ImageLoader {
     /// Retrieves image from URL
     /// - Parameter url: url at which you require the image.
     func retrieve(url: URL) -> ImageLoadPromise {
-        let asyncLoad = downloadTask(url: url)
+        let asyncLoad = networker.downloadTask(url: url)
             .mapError(ImageLoadError.generic)
             .flatMap(handleDownload)
             .eraseToAnyPublisher()
@@ -52,26 +50,6 @@ private extension ImageLoader {
             .catch { error -> ImageLoadPromise in
                 return asyncLoad
         }.eraseToAnyPublisher()
-    }
-    
-    /// Executes an asyncronous download task.
-    /// - Parameter url: url you wish to retrieve data from.
-    func downloadTask(url: URL) -> Publishers.Future<(URLResponse, URL), Error> {
-        return Publishers.Future.init { [weak self] result in
-            let request = self?.session.downloadTask(with: url, completionHandler: { (downloadLocation, response, error) in
-                if let error = error {
-                    result(.failure(error))
-                    return
-                }
-                
-                if let response = response, let downloadLocation = downloadLocation {
-                    result(.success((response, downloadLocation)))
-                    return
-                }
-            })
-            
-            request?.resume()
-        }
     }
  
     /// Handles response of successful download response

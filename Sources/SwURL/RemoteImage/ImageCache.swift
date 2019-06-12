@@ -14,14 +14,20 @@ class ImageCache {
     
     private let cache = NSCache<NSURL, CGImage>()
     
+    /// Specific queue to assist with concurrency.
     private let queue = DispatchQueue.init(label: "cacheQueue", qos: .userInteractive)
     
+    /// Asyncronously stores an image in the cache
+    /// - Parameter image: the image which you wish to store
+    /// - Parameter url: the url at which you wish to associate with the image.
     func store(image: CGImage, for url: URL) {
         queue.async { [unowned cache] in
             cache.setObject(image, forKey: url as NSURL)
         }
     }
     
+    /// Asyncronously retrieves an image from the cache based on the provided url
+    /// - Parameter url: the url at  which you wish to retrieve an image for.
     func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
         return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
@@ -32,10 +38,11 @@ class ImageCache {
             self.queue.async {
                 if let cached = self.cache.object(forKey: url as NSURL) {
                     seal(.success(cached))
-                    return
+                } else {
+                    // for some reason it occasionally crashes here saying an event has already been sent to the subscriber,
+                    // but that's not possible inside this if statement. Can anyone spot what's up?
+                    seal(.failure(.cacheError))
                 }
-                
-                seal(.failure(.cacheError))
             }
         }
     }
