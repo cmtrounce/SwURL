@@ -4,7 +4,11 @@ Declarative-style SwiftUI wrapper around asyncronous image views
 
 # Get it
 
-SwURL is available as a Swift Package, install guide coming soon, for now just Google it.
+* Open Xcode
+* Go to `File > Swift Packages > Add Package Dependancy...`
+* Paste in this Github Repo URL
+* Select the latest release version or enter  `master`  or `develop`  branch for the most cutting edge version.
+* Confirm and enjoy!
 
 # RemoteImageView
 
