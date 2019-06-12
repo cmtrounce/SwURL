@@ -38,10 +38,10 @@ class ImageCache {
             self.queue.async {
                 if let cached = self.cache.object(forKey: url as NSURL) {
                     seal(.success(cached))
-                    return
                 } else {
+                    // for some reason it occasionally crashes here saying an event has already been sent to the subscriber,
+                    // but that's not possible inside this if statement. Can anyone spot what's up?
                     seal(.failure(.cacheError))
-                    return
                 }
             }
         }
