@@ -33,6 +33,7 @@ public struct SwURLDebug {
     public static var loggingEnabled = false
     
     static func log(level: LogLevel, message: String) {
+        guard loggingEnabled else { return }
         print("[SwURLDebug '\(level.label)]\n\(message)\n----------------")
         if level == .fatal {
             fatalError(message)
