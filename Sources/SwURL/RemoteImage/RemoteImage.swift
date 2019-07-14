@@ -22,18 +22,23 @@ class RemoteImage: BindableObject {
     var image: Image? = nil {
         willSet {
             guard image == nil else { return }
-            DispatchQueue.main.async { [unowned self] in
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 self.didChange.send(self.image)
             }
         }
     }
     
     func load(url: URL) -> Self {
-        DispatchQueue.global(qos: .userInitiated).async { [unowned self] in
-            self.request = ImageLoader.shared.load(url: url).map { cgImage -> Image in
-                Image.init(cgImage,
-                           scale: 1,
-                           label: Text(url.lastPathComponent))
+        DispatchQueue.global(qos: .userInitiated)
+            .async { [unowned self] in
+                
+            self.request = ImageLoader.shared.load(url: url)
+                .map { cgImage -> Image in
+                    print("CGImage recieved in load")
+                    return Image.init(cgImage,
+                                      scale: 1,
+                                      label: Text(url.lastPathComponent))
                 }
                 .replaceError(with: nil)
                 .assign(to: \RemoteImage.image, on: self)
