@@ -11,7 +11,7 @@ public struct SwURL {
        return networker.requestDecodable(from: url, decoder: decoder)
     }
     
-    static func setImageCache(type: ImageCacheType) {
+    public static func setImageCache(type: ImageCacheType) {
         ImageLoader.shared.cache = type
     }
 }
