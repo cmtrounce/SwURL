@@ -52,11 +52,6 @@ public class PersistentImageCache: ImageCacheType {
             
             do {
                 let path = try self.storageURL(for: url)
-                guard self.fileManager.fileExists(atPath: path.absoluteString) else {
-                    seal(.failure(.imageNotFound))
-                    return
-                }
-                
                 let data = try Data(contentsOf: path)
                 guard let provider = CGDataProvider.init(data: data as CFData), let image = CGImage.init(pngDataProviderSource: provider,
                                                                                                          decode: nil,
