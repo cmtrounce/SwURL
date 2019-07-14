@@ -16,7 +16,7 @@ extension FileManager {
         } else {
             let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true) as [String]
             let path = paths[0]
-            let url = URL(string: path)!
+            let url = URL.init(fileURLWithPath: path)
             UserDefaults.standard.set(url, forKey: "SwURLCacheDestinationDirectory")
             return url
         }
