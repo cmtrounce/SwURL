@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 @available(iOS 13.0, *)
-class InMemoryImageCache: ImageCacheType {
+public class InMemoryImageCache: ImageCacheType {
     
     private let cache = NSCache<NSURL, CGImage>()
     
@@ -20,7 +20,7 @@ class InMemoryImageCache: ImageCacheType {
     /// Asyncronously stores an image in the cache
     /// - Parameter image: the image which you wish to store
     /// - Parameter url: the url at which you wish to associate with the image.
-    func store(image: CGImage, for url: URL) {
+    public func store(image: CGImage, for url: URL) {
         queue.async { [unowned cache] in
             cache.setObject(image, forKey: url as NSURL)
         }
@@ -28,7 +28,7 @@ class InMemoryImageCache: ImageCacheType {
     
     /// Asyncronously retrieves an image from the cache based on the provided url
     /// - Parameter url: the url at  which you wish to retrieve an image for.
-    func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
+    public func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
         return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
                 seal(.failure(ImageLoadError.loaderDeallocated))

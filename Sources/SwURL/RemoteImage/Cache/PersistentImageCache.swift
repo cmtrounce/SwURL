@@ -11,7 +11,7 @@ import CoreImage
 import Combine
 
 @available(iOS 13.0, *)
-class PersistentImageCache: ImageCacheType {
+public class PersistentImageCache: ImageCacheType {
     
     /// Specific queue to assist with concurrency.
     private let queue = DispatchQueue.init(label: "cacheQueue", qos: .userInteractive)
@@ -20,7 +20,7 @@ class PersistentImageCache: ImageCacheType {
     
     private let cachesDirectory = FileManager.cachesDir()
 
-    func store(image: CGImage, for url: URL) {
+    public func store(image: CGImage, for url: URL) {
         
         queue.async { [weak self] in
             guard let self = self else { return }
@@ -38,7 +38,7 @@ class PersistentImageCache: ImageCacheType {
         }
     }
     
-    func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
+    public func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
       
         return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
