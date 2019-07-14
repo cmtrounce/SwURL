@@ -17,13 +17,13 @@ enum LogLevel {
         switch self {
             
         case .info:
-            return "INFO"
+            return "INFO ℹ️"
         case .warning:
-            return "WARNING"
+            return "WARNING ⚠️"
         case .error:
-            return "ERROR"
+            return "ERROR 🚨"
         case .fatal:
-            return "FATAL"
+            return "FATAL ☢️"
         }
     }
 }
@@ -34,7 +34,7 @@ public struct SwURLDebug {
     
     static func log(level: LogLevel, message: String) {
         guard loggingEnabled else { return }
-        print("[SwURLDebug '\(level.label)]\n\(message)\n----------------")
+        print("[SwURLDebug \(level.label)]\n\(message)\n----------------")
         if level == .fatal {
             fatalError(message)
         }
