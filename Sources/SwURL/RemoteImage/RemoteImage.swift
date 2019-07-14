@@ -39,8 +39,10 @@ class RemoteImage: BindableObject {
                     return Image.init(cgImage,
                                       scale: 1,
                                       label: Text(url.lastPathComponent))
-                }
-                .replaceError(with: nil)
+                }.catch { error -> Publishers.Just<Image?>  in
+                    print("Error in load", error.localizedDescription)
+                    return .init(nil)
+                }.eraseToAnyPublisher()
                 .assign(to: \RemoteImage.image, on: self)
         }
         
