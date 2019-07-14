@@ -6,13 +6,38 @@ Declarative-style SwiftUI wrapper around asyncronous image views
 
 Asyncrounously download and display images declaratively. Supports placeholders and image transitions.
 
-In-memory caching and image fetching done in background. Currently tested with basic `List` as seen in Example
+Flexible caching and image fetching done in background. Currently tested with basic `List` as seen in Example
 
 As everyone gets to understand SwiftUI more, this project will evolve and get more features.
 
 ![Fading Transition!](https://media.giphy.com/media/kFCKkcURNhI0AVG19y/giphy.gif)
 
-## Example
+## Configuration
+
+Enable or disable debug logging 
+
+```swift 
+SwURLDebug.loggingEnabled = true
+```
+
+
+Choose between **global** persistent or in-memory (default) caching
+
+ ```swift
+ SwURL.setImageCache(type: .inMemory)
+ ```
+
+ ```swift
+ SwURL.setImageCache(type: .persistent)
+ ```
+ 
+ ... or provide your own caching implementation by using `ImageCacheType`
+ 
+  ```swift
+ SwURL.setImageCache(type: .custom(ImageCacheType))
+ ```
+
+## Usage
 
 `RemoteImageView` is initialised with a `URL`, placeholder `Image` (default nil)  and a `.custom` `ImageTransitionType` (default `.none`). 
 
