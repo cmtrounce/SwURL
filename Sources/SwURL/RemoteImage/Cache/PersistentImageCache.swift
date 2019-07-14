@@ -31,8 +31,8 @@ public class PersistentImageCache: ImageCacheType {
                     return
                 }
 
-                if !fileManager.fileExists(atPath: directory.absoluteString) {
-                    try fileManager.createFile(atPath: directory.absoluteString, contents: data, attributes: nil)
+                if !self.fileManager.fileExists(atPath: directory.absoluteString) {
+                    self.fileManager.createFile(atPath: directory.absoluteString, contents: data, attributes: nil)
                 } else {
                     try data.write(to: directory)
                 }
