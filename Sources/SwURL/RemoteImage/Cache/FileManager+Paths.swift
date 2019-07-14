@@ -10,8 +10,16 @@ import Foundation
 extension FileManager {
     
     class func cachesDir() -> URL {
-        let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true) as [String]
-        return URL.init(string: paths[0])!
+        
+        if let savedPath = UserDefaults.standard.url(forKey: "SwURLCacheDestinationDirectory") {
+            return savedPath
+        } else {
+            let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true) as [String]
+            let path = paths[0]
+            let url = URL(string: path)!
+            UserDefaults.standard.set(url, forKey: "SwURLCacheDestinationDirectory")
+            return url
+        }
     }
     
 }
