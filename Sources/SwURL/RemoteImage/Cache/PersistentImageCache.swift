@@ -31,11 +31,13 @@ public class PersistentImageCache: ImageCacheType {
                     return
                 }
 
+                self.fileManager.url
+                
                 if !self.fileManager.fileExists(atPath: directory.absoluteString) {
                     self.fileManager.createFile(atPath: directory.absoluteString, contents: data, attributes: nil)
-                } else {
-                    try data.write(to: directory)
                 }
+                
+                try data.write(to: directory)
             } catch {
                 print("UNABLE TO STORE IMAGE: ", error.localizedDescription)
             }
