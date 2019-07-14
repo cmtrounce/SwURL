@@ -35,12 +35,12 @@ class RemoteImage: BindableObject {
                 
             self.request = ImageLoader.shared.load(url: url)
                 .map { cgImage -> Image in
-                    print("CGImage recieved in load")
+                    SwURLDebug.log(level: .info, message: "Image successfully retrieved from url: " + url.absoluteString)
                     return Image.init(cgImage,
                                       scale: 1,
                                       label: Text(url.lastPathComponent))
                 }.catch { error -> Publishers.Just<Image?>  in
-                    print("Error in load", error.localizedDescription)
+                    SwURLDebug.log(level: .warning, message: "Failed to load image from url: " + url.absoluteString + "\nReason: " + error.localizedDescription)
                     return .init(nil)
                 }.eraseToAnyPublisher()
                 .assign(to: \RemoteImage.image, on: self)

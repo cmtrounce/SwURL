@@ -29,7 +29,4 @@ public extension ImageCacheType {
     static var persistent: ImageCacheType {
         return PersistentImageCache()
     }
-    
 }
-
-

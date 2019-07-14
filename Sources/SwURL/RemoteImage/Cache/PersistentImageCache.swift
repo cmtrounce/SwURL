@@ -27,7 +27,7 @@ public class PersistentImageCache: ImageCacheType {
             do {
                 let directory = try self.storageURL(for: url)
                 guard let data = image.dataRepresentation else {
-                    print("UNABLE TO RETRIEVE IMAGE DATA FOR URL: ", url)
+                    SwURLDebug.log(level: .error, message: "UNABLE TO RETRIEVE IMAGE DATA FOR URL: " + url.absoluteString)
                     return
                 }
 
@@ -37,13 +37,13 @@ public class PersistentImageCache: ImageCacheType {
                 
                 try data.write(to: directory)
             } catch {
-                print("UNABLE TO STORE IMAGE: ", error.localizedDescription)
+                SwURLDebug.log(level: .error, message: "UNABLE TO STORE IMAGE: " + error.localizedDescription)
             }
         }
     }
     
     public func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
-      
+        
         return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
                 seal(.failure(.loaderDeallocated))
@@ -79,22 +79,3 @@ private extension PersistentImageCache {
     }
     
 }
-
-extension CGImage {
-    
-    var dataRepresentation: Data? {
-        if let mutableData = CFDataCreateMutable(nil, 0),
-            let destination = CGImageDestinationCreateWithData(mutableData, "public.png" as CFString, 1, nil) {
-            CGImageDestinationAddImage(destination, self, nil)
-            if CGImageDestinationFinalize(destination) {
-                let data = mutableData as Data
-                return data
-            } else {
-                return nil
-            }
-        } else {
-            return nil
-        }
-    }
-}
-
