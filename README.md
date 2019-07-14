@@ -1,6 +1,6 @@
 # SwURL
 
-Declarative-style SwiftUI wrapper around asyncronous image views
+Declarative-style SwiftUI wrapper around asyncronous image views including smooth transitions and caching options.
 
 # RemoteImageView
 
