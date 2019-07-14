@@ -18,15 +18,20 @@ public protocol ImageCacheType {
     
 }
 
-// Predefined caching options
 @available(iOS 13.0, *)
-public extension ImageCacheType {
+public enum ImageCache {
+    case inMemory
+    case persistent
+    case custom(ImageCacheType)
     
-    static var inMemory: ImageCacheType {
-        return InMemoryImageCache()
-    }
-    
-    static var persistent: ImageCacheType {
-        return PersistentImageCache()
+    var cache: ImageCacheType {
+        switch self {
+        case .inMemory:
+            return InMemoryImageCache()
+        case .persistent:
+            return PersistentImageCache()
+        case .custom(let cache):
+            return cache
+        }
     }
 }
