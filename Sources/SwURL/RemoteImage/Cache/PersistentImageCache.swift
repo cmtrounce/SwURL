@@ -78,9 +78,8 @@ public class PersistentImageCache: ImageCacheType {
 private extension PersistentImageCache {
     
     func storageURL(for imageURL: URL) throws -> URL {
-        return try self.fileManager
-            .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            .appendingPathComponent("SwURLPersistentImageCache")
+        return try FileManager
+            .cachesDir()
             .appendingPathComponent(imageURL.lastPathComponent)
     }
     
