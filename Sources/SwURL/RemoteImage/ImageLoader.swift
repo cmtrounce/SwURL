@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import SwiftUI
+import CoreGraphics
+import CoreImage
 import Combine
 
 public enum ImageLoadError: Error {
@@ -14,6 +15,7 @@ public enum ImageLoadError: Error {
     case malformedResponse
     case invalidImageData
     case cacheError
+    case imageNotFound
     case generic(underlying: Error)
 }
 
@@ -25,11 +27,11 @@ class ImageLoader {
     
     private let fileManager = FileManager()
     
-    private let cache = ImageCache()
+    var cache: ImageCacheType = InMemoryImageCache()
     
     private let networker = Networker()
     
-    public func load(url: URL) -> ImageLoadPromise{
+    public func load(url: URL) -> ImageLoadPromise {
         return retrieve(url: url)
     }
 }
