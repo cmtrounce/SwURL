@@ -31,9 +31,13 @@ public class PersistentImageCache: ImageCacheType {
                     return
                 }
 
-                try data.write(to: directory)
+                if !fileManager.fileExists(atPath: directory.absoluteString) {
+                    try fileManager.createFile(atPath: directory.absoluteString, contents: data, attributes: nil)
+                } else {
+                    try data.write(to: directory)
+                }
             } catch {
-                print(error.localizedDescription)
+                print("UNABLE TO STORE IMAGE: ", error.localizedDescription)
             }
         }
     }
