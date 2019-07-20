@@ -45,12 +45,12 @@ public enum ImageTransitionType {
         }
     }
     
-    var animation: Animation {
+    var animation: Animation? {
         switch self {
         case .custom(_, let animation):
             return animation
         case .none:
-            return .empty
+            return nil
         }
     }
 }

@@ -42,9 +42,9 @@ public class PersistentImageCache: ImageCacheType {
         }
     }
     
-    public func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
+    public func image(for url: URL) -> Future<CGImage, ImageLoadError> {
         
-        return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
+        return Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
                 seal(.failure(.loaderDeallocated))
                 return
