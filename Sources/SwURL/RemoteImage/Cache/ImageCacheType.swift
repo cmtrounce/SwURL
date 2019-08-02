@@ -14,7 +14,7 @@ public protocol ImageCacheType {
     
     func store(image: CGImage, for url: URL)
     
-    func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError>
+    func image(for url: URL) -> Future<CGImage, ImageLoadError>
     
 }
 

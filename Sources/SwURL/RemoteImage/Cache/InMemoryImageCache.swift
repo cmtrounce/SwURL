@@ -28,8 +28,8 @@ public class InMemoryImageCache: ImageCacheType {
     
     /// Asyncronously retrieves an image from the cache based on the provided url
     /// - Parameter url: the url at  which you wish to retrieve an image for.
-    public func image(for url: URL) -> Publishers.Future<CGImage, ImageLoadError> {
-        return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
+    public func image(for url: URL) -> Future<CGImage, ImageLoadError> {
+        return Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
                 seal(.failure(ImageLoadError.loaderDeallocated))
                 return
