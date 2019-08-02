@@ -1,5 +1,5 @@
 language: swift
 osx_image: xcode11
-xcode_scheme: SwURL
+xcode_scheme: SwURL-Package
 xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
 xcode_project: SwURL.xcodeproj
