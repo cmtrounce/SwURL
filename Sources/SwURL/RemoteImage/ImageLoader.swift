@@ -58,7 +58,7 @@ private extension ImageLoader {
     /// - Parameter response: data response from request
     /// - Parameter location: the url fthat was in the request.
     func handleDownload(response: URLResponse, location: URL) -> ImageLoadPromise {
-        return Publishers.Future<CGImage, ImageLoadError>.init { [weak self] seal in
+        return Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
                 seal(.failure(.loaderDeallocated))
                 return

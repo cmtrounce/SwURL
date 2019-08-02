@@ -8,9 +8,6 @@
 import Foundation
 import Combine
 
-
-extension JSONDecoder: TopLevelDecoder {  }
-
 @available(iOS 13.0, *)
 class Networker {
     
@@ -18,8 +15,8 @@ class Networker {
     
     /// Executes an asyncronous download task.
     /// - Parameter url: url you wish to retrieve data from.
-    func downloadTask(url: URL) -> Publishers.Future<(URLResponse, URL), Error> {
-        return Publishers.Future.init { [weak self] result in
+    func downloadTask(url: URL) -> Future<(URLResponse, URL), Error> {
+        return Future.init { [weak self] result in
             let request = self?.session.downloadTask(with: url, completionHandler: { (downloadLocation, response, error) in
                 if let error = error {
                     result(.failure(error))
@@ -38,8 +35,8 @@ class Networker {
     
     /// Perform an asyncronous data task from a remote url.
     /// - Parameter url: url at which you wish to retreive data.
-    func dataTask(url: URL) -> Publishers.Future<Data, Error> {
-        return Publishers.Future.init { [weak self] result in
+    func dataTask(url: URL) -> Future<Data, Error> {
+        return Future.init { [weak self] result in
             let request = self?.session.dataTask(with: url, completionHandler: { (data, response, error) in
                 if let error = error {
                     result(.failure(error))
