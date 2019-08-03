@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.org/cmtrounce/SwURL.svg?branch=master)](https://travis-ci.org/cmtrounce/SwURL)
+
 # SwURL
 
 Declarative-style SwiftUI wrapper around asyncronous image views including smooth transitions and caching options.
