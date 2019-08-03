@@ -1,7 +1,8 @@
+# SwURL
 
 [![Build Status](https://travis-ci.org/cmtrounce/SwURL.svg?branch=master)](https://travis-ci.org/cmtrounce/SwURL)
-
-# SwURL
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
 Declarative-style SwiftUI wrapper around asyncronous image views including smooth transitions and caching options.
 
