@@ -11,12 +11,10 @@ import SwiftUI
 import Combine
 
 @available(iOS 13.0, *)
-class RemoteImage: BindableObject {
+class RemoteImage: ObservableObject {
 
-    var willChange = PassthroughSubject<Image?, Never>()
-
-    typealias PublisherType = PassthroughSubject<Image?, Never>
-
+    var objectWillChange = PassthroughSubject<Image?, Never>()
+    
     var request: Cancellable?
 
     var image: Image? = nil {
@@ -24,7 +22,7 @@ class RemoteImage: BindableObject {
             guard image == nil else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                self.willChange.send(self.image)
+                self.objectWillChange.send(self.image)
             }
         }
     }
