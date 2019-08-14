@@ -1,4 +1,3 @@
-# SwURL
 
 ![SwURL](https://imgur.com/jTPdRfJ.png)
 
