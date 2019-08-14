@@ -1,5 +1,6 @@
 # SwURL
 
+![SwURL](https://imgur.com/jTPdRfJ.png)
 
 
 [![Build Status](https://travis-ci.org/cmtrounce/SwURL.svg?branch=master)](https://travis-ci.org/cmtrounce/SwURL)
