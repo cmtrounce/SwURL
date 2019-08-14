@@ -9,7 +9,6 @@
 import Foundation
 import SwiftUI
 
-
 public struct RemoteImageView: View {
     
     var url: URL

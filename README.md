@@ -60,7 +60,7 @@ struct LandmarkRow: View {
             RemoteImageView(url: landmark.imageURL,
                             placeholderImage: Image.init("user"),
                             transition: .custom(transition: .opacity,
-                                                animation: .basic(duration: 0.5, curve: .easeInOut)))
+                                                animation: .easeOut(duration: 0.5)))
             Text(verbatim: landmark.name)
             Spacer()
         }
