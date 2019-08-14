@@ -1,5 +1,9 @@
-
-![SwURL](https://imgur.com/jTPdRfJ.png)
+<p align="center">
+  <img src="https://imgur.com/jTPdRfJ.png" alt="SwURL"/>
+</p>
+<br/>
+<br/>
+<br/>
 
 
 [![Build Status](https://travis-ci.org/cmtrounce/SwURL.svg?branch=master)](https://travis-ci.org/cmtrounce/SwURL)
