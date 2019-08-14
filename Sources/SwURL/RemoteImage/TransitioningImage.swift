@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-@available(iOS 13.0, *)
+
 struct TransitioningImage: View {
     
     var placeholder: Image?
@@ -31,7 +31,7 @@ struct TransitioningImage: View {
     }
 }
 
-@available(iOS 13.0, *)
+
 public enum ImageTransitionType {
     case custom(transition: AnyTransition, animation: Animation)
     case none

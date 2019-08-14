@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-@available(iOS 13.0, *)
+
 class Networker {
     
     private lazy var session = URLSession.init(configuration: .default)

@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-@available(iOS 13.0, *)
+
 class RemoteImage: ObservableObject {
 
     var objectWillChange = PassthroughSubject<Image?, Never>()

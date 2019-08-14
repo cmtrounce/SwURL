@@ -19,7 +19,7 @@ public enum ImageLoadError: Error {
     case generic(underlying: Error)
 }
 
-@available(iOS 13.0, *)
+
 class ImageLoader {
     public typealias ImageLoadPromise = AnyPublisher<CGImage, ImageLoadError>
     
@@ -36,7 +36,7 @@ class ImageLoader {
     }
 }
 
-@available(iOS 13.0, *)
+
 private extension ImageLoader {
     
     /// Retrieves image from URL

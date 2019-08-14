@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-@available(iOS 13.0, *)
 public class InMemoryImageCache: ImageCacheType {
     
     private let cache = NSCache<NSURL, CGImage>()

@@ -10,7 +10,7 @@ import CoreGraphics
 import CoreImage
 import Combine
 
-@available(iOS 13.0, *)
+
 public class PersistentImageCache: ImageCacheType {
     
     /// Specific queue to assist with concurrency.
@@ -69,7 +69,7 @@ public class PersistentImageCache: ImageCacheType {
 }
 
 
-@available(iOS 13.0, *)
+
 private extension PersistentImageCache {
     
     func storageURL(for imageURL: URL) throws -> URL {

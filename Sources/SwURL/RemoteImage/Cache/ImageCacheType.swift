@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import CoreGraphics
 
-@available(iOS 13.0, *)
 public protocol ImageCacheType {
     
     func store(image: CGImage, for url: URL)
@@ -18,7 +17,6 @@ public protocol ImageCacheType {
     
 }
 
-@available(iOS 13.0, *)
 public enum ImageCache {
     case inMemory
     case persistent
