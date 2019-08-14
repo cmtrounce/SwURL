@@ -81,3 +81,6 @@ SwURL is available only through `Swift Package Manager`
 * Choose the branch/version you want to clone. The most recent release is the most stable but you can choose branches  `master` and `develop` for the most up to date changes.
 * Confirm and enjoy!
 
+# Contact
+
+If you want to get in touch you can email me at ctrounce94@gmail.com or follow/message me on Twitter https://twitter.com/ctrounce94
