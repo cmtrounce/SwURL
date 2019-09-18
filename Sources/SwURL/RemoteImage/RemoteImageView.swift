@@ -10,9 +10,9 @@ import Foundation
 import SwiftUI
 
 public struct RemoteImageView: View {
-
     var url: URL
     var placeholderImage: Image?
+	var imageRenderingMode: Image.TemplateRenderingMode?
     
     let transitionType: ImageTransitionType
 
@@ -20,9 +20,13 @@ public struct RemoteImageView: View {
     var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
-        TransitioningImage.init(
-			placeholder: placeholderImage?.resizable(),
-			finalImage: remoteImage.load(url: url).image?.resizable(),
+        TransitioningImage(
+			placeholder: placeholderImage?
+				.resizable()
+				.renderingMode(imageRenderingMode),
+			finalImage: remoteImage.load(url: url).image?
+				.resizable()
+				.renderingMode(imageRenderingMode),
 			transitionType: transitionType
 		)
     }
@@ -30,10 +34,12 @@ public struct RemoteImageView: View {
 	public init(
 		url: URL,
 		placeholderImage: Image? = nil,
-		transition: ImageTransitionType = .none
+		transition: ImageTransitionType = .none,
+		imageRenderingMode: Image.TemplateRenderingMode? = nil
 	) {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
+		self.imageRenderingMode = imageRenderingMode
     }
 }
