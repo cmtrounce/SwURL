@@ -73,6 +73,15 @@ struct LandmarkRow: View {
 }
 ```
 
+## Available Parameters
+
+| Name | Description |
+| :--- | :--- |
+| url | `URL` of the remote source image. |
+| placeholderImage | _(optional)_ `Image` to display whilst remote image data is being fetched and decoded. |
+| transition | _(optional)_ transition to occur when showing the loaded image. |
+| imageRenderingMode | _(optional)_ `TemplateRenderingMode` of the placeholder image (if provided) and loaded image. |  
+
 # Get it
 
 SwURL is available only through `Swift Package Manager`
