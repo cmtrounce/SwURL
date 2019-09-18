@@ -10,11 +10,8 @@ import Combine
 import CoreGraphics
 
 public protocol ImageCacheType {
-    
     func store(image: CGImage, for url: URL)
-    
     func image(for url: URL) -> Future<CGImage, ImageLoadError>
-    
 }
 
 public enum ImageCache {

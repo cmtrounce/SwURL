@@ -8,9 +8,7 @@
 import Foundation
 
 extension FileManager {
-    
     class func cachesDir() -> URL {
-        
         if let savedPath = UserDefaults.standard.url(forKey: "SwURLCacheDestinationDirectory") {
             return savedPath
         } else {
@@ -21,5 +19,4 @@ extension FileManager {
             return url
         }
     }
-    
 }

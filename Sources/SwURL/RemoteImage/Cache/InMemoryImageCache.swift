@@ -10,7 +10,6 @@ import SwiftUI
 import Combine
 
 public class InMemoryImageCache: ImageCacheType {
-    
     private let cache = NSCache<NSURL, CGImage>()
     
     /// Specific queue to assist with concurrency.

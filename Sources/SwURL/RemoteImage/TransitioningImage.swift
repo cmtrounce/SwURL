@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-
 struct TransitioningImage: View {
-    
     var placeholder: Image?
     var finalImage: Image?
     
