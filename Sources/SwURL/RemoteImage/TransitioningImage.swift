@@ -11,7 +11,7 @@ import SwiftUI
 struct TransitioningImage: View {
     var placeholder: Image?
     var finalImage: Image?
-	var percentageComplete: CGFloat
+	@State var percentageComplete: CGFloat
 	
     let transitionType: ImageTransitionType
     
