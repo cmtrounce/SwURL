@@ -16,7 +16,7 @@ struct ProgressBar: View {
 		return frame.size.width * progressValue
 	}
 	
-	let progressValue: CGFloat
+	@State var progressValue: CGFloat
 	
 	var body: some View {
 		GeometryReader { geometry in
