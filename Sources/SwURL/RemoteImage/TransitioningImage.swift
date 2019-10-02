@@ -11,12 +11,14 @@ import SwiftUI
 struct TransitioningImage: View {
     var placeholder: Image?
     var finalImage: Image?
-    
+	var percentageComplete: CGFloat
+	
     let transitionType: ImageTransitionType
     
     public var body: some View {
         ZStack {
             if finalImage == nil {
+				ProgressBar(progressValue: percentageComplete)
                 placeholder?
                     .transition(transitionType.t)
                     .animation(transitionType.animation)

@@ -32,6 +32,13 @@ class RemoteImage: ObservableObject {
 		)
 	}
 	
+	var progress: Float {
+		guard case let .progress(fraction) = imageStatus else {
+			return 0
+		}
+		return fraction
+	}
+	
 	var imageStatus: RemoteImageStatus = .progress(fraction: 0) {
 		willSet {
 			guard case .progress = imageStatus else { return }
