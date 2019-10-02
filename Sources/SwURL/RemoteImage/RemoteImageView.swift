@@ -27,7 +27,7 @@ public struct RemoteImageView: View {
 			finalImage: remoteImage.load(url: url).image?
 				.resizable()
 				.renderingMode(imageRenderingMode),
-			percentageComplete: CGFloat(remoteImage.progress),
+			percentageComplete: CGFloat(50),
 			transitionType: transitionType
 		)
     }
