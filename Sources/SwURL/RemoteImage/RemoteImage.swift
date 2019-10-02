@@ -41,7 +41,6 @@ class RemoteImage: ObservableObject {
 	
 	var imageStatus: RemoteImageStatus = .progress(fraction: 0) {
 		willSet {
-			guard case .progress = imageStatus else { return }
 			DispatchQueue.main.async { [weak self] in
 				guard let self = self else { return }
 				self.objectWillChange.send(self.imageStatus)
