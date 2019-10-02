@@ -10,43 +10,48 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum RemoteImageStatus {
+	case complete(result: CGImage)
+	case progress(fraction: Float)
+}
+
 class RemoteImage: ObservableObject {
 
-    var objectWillChange = PassthroughSubject<Image?, Never>()
+    var objectWillChange = PassthroughSubject<RemoteImageStatus, Never>()
 	
 	var request: Cancellable?
 	
-	var image: Image? = nil {
+	var image: Image? {
+		guard case let .complete(image) = imageStatus else {
+			return nil
+		}
+		return Image.init(
+			image,
+			scale: 1,
+			label: Text("Image")
+		)
+	}
+	
+	var imageStatus: RemoteImageStatus = .progress(fraction: 0) {
 		willSet {
-			guard image == nil else { return }
+			guard case .progress = imageStatus else { return }
 			DispatchQueue.main.async { [weak self] in
 				guard let self = self else { return }
-				self.objectWillChange.send(self.image)
+				self.objectWillChange.send(self.imageStatus)
 			}
 		}
 	}
 	
 	func load(url: URL) -> Self {
-		request = ImageLoader.shared.load(url: url)
-			.map { cgImage -> Image in
-				SwURLDebug.log(
-					level: .info,
-					message: "Image successfully retrieved from url: " + url.absoluteString
-				)
-				return Image.init(
-					cgImage,
-					scale: 1,
-					label: Text(url.lastPathComponent)
-				)
-		}.catch { error -> Just<Image?>  in
+		request = ImageLoader.shared.load(url: url).catch { error -> Just<RemoteImageStatus> in
 			SwURLDebug.log(
 				level: .warning,
 				message: "Failed to load image from url: " + url.absoluteString + "\nReason: " + error.localizedDescription
 			)
-			return .init(nil)
+			return .init(.progress(fraction: 0))
 		}
 		.eraseToAnyPublisher()
-		.assign(to: \RemoteImage.image, on: self)
+		.assign(to: \RemoteImage.imageStatus, on: self)
 		return self
 	}
 }

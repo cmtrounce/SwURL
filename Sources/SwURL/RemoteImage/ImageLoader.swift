@@ -21,7 +21,7 @@ public enum ImageLoadError: Error {
 
 
 class ImageLoader {
-    public typealias ImageLoadPromise = AnyPublisher<CGImage, ImageLoadError>
+    public typealias ImageLoadPromise = AnyPublisher<RemoteImageStatus, ImageLoadError>
     
     static let shared = ImageLoader()
     
@@ -45,20 +45,22 @@ private extension ImageLoader {
 		let asyncLoad = downloader.download(from: url)
             .mapError(ImageLoadError.generic)
             .flatMap(handleDownload)
-            .eraseToAnyPublisher()
-        
-        return cache
-            .image(for: url)
-            .catch { error -> ImageLoadPromise in
-                return asyncLoad
-        }.eraseToAnyPublisher()
-    }
- 
-    /// Handles response of successful download response
+			.eraseToAnyPublisher()
+		
+		return cache.image(for: url)
+			.map { cgImage in
+				return RemoteImageStatus.complete(result: cgImage)
+		}
+		.catch { error -> ImageLoadPromise in
+			return asyncLoad
+		}.eraseToAnyPublisher()
+	}
+	
+	/// Handles response of successful download response
     /// - Parameter response: data response from request
     /// - Parameter location: the url fthat was in the request.
     func handleDownload(downloadInfo: DownloadInfo) -> ImageLoadPromise {
-        return Future<CGImage, ImageLoadError>.init { [weak self] seal in
+        return Future<RemoteImageStatus, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
                 seal(.failure(.loaderDeallocated))
                 return
@@ -90,7 +92,7 @@ private extension ImageLoader {
                 }
                 
                 self.cache.store(image: image, for: url)
-                seal(.success(image))
+				seal(.success(.complete(result: image)))
             } catch {
                 seal(.failure(.generic(underlying: error)))
             }
