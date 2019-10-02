@@ -43,59 +43,53 @@ private extension ImageLoader {
     /// - Parameter url: url at which you require the image.
     func retrieve(url: URL) -> ImageLoadPromise {
 		let asyncLoad = downloader.download(from: url)
-            .mapError(ImageLoadError.generic)
-            .flatMap(handleDownload)
+            .tryMap(handleDownload)
+			.mapError { error -> ImageLoadError in
+				if let error = error as? ImageLoadError {
+					return error
+				}
+				return .generic(underlying: error)
+			}
 			.eraseToAnyPublisher()
 		
 		return cache.image(for: url)
-			.map { cgImage in
-				return RemoteImageStatus.complete(result: cgImage)
-		}
-		.catch { error -> ImageLoadPromise in
-			return asyncLoad
+			.map(RemoteImageStatus.complete)
+			.catch { error -> ImageLoadPromise in
+				asyncLoad
 		}.eraseToAnyPublisher()
 	}
 	
 	/// Handles response of successful download response
     /// - Parameter response: data response from request
     /// - Parameter location: the url fthat was in the request.
-    func handleDownload(downloadInfo: DownloadInfo) -> ImageLoadPromise {
-        return Future<RemoteImageStatus, ImageLoadError>.init { [weak self] seal in
-            guard let self = self else {
-                seal(.failure(.loaderDeallocated))
-                return
-            }
-            
-			let url = downloadInfo.url
-			guard let location = downloadInfo.resultURL else {
-				SwURLDebug.log(
-					level: .info,
-					message: "Result url not present in handleDownload."
-				)
-                return
-            }
-            
-            do {
-                let directory = try self.fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(location.lastPathComponent)
-                try self.fileManager.copyItem(at: location, to: directory)
-                
-                guard
-                    let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
-                        seal(.failure(.cacheError))
-                        return
-                }
-                
-                guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
-                    else {
-                        seal(.failure(.cacheError))
-                        return
-                }
-                
-                self.cache.store(image: image, for: url)
-				seal(.success(.complete(result: image)))
-            } catch {
-                seal(.failure(.generic(underlying: error)))
-            }
-        }.eraseToAnyPublisher()
+    func handleDownload(downloadInfo: DownloadInfo) throws -> RemoteImageStatus {
+        let url = downloadInfo.url
+		guard let location = downloadInfo.resultURL else {
+			SwURLDebug.log(
+				level: .info,
+				message: "Result url not present in handleDownload.\nProgress \(downloadInfo.progress)"
+			)
+			return .progress(fraction: downloadInfo.progress)
+		}
+		
+		do {
+			let directory = try self.fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(location.lastPathComponent)
+			try self.fileManager.copyItem(at: location, to: directory)
+			
+			guard
+				let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
+					throw ImageLoadError.cacheError
+			}
+			
+			guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
+				else {
+					throw ImageLoadError.cacheError
+			}
+			
+			self.cache.store(image: image, for: url)
+			return .complete(result: image)
+		} catch {
+			throw ImageLoadError.generic(underlying: error)
+		}
     }
 }
