@@ -15,11 +15,14 @@ struct DownloadInfo {
 }
 
 class Downloader: NSObject {
-	
 	var tasks: [URLSessionDownloadTask: CurrentValueSubject<DownloadInfo, Error>] = [:]
 	
 	private lazy var session: URLSession = { [weak self] in
-		let urlSession = URLSession(configuration: .default)
+		let urlSession = URLSession.init(
+			configuration: .default,
+			delegate: self,
+			delegateQueue: OperationQueue()
+		)
 		return urlSession
 	}()
 	
@@ -52,6 +55,10 @@ extension Downloader: URLSessionDownloadDelegate {
 		
 		tasks[downloadTask]?.send(downloadInfo)
 		tasks[downloadTask]?.send(completion: .finished)
+		SwURLDebug.log(
+			level: .info,
+			message: "Download of \(downloadInfo.url) finished download to \(location)"
+		)
 	}
 	
 	func urlSession(
@@ -69,5 +76,10 @@ extension Downloader: URLSessionDownloadDelegate {
 		
 		downloadInfo.progress = fractionDownloaded
 		tasks[downloadTask]?.send(downloadInfo)
+		
+		SwURLDebug.log(
+			level: .info,
+			message: "Download of \(downloadInfo.url) reached progress: \(fractionDownloaded)"
+		)
 	}
 }
