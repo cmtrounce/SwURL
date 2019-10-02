@@ -29,7 +29,7 @@ class ImageLoader {
     
     var cache: ImageCacheType = InMemoryImageCache()
     
-    private let networker = Networker()
+    private let downloader = Downloader()
     
     public func load(url: URL) -> ImageLoadPromise {
         return retrieve(url: url)
@@ -42,7 +42,7 @@ private extension ImageLoader {
     /// Retrieves image from URL
     /// - Parameter url: url at which you require the image.
     func retrieve(url: URL) -> ImageLoadPromise {
-        let asyncLoad = networker.downloadTask(url: url)
+		let asyncLoad = downloader.download(from: url)
             .mapError(ImageLoadError.generic)
             .flatMap(handleDownload)
             .eraseToAnyPublisher()
@@ -57,14 +57,15 @@ private extension ImageLoader {
     /// Handles response of successful download response
     /// - Parameter response: data response from request
     /// - Parameter location: the url fthat was in the request.
-    func handleDownload(response: URLResponse, location: URL) -> ImageLoadPromise {
+    func handleDownload(downloadInfo: DownloadInfo) -> ImageLoadPromise {
         return Future<CGImage, ImageLoadError>.init { [weak self] seal in
             guard let self = self else {
                 seal(.failure(.loaderDeallocated))
                 return
             }
             
-            guard let url = response.url else {
+			let url = downloadInfo.url
+			guard let location = downloadInfo.resultURL else {
                 seal(.failure(.malformedResponse))
                 return
             }
