@@ -36,6 +36,7 @@ class Downloader: NSObject {
 			)
 		)
 		tasks[task] = subject
+		task.resume()
 		return subject
 	}
 }
