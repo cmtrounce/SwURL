@@ -20,7 +20,7 @@ struct ProgressBar: View {
 	
 	var body: some View {
 		GeometryReader { geometry in
-			ZStack(alignment: .center) {
+			ZStack(alignment: .leading) {
 				Rectangle()
 					.opacity(0.1)
 				Rectangle()
