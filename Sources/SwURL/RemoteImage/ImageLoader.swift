@@ -66,7 +66,10 @@ private extension ImageLoader {
             
 			let url = downloadInfo.url
 			guard let location = downloadInfo.resultURL else {
-                seal(.failure(.malformedResponse))
+				SwURLDebug.log(
+					level: .info,
+					message: "Result url not present in handleDownload."
+				)
                 return
             }
             
