@@ -70,7 +70,13 @@ private extension ImageLoader {
             }
             
             do {
+                #if os(iOS)
                 let directory = try self.fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(location.lastPathComponent)
+                #elseif os(tvOS)
+                //there is no user directory on tvOS. 
+                let directory = try self.fileManager.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(location.lastPathComponent)
+                #endif
+                
                 try self.fileManager.copyItem(at: location, to: directory)
                 
                 guard
