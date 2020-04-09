@@ -52,10 +52,14 @@ private extension ImageLoader {
 			}
 			.eraseToAnyPublisher()
 		
+		let deferredAsyncLoad = Deferred<ImageLoadPromise>.init { () -> ImageLoadPromise in
+			return asyncLoad
+		}
+		
 		return cache.image(for: url)
 			.map(RemoteImageStatus.complete)
-			.catch { error -> ImageLoadPromise in
-				asyncLoad
+			.catch { error in
+				return deferredAsyncLoad
 		}.eraseToAnyPublisher()
 	}
 	
