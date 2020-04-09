@@ -73,17 +73,21 @@ private extension ImageLoader {
 		}
 		
 		do {
-			let directory = try self.fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(location.lastPathComponent)
+			let directory = try self.fileManager.url(
+				for: searchPathDirectory,
+				in: .userDomainMask,
+				appropriateFor: nil,
+				create: true
+			).appendingPathComponent(location.lastPathComponent)
+			
 			try self.fileManager.copyItem(at: location, to: directory)
 			
-			guard
-				let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
-					throw ImageLoadError.cacheError
+			guard let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
+				throw ImageLoadError.cacheError
 			}
 			
-			guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil)
-				else {
-					throw ImageLoadError.cacheError
+			guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
+				throw ImageLoadError.cacheError
 			}
 			
 			self.cache.store(image: image, for: url)
@@ -92,4 +96,12 @@ private extension ImageLoader {
 			throw ImageLoadError.generic(underlying: error)
 		}
     }
+
+	var searchPathDirectory: FileManager.SearchPathDirectory {
+		#if os(iOS)
+		return FileManager.SearchPathDirectory.documentDirectory
+		#else
+		return FileManager.SearchPathDirectory.cachesDirectory
+		#endif
+	}
 }
