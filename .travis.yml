@@ -11,4 +11,4 @@ addons:
 
 script:
   - set -o pipefail && xcodebuild -project SwURL.xcodeproj -scheme SwURL-Package -destination platform\=iOS\ Simulator,OS\=13.0,name\=iPhone\ Xs build test | xcpretty
-  - sonar-scanner
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner; fi' # sonar only on non-PRs
