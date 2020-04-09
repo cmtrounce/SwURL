@@ -1,7 +1,7 @@
 language: swift
 osx_image: xcode11
 xcode_scheme: SwURL-Package
-xcode_destination: platform=iOS Simulator,OS=13.0,name=iPhone Xs
+xcode_destination: platform=iOS Simulator,OS=13.0,name=iPhone 8
 xcode_project: SwURL.xcodeproj
 addons:
   sonarcloud:
@@ -10,5 +10,5 @@ addons:
       secure: "QaGrr/KqNIaqIMV/geeIzNgotSteLABio1wOGfwwWH+NHt/5Dv/pQuRxJrfO0grK2DUKzazBjhR9zgGUKFtcgR3GTPFhJj0fksZa3BjaOxtXLUs7u4nEymS2zURIIrKB65O7rK5acWYSjVzx813hSVMXRNMYBHibguLa2mmx48g5S7srJISYLcKksW5imqUwezk4ipaJHZXLGOOZf1jvSSYOpKDKwqtbJNKpjrmSVqqtF6lspiXXBaBeuU+JEnVnoeyKwfq00cW8mt9yzxiapReCcbbPTo0ES8cwU8tsqLbf7eZyJ+/DwXhZZvX8z6VESBhjnXRv+emvdp2OPE9UenBDqUBkXOzlVtkc/LoJcXqrY+nEcx0xk2NKrlUUR4nAi5olHRbkv4LSsCoWdupU8Dl7BQu1lIZ+Y6AmmeaoXlNjUOWHuL34weBCpRGBM7k4YgaJ/DM0cPfys0/OZdtZJ39+slWacQEJaF0Iw3m7MTYm8DlfVEzuvteeljJlFbvp/ZQp9w/T+4g/ulgh7z7VmiM35HiRBnIcDP5hM5lGY0vaN4/X5Lri5t7PPS42TT1Gc16cEMln/ZtnYY/rI+kzIlapEsoYyYD4RdDwmlJSXS5DKWeZvpqbUSYYap67u/lD4WPLpw3RmSibtD+Vu2xOlLPoZ6iC4ndXbgO+V9nM+bo=" # encrypted value of your token
 
 script:
-  - set -o pipefail && xcodebuild -project SwURL.xcodeproj -scheme SwURL-Package -destination platform\=iOS\ Simulator,OS\=13.0,name\=iPhone\ Xs build test | xcpretty
+  - set -o pipefail && xcodebuild -project SwURL.xcodeproj -scheme SwURL-Package -destination platform\=iOS\ Simulator,OS\=13.0,name\=iPhone\ 8 build test | xcpretty
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then sonar-scanner; fi' # sonar only on non-PRs
