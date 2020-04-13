@@ -5,7 +5,7 @@
 <br/>
 
 
-[![Build Status](https://travis-ci.org/cmtrounce/SwURL.svg?branch=master)](https://travis-ci.org/cmtrounce/SwURL)
+[![Build Status](https://app.bitrise.io/app/0cc93118a793b6f9/status.svg?token=6ITVosjDjjYgfYcVRGMuUw&branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
