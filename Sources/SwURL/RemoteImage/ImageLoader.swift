@@ -41,25 +41,23 @@ private extension ImageLoader {
     
     /// Retrieves image from URL
     /// - Parameter url: url at which you require the image.
-    func retrieve(url: URL) -> ImageLoadPromise {
-		let asyncLoad = downloader.download(from: url)
-            .tryMap(handleDownload)
-			.mapError { error -> ImageLoadError in
-				if let error = error as? ImageLoadError {
-					return error
-				}
-				return .generic(underlying: error)
+	func retrieve(url: URL) -> ImageLoadPromise {
+		let asyncLoad = Deferred { [unowned self] in
+			self.downloader.download(from: url)
+				.tryMap(self.handleDownload)
+				.mapError { error -> ImageLoadError in
+					if let error = error as? ImageLoadError {
+						return error
+					}
+					return .generic(underlying: error)
 			}
 			.eraseToAnyPublisher()
-		
-		let deferredAsyncLoad = Deferred<ImageLoadPromise>.init { () -> ImageLoadPromise in
-			return asyncLoad
 		}
 		
 		return cache.image(for: url)
 			.map(RemoteImageStatus.complete)
 			.catch { error in
-				return deferredAsyncLoad
+				return asyncLoad
 		}.eraseToAnyPublisher()
 	}
 	

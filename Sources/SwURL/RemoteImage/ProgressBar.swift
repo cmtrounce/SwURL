@@ -8,29 +8,30 @@
 import Foundation
 import SwiftUI
 
-
-
 struct ProgressBar: View {
 	func getProgressBarWidth(geometry: GeometryProxy) -> CGFloat {
-		let frame = geometry.frame(in: .global)
-		return frame.size.width * progressValue
+		return geometry.size.width * progress
 	}
 	
-	@State var progressValue: CGFloat
+	var progress: CGFloat = 0
 	
 	var body: some View {
 		GeometryReader { geometry in
 			ZStack(alignment: .leading) {
+				Rectangle().foregroundColor(Color(.systemBackground))
 				Rectangle()
-					.opacity(0.1)
-				Rectangle()
-					.frame(minWidth: 0, idealWidth: self.getProgressBarWidth(geometry: geometry),
-						   maxWidth: self.getProgressBarWidth(geometry: geometry))
-					.opacity(0.5)
-					.background(Color.green)
+					.frame(width: self.getProgressBarWidth(geometry: geometry))
+					.foregroundColor(.accentColor)
 					.animation(.default)
 			}
-			.frame(height:10)
 		}
+	}
+}
+
+struct ProgressBar_Previews: PreviewProvider {
+	static var previews: some View {
+		ProgressBar(progress: 0.3)
+			.frame(width: 320, height: 10, alignment: .center)
+			.previewLayout(.sizeThatFits)
 	}
 }
