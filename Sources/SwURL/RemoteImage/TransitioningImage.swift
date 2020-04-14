@@ -11,9 +11,10 @@ import SwiftUI
 struct TransitioningImage: View {
     var placeholder: Image?
     var finalImage: Image?
-
+	
+	let percentageComplete: CGFloat
     let transitionType: ImageTransitionType
-    
+	
     public var body: some View {
         ZStack {
             if finalImage == nil {
