@@ -11,7 +11,7 @@ import SwiftUI
 struct TransitioningImage: View {
     var placeholder: Image?
     var finalImage: Image?
-    
+
     let transitionType: ImageTransitionType
     
     public var body: some View {

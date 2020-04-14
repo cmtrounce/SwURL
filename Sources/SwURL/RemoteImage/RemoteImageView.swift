@@ -16,7 +16,7 @@ public struct RemoteImageView: View {
     
     let transitionType: ImageTransitionType
 
-    @ObservedObject
+    @State
     var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
@@ -27,6 +27,7 @@ public struct RemoteImageView: View {
 			finalImage: remoteImage.load(url: url).image?
 				.resizable()
 				.renderingMode(imageRenderingMode),
+			percentageComplete: CGFloat(remoteImage.progress),
 			transitionType: transitionType
 		)
     }
