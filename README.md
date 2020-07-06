@@ -62,10 +62,17 @@ struct LandmarkRow: View {
     
     var body: some View {
         HStack {
-            RemoteImageView(url: landmark.imageURL,
-                            placeholderImage: Image.init("user"),
-                            transition: .custom(transition: .opacity,
-                                                animation: .easeOut(duration: 0.5)))
+            RemoteImageView(
+                url: landmark.imageURL,
+			    placeholderImage: Image.init("placeholder_avatar"),
+				transition: .custom(transition: .opacity,
+									animation: .easeOut(duration: 0.5)),
+				imageProcessing: { image in    
+					return image
+						.resizable()
+						.renderingMode(.alwaysTemplate)
+				}
+			)
             Text(verbatim: landmark.name)
             Spacer()
         }
@@ -75,12 +82,12 @@ struct LandmarkRow: View {
 
 ## Available Parameters
 
-| Name | Description |
-| :--- | :--- |
-| url | `URL` of the remote source image. |
-| placeholderImage | _(optional)_ `Image` to display whilst remote image data is being fetched and decoded. |
-| transition | _(optional)_ transition to occur when showing the loaded image. |
-| imageRenderingMode | _(optional)_ `TemplateRenderingMode` of the placeholder image (if provided) and loaded image. |  
+| Name | Description |Default|
+| :--- | :--- | :--- |
+| url | `URL` of the remote source image. | _none_ |
+| placeholderImage | _(optional)_ `Image` to display whilst remote image data is being fetched and decoded. | `nil` |
+| transition | _(optional)_ transition to occur when showing the loaded image. | `nil` |
+| processing | _(optional)_    `@escaping (Image) -> Image?`  alterations passed into the closure will be applied to placeholder and final image. Modifiers such as `resizable()` and  `renderingMode`  be used here |  applies `resizable()` to all images |
 
 # Get it
 

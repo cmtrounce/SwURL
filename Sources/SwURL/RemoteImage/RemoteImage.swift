@@ -16,7 +16,6 @@ enum RemoteImageStatus {
 }
 
 class RemoteImage: ObservableObject {
-
     var objectWillChange = PassthroughSubject<RemoteImageStatus, Never>()
 	
 	var request: Cancellable?
