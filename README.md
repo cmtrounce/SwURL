@@ -87,7 +87,9 @@ struct LandmarkRow: View {
 | url | `URL` of the remote source image. | _none_ |
 | placeholderImage | _(optional)_ `Image` to display whilst remote image data is being fetched and decoded. | `nil` |
 | transition | _(optional)_ transition to occur when showing the loaded image. | `nil` |
-| processing | _(optional)_    `@escaping (Image) -> Image?`  alterations passed into the closure will be applied to placeholder and final image. Modifiers such as `resizable()` and  `renderingMode`  be used here |  applies `resizable()` to all images |
+| processing | _(optional)_    `@escaping (Image) -> Image?`  alterations passed into the closure will be applied to placeholder and final image.
+
+Modifiers such as `resizable()` and  `renderingMode`  are to be used here |  applies `resizable()` to all images |
 
 # Get it
 

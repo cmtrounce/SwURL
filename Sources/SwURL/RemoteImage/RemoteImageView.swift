@@ -10,14 +10,14 @@ import Foundation
 import SwiftUI
 
 public struct RemoteImageView: View {
+	public typealias ImageProcessing = ((Image) -> Image?)
+	
 	public static func defaultImageProcessing() -> ImageProcessing {
 		return { image in
 			return image.resizable()
 		}
 	}
  
-	public typealias ImageProcessing = ((Image) -> Image?)
-	
     var url: URL
     var placeholderImage: Image?
 	var imageProcessing: ImageProcessing?
