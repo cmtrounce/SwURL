@@ -16,8 +16,8 @@ enum RemoteImageStatus {
 }
 
 class RemoteImage: ObservableObject {
-    var objectWillChange = PassthroughSubject<RemoteImageStatus, Never>()
-	
+	@Published var imageStatus: RemoteImageStatus = .progress(fraction: 0)
+
 	var request: Cancellable?
 	
 	var image: Image? {
@@ -38,15 +38,6 @@ class RemoteImage: ObservableObject {
 		return fraction
 	}
 	
-	var imageStatus: RemoteImageStatus = .progress(fraction: 0) {
-		willSet {
-			DispatchQueue.main.async { [weak self] in
-				guard let self = self else { return }
-				self.objectWillChange.send(self.imageStatus)
-			}
-		}
-	}
-	
 	func load(url: URL) -> Self {
 		request = ImageLoader.shared.load(url: url).catch { error -> Just<RemoteImageStatus> in
 			SwURLDebug.log(
@@ -56,6 +47,7 @@ class RemoteImage: ObservableObject {
 			return .init(.progress(fraction: 0))
 		}
 		.eraseToAnyPublisher()
+		.receive(on: DispatchQueue.main)
 		.assign(to: \RemoteImage.imageStatus, on: self)
 		return self
 	}
