@@ -39,16 +39,19 @@ class RemoteImage: ObservableObject {
 	}
 	
 	func load(url: URL) -> Self {
-		request = ImageLoader.shared.load(url: url).catch { error -> Just<RemoteImageStatus> in
-			SwURLDebug.log(
-				level: .warning,
-				message: "Failed to load image from url: " + url.absoluteString + "\nReason: " + error.localizedDescription
-			)
-			return .init(.progress(fraction: 0))
+		request = ImageLoader.shared
+			.load(url: url).catch { error -> Just<RemoteImageStatus> in
+				SwURLDebug.log(
+					level: .warning,
+					message: "Failed to load image from url: " + url.absoluteString + "\nReason: " + error.localizedDescription
+				)
+				return .init(.progress(fraction: 0))
 		}
 		.eraseToAnyPublisher()
+		.subscribe(on: DispatchQueue.global(qos: .userInitiated))
 		.receive(on: DispatchQueue.main)
 		.assign(to: \RemoteImage.imageStatus, on: self)
+
 		return self
 	}
 }
