@@ -70,7 +70,7 @@ struct LandmarkRow: View {
 				imageProcessing: { image in    
 					return image
 						.resizable()
-						.renderingMode(.alwaysTemplate)
+						.renderingMode(.template)
 				}
 			)
             Text(verbatim: landmark.name)
