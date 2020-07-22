@@ -24,7 +24,7 @@ public struct RemoteImageView: View {
     
     let transitionType: ImageTransitionType
 
-    @State
+    @ObservedObject
     var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
