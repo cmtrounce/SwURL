@@ -16,7 +16,11 @@ enum RemoteImageStatus: Equatable {
 }
 
 class RemoteImage: ObservableObject {
-	@Published var imageStatus: RemoteImageStatus = .progress(fraction: 0)
+	@Published var imageStatus: RemoteImageStatus = .progress(fraction: 0) {
+		willSet {
+			objectWillChange.send()
+		}
+	}
 
 	var request: Cancellable?
 	
