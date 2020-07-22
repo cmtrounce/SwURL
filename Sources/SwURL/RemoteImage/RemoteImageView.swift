@@ -10,11 +10,11 @@ import Foundation
 import SwiftUI
 
 public struct RemoteImageView: View {
-	public typealias ImageProcessing = ((Image) -> Image?)
+	public typealias ImageProcessing = ((Image) -> AnyView?)
 	
 	public static func defaultImageProcessing() -> ImageProcessing {
 		return { image in
-			return image.resizable()
+			return AnyView(image.resizable())
 		}
 	}
  
@@ -51,11 +51,11 @@ public struct RemoteImageView: View {
 }
 
 fileprivate extension Image {
-	func process(with processing: ((Image) -> Image?)?) -> Image? {
+	func process(with processing: ((Image) -> AnyView?)?) -> AnyView? {
 		if let processing = processing {
 			return processing(self)
 		}
 		
-		return self
+		return AnyView(self)
 	}
 }

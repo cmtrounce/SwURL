@@ -9,24 +9,26 @@ import Foundation
 import SwiftUI
 
 struct TransitioningImage: View {
-    var placeholder: Image?
-    var finalImage: Image?
+    var placeholder: AnyView?
+    var finalImage: AnyView?
 	
 	let percentageComplete: CGFloat
     let transitionType: ImageTransitionType
 	
+	var viewToUse: AnyView? {
+		if let finalImage = finalImage {
+			return finalImage
+		} else {
+			return placeholder
+		}
+	}
+	
     public var body: some View {
         ZStack {
-            if finalImage == nil {
-                placeholder?
-                    .transition(transitionType.t)
-                    .animation(transitionType.animation)
-            }
-            
-            finalImage?
-                .transition(transitionType.t)
-                .animation(transitionType.animation)
-        }
+			viewToUse
+				.transition(transitionType.t)
+				.animation(transitionType.animation)
+		}
     }
 }
 
