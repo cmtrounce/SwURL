@@ -15,18 +15,25 @@ struct TransitioningImage: View {
 	let percentageComplete: CGFloat
     let transitionType: ImageTransitionType
 	
+	
 	public var body: some View {
-		ZStack {
-			if finalImage == nil {
-				placeholder
+		GeometryReader { geo in
+			ZStack {
+				if self.finalImage == nil {
+					self.placeholder
+						.transition(self.transitionType.t)
+						.animation(self.transitionType.animation)
+				}
+				
+				self.finalImage?
 					.transition(self.transitionType.t)
 					.animation(self.transitionType.animation)
-			}
-			
-			finalImage?
-				.transition(self.transitionType.t)
-				.animation(self.transitionType.animation)
+			}.frame(
+				width: (geo as GeometryProxy).size.width,
+				height: (geo as GeometryProxy).size.height
+			)
 		}
+		
 	}
 }
 
