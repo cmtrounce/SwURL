@@ -36,7 +36,6 @@ class ImageLoader {
     }
 }
 
-
 private extension ImageLoader {
     
     /// Retrieves image from URL
@@ -65,39 +64,62 @@ private extension ImageLoader {
     /// - Parameter response: data response from request
     /// - Parameter location: the url fthat was in the request.
     func handleDownload(downloadInfo: DownloadInfo) throws -> RemoteImageStatus {
-        let url = downloadInfo.url
-		guard let location = downloadInfo.resultURL else {
+		switch downloadInfo.state {
+		case .progress(let fractionCompleted):
 			SwURLDebug.log(
 				level: .info,
-				message: "Result url not present in handleDownload.\nProgress \(downloadInfo.progress)"
+				message: "Image download progress: \(fractionCompleted)"
 			)
-			return .progress(fraction: downloadInfo.progress)
-		}
-		
-		do {
-			let directory = try self.fileManager.url(
-				for: searchPathDirectory,
-				in: .userDomainMask,
-				appropriateFor: nil,
-				create: true
-			).appendingPathComponent(location.lastPathComponent)
-			
-			try self.fileManager.copyItem(at: location, to: directory)
-			
-			guard let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
-				throw ImageLoadError.cacheError
+			return .progress(fraction: fractionCompleted)
+		case .result(let downloadLocationURL):
+			do {
+				let image = try createAndStoreImage(at: downloadLocationURL, requestURL: downloadInfo.url)
+				return .complete(result: image)
+			} catch {
+				SwURLDebug.log(
+					level: .error,
+					message: "FileManager failed with error: " + error.localizedDescription
+				)
+				throw ImageLoadError.generic(underlying: error)
 			}
-			
-			guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
-				throw ImageLoadError.cacheError
-			}
-			
-			self.cache.store(image: image, for: url)
-			return .complete(result: image)
-		} catch {
-			throw ImageLoadError.generic(underlying: error)
 		}
     }
+	
+	/// Attempts to create and store downloaded image using the file manager.
+	/// - Parameters:
+	///   - location: the location at which the downladed resource is stored.
+	///   - requestURL: the original url used to request the resource
+	/// - Throws: When the function fails to create and store the downloaded image
+	/// - Returns: A created CGImage
+	private func createAndStoreImage(at location: URL, requestURL: URL) throws -> CGImage {
+		let directory = try fileManager.url(
+			for: searchPathDirectory,
+			in: .userDomainMask,
+			appropriateFor: nil,
+			create: true
+		).appendingPathComponent(location.lastPathComponent)
+		
+		try fileManager.copyItem(at: location, to: directory)
+		
+		guard let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
+			SwURLDebug.log(
+				level: .error,
+				message: "failed to create an image source at directory: " + directory.absoluteString
+			)
+			throw ImageLoadError.cacheError
+		}
+		
+		guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
+			SwURLDebug.log(
+				level: .error,
+				message: "failed to create an image from source at directory" + directory.absoluteString
+			)
+			throw ImageLoadError.cacheError
+		}
+		
+		cache.store(image: image, for: requestURL)
+		return image
+	}
 
 	var searchPathDirectory: FileManager.SearchPathDirectory {
 		#if os(iOS)

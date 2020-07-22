@@ -9,9 +9,13 @@ import Foundation
 import Combine
 
 struct DownloadInfo {
+	enum State {
+		case progress(Float)
+		case result(URL)
+	}
+	
 	let url: URL
-	var progress: Float
-	var resultURL: URL?
+	var state: State
 }
 
 class Downloader: NSObject {
@@ -31,8 +35,7 @@ class Downloader: NSObject {
 		let subject = CurrentValueSubject<DownloadInfo, Error>.init(
 			DownloadInfo.init(
 				url: url,
-				progress: 0,
-				resultURL: nil
+				state: .progress(0)
 			)
 		)
 		tasks[task] = subject
@@ -51,8 +54,7 @@ extension Downloader: URLSessionDownloadDelegate {
 			return
 		}
 		
-		downloadInfo.resultURL = location
-		downloadInfo.progress = 1
+		downloadInfo.state = .result(location)
 		
 		tasks[downloadTask]?.send(downloadInfo)
 		tasks[downloadTask]?.send(completion: .finished)
@@ -75,7 +77,7 @@ extension Downloader: URLSessionDownloadDelegate {
 		
 		let fractionDownloaded = Float(Double(totalBytesWritten) / Double(totalBytesExpectedToWrite))
 		
-		downloadInfo.progress = fractionDownloaded
+		downloadInfo.state = .progress(fractionDownloaded)  
 		tasks[downloadTask]?.send(downloadInfo)
 		
 		SwURLDebug.log(
