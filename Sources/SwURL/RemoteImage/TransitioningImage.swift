@@ -19,15 +19,21 @@ struct TransitioningImage: View {
 		if let finalImage = finalImage {
 			return finalImage
 		} else {
-			return placeholder
+			return placeholder ?? AnyView(EmptyView())
 		}
 	}
 	
     public var body: some View {
-        ZStack {
-			viewToUse
-				.transition(transitionType.t)
-				.animation(transitionType.animation)
+		GeometryReader { geo in
+			ZStack {
+				self.viewToUse
+					.transition(self.transitionType.t)
+					.animation(self.transitionType.animation)
+			}.frame(
+				width: (geo as GeometryProxy).size.width,
+				height: (geo as GeometryProxy).size.height,
+				alignment: .center
+			)
 		}
     }
 }
