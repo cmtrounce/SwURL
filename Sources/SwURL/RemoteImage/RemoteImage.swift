@@ -50,7 +50,17 @@ class RemoteImage: ObservableObject {
 		.eraseToAnyPublisher()
 		.subscribe(on: DispatchQueue.global(qos: .userInitiated))
 		.receive(on: DispatchQueue.main)
-		.assign(to: \RemoteImage.imageStatus, on: self)
+		.sink(receiveCompletion: { completion in
+			switch completion {
+			case .finished:
+				SwURLDebug.log(
+					level: .info,
+					message: "ImageLoader.load observable request did finish"
+				)
+			}
+		}, receiveValue: { [weak self] value in
+			self?.imageStatus = value
+		})
 
 		return self
 	}
