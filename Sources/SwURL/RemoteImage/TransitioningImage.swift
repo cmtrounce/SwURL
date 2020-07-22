@@ -24,9 +24,17 @@ struct TransitioningImage: View {
 	}
 	
 	public var body: some View {
-		self.viewToUse
-			.transition(self.transitionType.t)
-			.animation(self.transitionType.animation)
+		ZStack {
+			if finalImage == nil {
+				placeholder
+					.transition(self.transitionType.t)
+					.animation(self.transitionType.animation)
+			}
+			
+			finalImage?
+				.transition(self.transitionType.t)
+				.animation(self.transitionType.animation)
+		}
 	}
 }
 
