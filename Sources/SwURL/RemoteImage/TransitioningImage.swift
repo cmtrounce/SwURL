@@ -15,14 +15,6 @@ struct TransitioningImage: View {
 	let percentageComplete: CGFloat
     let transitionType: ImageTransitionType
 	
-	var viewToUse: AnyView? {
-		if let finalImage = finalImage {
-			return finalImage
-		} else {
-			return placeholder ?? AnyView(EmptyView())
-		}
-	}
-	
 	public var body: some View {
 		ZStack {
 			if finalImage == nil {
