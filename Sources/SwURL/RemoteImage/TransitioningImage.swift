@@ -23,19 +23,11 @@ struct TransitioningImage: View {
 		}
 	}
 	
-    public var body: some View {
-		GeometryReader { geo in
-			ZStack {
-				self.viewToUse
-					.transition(self.transitionType.t)
-					.animation(self.transitionType.animation)
-			}.frame(
-				width: (geo as GeometryProxy).size.width,
-				height: (geo as GeometryProxy).size.height,
-				alignment: .center
-			)
-		}
-    }
+	public var body: some View {
+		self.viewToUse
+			.transition(self.transitionType.t)
+			.animation(self.transitionType.animation)
+	}
 }
 
 
