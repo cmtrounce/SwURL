@@ -16,32 +16,11 @@ enum RemoteImageStatus: Equatable {
 }
 
 class RemoteImage: ObservableObject {
-	@Published var imageStatus: RemoteImageStatus = .progress(fraction: 0) {
-		willSet {
-			objectWillChange.send()
-		}
-	}
-
+	@Published var imageStatus: RemoteImageStatus = .progress(fraction: 0)
+	
 	var request: Cancellable?
 	
-	var image: Image? {
-		guard case let .complete(image) = imageStatus else {
-			return nil
-		}
-		return Image.init(
-			image,
-			scale: 1,
-			label: Text("Image")
-		)
-	}
-	
-	var progress: Float {
-		guard case let .progress(fraction) = imageStatus else {
-			return 0
-		}
-		return fraction
-	}
-	
+	@discardableResult
 	func load(url: URL) -> Self {
 		request = ImageLoader.shared
 			.load(url: url).catch { error -> Just<RemoteImageStatus> in

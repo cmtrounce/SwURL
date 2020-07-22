@@ -25,15 +25,36 @@ public struct RemoteImageView: View {
     let transitionType: ImageTransitionType
 
     @State
-    var remoteImage: RemoteImage = RemoteImage()
-    
+	var remoteImage: RemoteImage = RemoteImage()
+	var image: Image? {
+		switch remoteImage.imageStatus {
+		case .complete(let result):
+			return Image.init(
+				result,
+				scale: 1,
+				label: Text("Image")
+			)
+		case .progress:
+			return nil
+		}
+	}
+	
+	var progress: Float {
+		switch remoteImage.imageStatus {
+		case .complete:
+			return 1.0
+		case .progress(let fraction):
+			return fraction
+		}
+	}
+	
     public var body: some View {
         TransitioningImage(
 			placeholder: placeholderImage?
 				.process(with: imageProcessing),
-			finalImage: remoteImage.load(url: url).image?
+			finalImage: image?
 				.process(with: imageProcessing),
-			percentageComplete: CGFloat(remoteImage.progress),
+			percentageComplete: CGFloat(progress),
 			transitionType: transitionType
 		)
     }
@@ -47,6 +68,7 @@ public struct RemoteImageView: View {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
+		remoteImage.load(url: url)
     }
 }
 
