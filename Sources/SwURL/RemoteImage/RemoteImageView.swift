@@ -50,10 +50,8 @@ public struct RemoteImageView: View {
 	
     public var body: some View {
         TransitioningImage(
-			placeholder: placeholderImage?
-				.process(with: imageProcessing),
-			finalImage: image?
-				.process(with: imageProcessing),
+			placeholder: placeholderImage?.process(with: imageProcessing),
+			finalImage: image?.process(with: imageProcessing),
 			percentageComplete: CGFloat(progress),
 			transitionType: transitionType
 		)
@@ -68,6 +66,7 @@ public struct RemoteImageView: View {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
+		self.imageProcessing = imageProcessing
 		remoteImage.load(url: url)
     }
 }
