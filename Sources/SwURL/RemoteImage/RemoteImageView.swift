@@ -10,11 +10,11 @@ import Foundation
 import SwiftUI
 
 public struct RemoteImageView: View {
-	public typealias ImageProcessing = ((Image) -> AnyView?)
+	public typealias ImageProcessing = ((Image) -> Image)
 	
 	public static func defaultImageProcessing() -> ImageProcessing {
 		return { image in
-			return AnyView(image.resizable())
+			return image.resizable()
 		}
 	}
  
@@ -50,8 +50,8 @@ public struct RemoteImageView: View {
 	
     public var body: some View {
         TransitioningImage(
-			placeholder: placeholderImage?.process(with: imageProcessing),
-			finalImage: image?.process(with: imageProcessing),
+			placeholder: placeholderImage.process(with: imageProcessing),
+			finalImage: image.process(with: imageProcessing),
 			percentageComplete: CGFloat(progress),
 			transitionType: transitionType
 		)
@@ -71,12 +71,17 @@ public struct RemoteImageView: View {
     }
 }
 
-fileprivate extension Image {
-	func process(with processing: ((Image) -> AnyView?)?) -> AnyView? {
-		if let processing = processing {
-			return processing(self)
+fileprivate extension Optional where Wrapped == Image {
+	func process(with processing: ((Image) -> Image)?) -> AnyView {
+		switch self {
+		case .none:
+			return AnyView(EmptyView())
+		case .some(let image):
+			if let processing = processing {
+				return AnyView(processing(image))
+			}
+			
+			return AnyView(image)
 		}
-		
-		return AnyView(self)
 	}
 }
