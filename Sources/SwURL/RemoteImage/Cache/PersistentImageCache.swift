@@ -36,6 +36,7 @@ public class PersistentImageCache: ImageCacheType {
                 }
                 
                 try data.write(to: directory)
+				SwURLDebug.log(level: .info, message: "Image for resource at " + url.absoluteString + " was stored to " + directory.absoluteString)
             } catch {
                 SwURLDebug.log(level: .error, message: "UNABLE TO STORE IMAGE: " + error.localizedDescription)
             }
@@ -52,16 +53,23 @@ public class PersistentImageCache: ImageCacheType {
             
             do {
                 let path = try self.storageURL(for: url)
-                let data = try Data(contentsOf: path)
-                guard let provider = CGDataProvider.init(data: data as CFData), let image = CGImage.init(pngDataProviderSource: provider,
-                                                                                                         decode: nil,
-                                                                                                         shouldInterpolate: false,
-                                                                                                         intent: .defaultIntent) else {
-                    seal(.failure(.invalidImageData))
-                    return
-                }
-                seal(.success(image))
-            } catch {
+				let data = try Data(contentsOf: path)
+				guard
+					let provider = CGDataProvider.init(data: data as CFData),
+					let image = CGImage.init(
+						pngDataProviderSource: provider,
+						decode: nil,
+						shouldInterpolate: false,
+						intent: .defaultIntent
+					) else {
+						seal(.failure(.invalidImageData))
+						return
+				}
+				
+				SwURLDebug.log(level: .info, message: "Image found in persistent cache for resource at URL: " + url.absoluteString)
+				seal(.success(image))
+			} catch {
+				SwURLDebug.log(level: .info, message: "Image not found in persistent cache for resource at URL: " + url.absoluteString)
                 seal(.failure(.generic(underlying: error)))
             }
         }
