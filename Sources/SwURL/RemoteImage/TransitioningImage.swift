@@ -17,23 +17,17 @@ struct TransitioningImage: View {
 	
 	
 	public var body: some View {
-		GeometryReader { geo in
-			ZStack {
-				if self.finalImage == nil {
-					self.placeholder
-						.transition(self.transitionType.t)
-						.animation(self.transitionType.animation)
-				}
-				
-				self.finalImage?
+		ZStack {
+			if self.finalImage == nil {
+				self.placeholder
 					.transition(self.transitionType.t)
 					.animation(self.transitionType.animation)
-			}.frame(
-				width: (geo as GeometryProxy).size.width,
-				height: (geo as GeometryProxy).size.height
-			)
+			}
+			
+			self.finalImage?
+				.transition(self.transitionType.t)
+				.animation(self.transitionType.animation)
 		}
-		
 	}
 }
 
