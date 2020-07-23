@@ -53,11 +53,15 @@ private extension ImageLoader {
 			.eraseToAnyPublisher()
 		}
 		
-		return cache.image(for: url)
-			.map(RemoteImageStatus.complete)
-			.catch { error in
-				return asyncLoad
-		}.eraseToAnyPublisher()
+		return Deferred { [unowned self] in
+			self.cache.image(for: url)
+				.map(RemoteImageStatus.complete)
+				.catch { error in
+					return asyncLoad
+			}
+		}
+		.subscribe(on: DispatchQueue.global(qos: .userInitiated))
+		.eraseToAnyPublisher()
 	}
 	
 	/// Handles response of successful download response
