@@ -11,8 +11,6 @@
 
 Declarative-style SwiftUI wrapper around asyncronous image views including smooth transitions and caching options.
 
-### Currently up to date with Xcode GM 2. 
-
 # RemoteImageView
 
 Asyncrounously download and display images declaratively. Supports placeholders and image transitions.
