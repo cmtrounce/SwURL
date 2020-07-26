@@ -32,17 +32,28 @@ public struct RemoteImageView: View {
 				scale: 1,
 				label: Text("Image")
 			)
-		case .progress:
+		case .progress, .pending:
 			return nil
 		}
 	}
 	
 	var progress: Float {
 		switch remoteImage.imageStatus {
+		case .pending:
+			return 0
 		case .complete:
 			return 1.0
 		case .progress(let fraction):
 			return fraction
+		}
+	}
+	
+	var shouldRequestLoad: Bool {
+		switch remoteImage.imageStatus {
+		case .pending:
+			return true
+		default:
+			return false
 		}
 	}
 	
@@ -53,7 +64,11 @@ public struct RemoteImageView: View {
 			percentageComplete: CGFloat(progress),
 			transitionType: transitionType
 		).onAppear {
-			self.remoteImage.load(url: self.url)
+			// bug in swift ui when onAppear called multiple times
+			// resulting in duplicate requests.
+			if self.shouldRequestLoad {
+				self.remoteImage.load(url: self.url)
+			}
 		}
     }
 

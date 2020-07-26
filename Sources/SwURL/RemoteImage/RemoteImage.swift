@@ -11,6 +11,7 @@ import SwiftUI
 import Combine
 
 enum RemoteImageStatus: Equatable {
+	case pending
 	case complete(result: CGImage)
 	case progress(fraction: Float)
 }
