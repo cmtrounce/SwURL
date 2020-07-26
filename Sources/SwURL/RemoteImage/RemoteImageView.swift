@@ -69,7 +69,7 @@ public struct RemoteImageView: View {
 
 public extension RemoteImageView {
 	func imagePostProcessing<ProcessedImage: View>(
-		@ViewBuilder image: @escaping (Image) -> ProcessedImage
+		image: @escaping (Image) -> ProcessedImage
 	) -> some View {
 		var mut = self
 		mut.imageProcessing = { val in
