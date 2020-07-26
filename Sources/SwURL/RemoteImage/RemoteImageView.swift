@@ -10,17 +10,15 @@ import Foundation
 import SwiftUI
 
 public struct RemoteImageView: View {
-	public typealias ImageProcessing = ((Image) -> Image)
-	
-	public static func defaultImageProcessing() -> ImageProcessing {
+	public static func defaultImageProcessing() -> ((Image) -> AnyView) {
 		return { image in
-			return image.resizable()
+			return AnyView(image.resizable())
 		}
 	}
  
     var url: URL
     var placeholderImage: Image?
-	var imageProcessing: ImageProcessing?
+	fileprivate var imageProcessing: ((Image) -> AnyView) = RemoteImageView.defaultImageProcessing()
     
     let transitionType: ImageTransitionType
 
@@ -60,19 +58,27 @@ public struct RemoteImageView: View {
 	public init(
 		url: URL,
 		placeholderImage: Image? = nil,
-		transition: ImageTransitionType = .none,
-		imageProcessing: ImageProcessing? = RemoteImageView.defaultImageProcessing()
+		transition: ImageTransitionType = .none
 	) {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
-		self.imageProcessing = imageProcessing
 		remoteImage.load(url: url)
     }
 }
 
+public extension RemoteImageView {
+	func imagePostProcessing(
+		@ViewBuilder image: @escaping (Image) -> AnyView
+	) -> some View {
+		var mut = self
+		mut.imageProcessing = image
+		return mut
+	}
+}
+
 fileprivate extension Optional where Wrapped == Image {
-	func process(with processing: ((Image) -> Image)?) -> AnyView {
+	func process(with processing: ((Image) -> AnyView)?) -> AnyView {
 		switch self {
 		case .none:
 			return AnyView(EmptyView())
