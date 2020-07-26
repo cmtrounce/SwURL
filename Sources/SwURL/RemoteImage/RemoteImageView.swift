@@ -25,49 +25,16 @@ public struct RemoteImageView: View {
     @ObservedObject
 	private var remoteImage: RemoteImage = RemoteImage()
 	
-	var image: Image? {
-		switch remoteImage.imageStatus {
-		case .complete(let result):
-			return Image.init(
-				result,
-				scale: 1,
-				label: Text("Image")
-			)
-		case .progress, .pending:
-			return nil
-		}
-	}
-	
-	var progress: Float {
-		switch remoteImage.imageStatus {
-		case .pending:
-			return 0
-		case .complete:
-			return 1.0
-		case .progress(let fraction):
-			return fraction
-		}
-	}
-	
-	var shouldRequestLoad: Bool {
-		switch remoteImage.imageStatus {
-		case .pending:
-			return true
-		default:
-			return false
-		}
-	}
-	
     public var body: some View {
         TransitioningImage(
 			placeholder: placeholderImage.process(with: _imageProcessing),
-			finalImage: image.process(with: _imageProcessing),
-			percentageComplete: CGFloat(progress),
+			finalImage: remoteImage.image.process(with: _imageProcessing),
+			percentageComplete: CGFloat(remoteImage.progress),
 			transitionType: transitionType
 		).onAppear {
 			// bug in swift ui when onAppear called multiple times
 			// resulting in duplicate requests.
-			if self.shouldRequestLoad {
+			if self.remoteImage.shouldRequestLoad {
 				self.remoteImage.load(url: self.url)
 			}
 		}

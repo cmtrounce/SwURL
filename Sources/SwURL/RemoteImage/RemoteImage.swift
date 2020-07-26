@@ -50,3 +50,38 @@ class RemoteImage: ObservableObject {
 		return self
 	}
 }
+
+extension RemoteImage {
+	var image: Image? {
+		switch imageStatus {
+		case .complete(let result):
+			return Image.init(
+				result,
+				scale: 1,
+				label: Text("Image")
+			)
+		case .progress, .pending:
+			return nil
+		}
+	}
+	
+	var progress: Float {
+		switch imageStatus {
+		case .pending:
+			return 0
+		case .complete:
+			return 1.0
+		case .progress(let fraction):
+			return fraction
+		}
+	}
+	
+	var shouldRequestLoad: Bool {
+		switch imageStatus {
+		case .pending:
+			return true
+		default:
+			return false
+		}
+	}
+}
