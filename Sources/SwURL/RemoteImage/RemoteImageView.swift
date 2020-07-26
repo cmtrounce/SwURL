@@ -84,14 +84,14 @@ public struct RemoteImageView: View {
 }
 
 public extension RemoteImageView {
-	func imageProcessing<ProcessedImage: View>(
+	mutating func imageProcessing<ProcessedImage: View>(
 		_ processing: @escaping (Image) -> ProcessedImage
 	) -> some View {
-		var mut = self
-		mut._imageProcessing = { image in
+		self._imageProcessing = { image in
 			return AnyView(processing(image))
 		}
-		return mut
+		
+		return self
 	}
 }
 
