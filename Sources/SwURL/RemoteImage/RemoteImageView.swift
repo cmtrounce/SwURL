@@ -49,6 +49,10 @@ public struct RemoteImageView: View {
         self.url = url
         self.transitionType = transition
 		self._imageProcessing = RemoteImageView.defaultImageProcessing()
+		
+		if remoteImage.shouldRequestLoad {
+			remoteImage.load(url: url)
+		}
     }
 }
 
