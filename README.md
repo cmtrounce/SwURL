@@ -104,8 +104,8 @@ Call `imageProcessing` on your `RemoteImageView` and return `some View`
         .resizable()
         .renderingMode(.template)
         .aspectRatio(contentMode: .fit)
-    })
-}
+})
+
 ```
 
 This gives you the power to return any `View` you want.
