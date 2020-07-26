@@ -18,7 +18,7 @@ public struct RemoteImageView: View {
  
     var url: URL
     var placeholderImage: Image?
-	fileprivate var imageProcessing: ((Image) -> AnyView) = RemoteImageView.defaultImageProcessing()
+	fileprivate var _imageProcessing: ((Image) -> AnyView) = RemoteImageView.defaultImageProcessing()
     
     let transitionType: ImageTransitionType
 
@@ -48,8 +48,8 @@ public struct RemoteImageView: View {
 	
     public var body: some View {
         TransitioningImage(
-			placeholder: placeholderImage.process(with: imageProcessing),
-			finalImage: image.process(with: imageProcessing),
+			placeholder: placeholderImage.process(with: _imageProcessing),
+			finalImage: image.process(with: _imageProcessing),
 			percentageComplete: CGFloat(progress),
 			transitionType: transitionType
 		)
@@ -68,11 +68,11 @@ public struct RemoteImageView: View {
 }
 
 public extension RemoteImageView {
-	func imagePostProcessing<ProcessedImage: View>(
+	func imageProcessing<ProcessedImage: View>(
 		image: @escaping (Image) -> ProcessedImage
 	) -> some View {
 		var mut = self
-		mut.imageProcessing = { val in
+		mut._imageProcessing = { val in
 			return AnyView(image(val))
 		}
 		return mut
