@@ -52,7 +52,9 @@ public struct RemoteImageView: View {
 			finalImage: image.process(with: _imageProcessing),
 			percentageComplete: CGFloat(progress),
 			transitionType: transitionType
-		)
+		).onAppear {
+			self.remoteImage.load(url: self.url)
+		}
     }
 
 	public init(
@@ -63,7 +65,6 @@ public struct RemoteImageView: View {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
-		remoteImage.load(url: url)
     }
 }
 
