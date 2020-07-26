@@ -18,12 +18,13 @@ public struct RemoteImageView: View {
  
     var url: URL
     var placeholderImage: Image?
-	fileprivate var _imageProcessing: ((Image) -> AnyView) = RemoteImageView.defaultImageProcessing()
+	fileprivate var _imageProcessing: ((Image) -> AnyView)
     
     let transitionType: ImageTransitionType
 
-    @ObservedObject
+    @State
 	var remoteImage: RemoteImage = RemoteImage()
+	
 	var image: Image? {
 		switch remoteImage.imageStatus {
 		case .complete(let result):
@@ -80,18 +81,20 @@ public struct RemoteImageView: View {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
+		self._imageProcessing = RemoteImageView.defaultImageProcessing()
     }
 }
 
 public extension RemoteImageView {
-	mutating func imageProcessing<ProcessedImage: View>(
+	func imageProcessing<ProcessedImage: View>(
 		_ processing: @escaping (Image) -> ProcessedImage
 	) -> some View {
-		self._imageProcessing = { image in
+		var mut = self
+		mut._imageProcessing = { image in
 			return AnyView(processing(image))
 		}
 		
-		return self
+		return mut
 	}
 }
 
