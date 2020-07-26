@@ -67,12 +67,13 @@ struct LandmarkRow: View {
 			    placeholderImage: Image.init("placeholder_avatar"),
 				transition: .custom(transition: .opacity,
 									animation: .easeOut(duration: 0.5)),
-				imageProcessing: { image in    
-					return image
-						.resizable()
-						.renderingMode(.template)
-				}
-			)
+				
+			).imageProcessing({ image in    
+				return image
+					.resizable()
+					.renderingMode(.template)
+					.aspectRatio(contentMode: .fit)
+			})
             Text(verbatim: landmark.name)
             Spacer()
         }
@@ -87,7 +88,28 @@ struct LandmarkRow: View {
 | url | `URL` of the remote source image. | _none_ |
 | placeholderImage | _(optional)_<br />`Image` to display whilst remote image data is being fetched and decoded. | `nil` |
 | transition | _(optional)_<br />transition to occur when showing the loaded image. | `nil` |
-| processing | _(optional)_<br />`@escaping (Image) -> Image?`  alterations passed into the closure will be applied to placeholder and final image.<br /><br />Modifiers such as `resizable()` and  `renderingMode`  are to be used here |  applies `resizable()` to all images |
+
+## Image Processing
+
+Using function `.imageProcessing` . 
+Process your placeholder and loaded images once they've been loaded. Apply resizing, aspect ratio, clipping and more!
+Call `imageProcessing` on your `RemoteImageView` and return `some View` 
+
+### Example
+
+```swift
+
+).imageProcessing({ image in    
+    return image
+        .resizable()
+        .renderingMode(.template)
+        .aspectRatio(contentMode: .fit)
+    })
+}
+```
+
+This gives you the power to return any `View` you want.
+`RemoteImageView` applies `resizable()` on all images by default.
 
 # Get it
 
