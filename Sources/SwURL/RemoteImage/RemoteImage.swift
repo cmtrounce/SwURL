@@ -17,12 +17,13 @@ enum RemoteImageStatus: Equatable {
 }
 
 class RemoteImage: ObservableObject {
-	@Published var imageStatus: RemoteImageStatus = .progress(fraction: 0)
+	@Published var imageStatus: RemoteImageStatus = .pending
 	
 	var request: Cancellable?
 	
 	@discardableResult
 	func load(url: URL) -> Self {
+		imageStatus = .progress(fraction: 0)
 		request = ImageLoader.shared
 			.load(url: url).catch { error -> Just<RemoteImageStatus> in
 				SwURLDebug.log(
