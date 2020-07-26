@@ -22,8 +22,8 @@ public struct RemoteImageView: View {
     
     let transitionType: ImageTransitionType
 
-    @State
-	var remoteImage: RemoteImage = RemoteImage()
+    @ObservedObject
+	private var remoteImage: RemoteImage = RemoteImage()
 	
 	var image: Image? {
 		switch remoteImage.imageStatus {

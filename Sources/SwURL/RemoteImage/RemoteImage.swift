@@ -19,7 +19,7 @@ enum RemoteImageStatus: Equatable {
 class RemoteImage: ObservableObject {
 	@Published var imageStatus: RemoteImageStatus = .pending
 	
-	var request: Cancellable?
+	private var request: Cancellable?
 	
 	@discardableResult
 	func load(url: URL) -> Self {
