@@ -63,8 +63,7 @@ struct LandmarkRow: View {
 			RemoteImageView(
 				url: landmark.imageURL,
 				placeholderImage: Image.init("placeholder_avatar"),
-				transition: .custom(transition: .opacity,
-									animation: .easeOut(duration: 0.5))
+				transition: .custom(transition: .opacity, animation: .easeOut(duration: 0.5))
 			).imageProcessing({ image in
 				return image
 					.resizable()
