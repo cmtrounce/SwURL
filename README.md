@@ -56,26 +56,25 @@ Upon initialisation, a resized image will be downloaded in the background and pl
 
 ```swift
 struct LandmarkRow: View {
-    var landmark: Landmark
-    
-    var body: some View {
-        HStack {
-            RemoteImageView(
-                url: landmark.imageURL,
-			    placeholderImage: Image.init("placeholder_avatar"),
+	var landmark: Landmark
+	
+	var body: some View {
+		HStack {
+			RemoteImageView(
+				url: landmark.imageURL,
+				placeholderImage: Image.init("placeholder_avatar"),
 				transition: .custom(transition: .opacity,
-									animation: .easeOut(duration: 0.5)),
-				
-			).imageProcessing({ image in    
+									animation: .easeOut(duration: 0.5))
+			).imageProcessing({ image in
 				return image
 					.resizable()
 					.renderingMode(.template)
 					.aspectRatio(contentMode: .fit)
 			})
-            Text(verbatim: landmark.name)
-            Spacer()
-        }
-    }
+			Text(verbatim: landmark.name)
+			Spacer()
+		}
+	}
 }
 ```
 
