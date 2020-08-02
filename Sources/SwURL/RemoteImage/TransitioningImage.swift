@@ -11,8 +11,8 @@ import SwiftUI
 struct TransitioningImage: View {
     var placeholder: AnyView?
     var finalImage: AnyView?
+	var loadingIndicator: AnyView?
 	
-	let percentageComplete: CGFloat
     let transitionType: ImageTransitionType
 	
 	public var body: some View {
@@ -21,6 +21,8 @@ struct TransitioningImage: View {
 				self.placeholder
 					.transition(self.transitionType.t)
 					.animation(self.transitionType.animation)
+				
+				loadingIndicator
 			}
 			
 			self.finalImage?

@@ -19,6 +19,7 @@ public struct RemoteImageView: View {
     var url: URL
     var placeholderImage: Image?
 	fileprivate var _imageProcessing: ((Image) -> AnyView)
+	fileprivate var _loadingIndicator: ((CGFloat) -> AnyView)?
     
     let transitionType: ImageTransitionType
 
@@ -29,7 +30,7 @@ public struct RemoteImageView: View {
         TransitioningImage(
 			placeholder: placeholderImage.process(with: _imageProcessing),
 			finalImage: remoteImage.image.process(with: _imageProcessing),
-			percentageComplete: CGFloat(remoteImage.progress),
+			loadingIndicator: _loadingIndicator?(CGFloat(remoteImage.progress)),
 			transitionType: transitionType
 		).onAppear {
 			// bug in swift ui when onAppear called multiple times
@@ -65,6 +66,14 @@ public extension RemoteImageView {
 			return AnyView(processing(image))
 		}
 		
+		return mut
+	}
+	
+	func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> some View {
+		var mut = self
+		mut._loadingIndicator = { percentageComplete in
+			return AnyView(progress(percentageComplete))
+		}
 		return mut
 	}
 }
