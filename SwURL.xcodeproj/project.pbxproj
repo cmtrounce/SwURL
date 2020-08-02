@@ -21,7 +21,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		475F3D282345449100CB5714 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 475F3D272345449100CB5714 /* ProgressBar.swift */; };
 		OBJ_38 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Logger.swift */; };
 		OBJ_39 /* CGImage+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* CGImage+Data.swift */; };
 		OBJ_40 /* FileManager+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* FileManager+Paths.swift */; };
@@ -58,7 +57,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		475F3D272345449100CB5714 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		OBJ_12 /* CGImage+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImage+Data.swift"; sourceTree = "<group>"; };
 		OBJ_14 /* FileManager+Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Paths.swift"; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 				OBJ_20 /* RemoteImage.swift */,
 				OBJ_21 /* RemoteImageView.swift */,
 				OBJ_22 /* TransitioningImage.swift */,
-				475F3D272345449100CB5714 /* ProgressBar.swift */,
 			);
 			path = RemoteImage;
 			sourceTree = "<group>";
@@ -286,7 +283,6 @@
 				OBJ_45 /* Downloader.swift in Sources */,
 				OBJ_46 /* RemoteImage.swift in Sources */,
 				OBJ_47 /* RemoteImageView.swift in Sources */,
-				475F3D282345449100CB5714 /* ProgressBar.swift in Sources */,
 				OBJ_48 /* TransitioningImage.swift in Sources */,
 				OBJ_49 /* SwURL.swift in Sources */,
 			);
