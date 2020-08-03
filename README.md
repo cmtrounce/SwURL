@@ -120,4 +120,6 @@ SwURL is available only through `Swift Package Manager`
 
 # Contact
 
+Join the SwURL Gitter community at https://gitter.im/SwURL-package/community and message me directly. Recommended for quicker response time.
+
 If you want to get in touch you can email me at ctrounce94@gmail.com or follow/message me on Twitter https://twitter.com/ctrounce94
