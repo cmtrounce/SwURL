@@ -1,9 +1,6 @@
 <p align="center">
   <img src="https://i.imgur.com/iHgsHBs.png" alt="SwURL"/>
 </p>
-<br/>
-<br/>
-
 
 ![Build Status](https://app.bitrise.io/app/0cc93118a793b6f9/status.svg?token=6ITVosjDjjYgfYcVRGMuUw&branch=master)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
