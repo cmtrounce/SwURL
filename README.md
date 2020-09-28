@@ -89,6 +89,23 @@ struct LandmarkRow: View {
 | placeholderImage | _(optional)_<br />`Image` to display whilst remote image data is being fetched and decoded. | `nil` |
 | transition | _(optional)_<br />transition to occur when showing the loaded image. | `nil` |
 
+## Progress / Loading Indicators
+
+Using function `.progress` . 
+Display a loading indicator on top of the placeholder as the image loads.
+Once the image has finished downloading, the supplied loading indicator will hide
+Call `progress` on your `RemoteImageView` and return `some View` 
+
+### Example
+
+```swift
+
+).progress({ progress in    
+    return MyProgressBarView(progress: progress)
+})
+
+```
+
 ## Image Processing
 
 Using function `.imageProcessing` . 
