@@ -6,11 +6,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
-Declarative-style SwiftUI wrapper around asyncronous image views including smooth transitions and caching options.
+Asyncrounously download and display images in Swift UI. Supports progress indicators, placeholders and image transitions.
 
 # RemoteImageView
 
-Asyncrounously download and display images declaratively. Supports progress indicators, placeholders and image transitions.
+Asyncrounously download and display images declaratively. Supports progress indicators, placeholders and image transitions. Flexible caching options. 
 
 Flexible caching and image fetching done in background. Currently tested with basic `List` as seen in Example
 
