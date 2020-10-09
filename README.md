@@ -10,11 +10,11 @@ Declarative-style SwiftUI wrapper around asyncronous image views including smoot
 
 # RemoteImageView
 
-Asyncrounously download and display images declaratively. Supports placeholders and image transitions.
+Asyncrounously download and display images declaratively. Supports progress indicators, placeholders and image transitions.
 
 Flexible caching and image fetching done in background. Currently tested with basic `List` as seen in Example
 
-As everyone gets to understand SwiftUI more, this project will evolve and get more features.
+This is an evolving project, if you have any ideas or feedback - feel free to create an issue or get in touch.
 
 ![Fading Transition!](https://media.giphy.com/media/kFCKkcURNhI0AVG19y/giphy.gif)
 
@@ -66,6 +66,8 @@ struct LandmarkRow: View {
 					.resizable()
 					.renderingMode(.template)
 					.aspectRatio(contentMode: .fit)
+			}).progress({ progress in    
+    				return MyProgressBarView(progress: progress)
 			})
 			Text(verbatim: landmark.name)
 			Spacer()
