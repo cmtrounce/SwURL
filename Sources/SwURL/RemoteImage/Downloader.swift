@@ -18,8 +18,8 @@ struct DownloadInfo {
 	var state: State
 }
 
-class Downloader: NSObject {
-	var tasks: [URLSessionDownloadTask: CurrentValueSubject<DownloadInfo, Error>] = [:]
+final class Downloader: NSObject {
+	@Atomic private var tasks: [URLSessionDownloadTask: CurrentValueSubject<DownloadInfo, Error>] = [:]
 	
 	private lazy var session: URLSession = { [weak self] in
 		let urlSession = URLSession.init(
