@@ -37,7 +37,8 @@ final class Downloader: NSObject {
 	}()
 	
 	func download(from url: URL) -> CurrentValueSubject<DownloadInfo, Error> {
-        queue.sync {
+        // Only place where `tasks` is written to, therefore place barrier flag.
+        queue.sync(flags: .barrier) {
             let task = session.downloadTask(with: url)
             let subject = CurrentValueSubject<DownloadInfo, Error>.init(
                 DownloadInfo.init(
@@ -58,7 +59,7 @@ extension Downloader: URLSessionDownloadDelegate {
 		downloadTask: URLSessionDownloadTask,
 		didFinishDownloadingTo location: URL
 	) {
-        queue.async(flags: .barrier) { [weak self] in
+        queue.async { [weak self] in
             guard
                 let self = self,
                 var downloadInfo = self.tasks[downloadTask]?.value
@@ -84,7 +85,7 @@ extension Downloader: URLSessionDownloadDelegate {
 		totalBytesWritten: Int64,
 		totalBytesExpectedToWrite: Int64
 	) {
-        queue.async(flags: .barrier) { [weak self] in
+        queue.async { [weak self] in
             guard
                 let self = self,
                 var downloadInfo = self.tasks[downloadTask]?.value
