@@ -10,23 +10,21 @@ import Foundation
 import SwiftUI
 
 public protocol SwURLImageViewType {
-    mutating func imageProcessing<ProcessedImage: View>(
+    func imageProcessing<ProcessedImage: View>(
         _ processing: @escaping (Image) -> ProcessedImage
     ) -> Self
-    mutating func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
+    func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
 }
 
 public struct SwURLImageView: SwURLImageViewType {
     var imageView: SwURLImageViewType
     
-    public mutating func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> SwURLImageView where ProcessedImage : View {
-        self = .init(imageView: imageView.imageProcessing(processing))
-        return self
+    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> SwURLImageView where ProcessedImage : View {
+        return .init(imageView: imageView.imageProcessing(processing))
     }
     
-    public mutating func progress<T>(_ progress: @escaping (CGFloat) -> T) -> SwURLImageView where T : View {
-        self = .init(imageView: imageView.progress(progress))
-        return self
+    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> SwURLImageView where T : View {
+        return .init(imageView: imageView.progress(progress))
     }
 }
 
