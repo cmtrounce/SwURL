@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		47ED4A0B26CDBF0E00B3058B /* iOS14RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED4A0A26CDBF0E00B3058B /* iOS14RemoteImageView.swift */; };
+		47ED4A0D26CDBF5E00B3058B /* ImageProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED4A0C26CDBF5E00B3058B /* ImageProcessing.swift */; };
+		47ED4A1426CDC6CA00B3058B /* iOS13RemoteImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47ED4A1326CDC6CA00B3058B /* iOS13RemoteImageView.swift */; };
 		OBJ_38 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* Logger.swift */; };
 		OBJ_39 /* CGImage+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* CGImage+Data.swift */; };
 		OBJ_40 /* FileManager+Paths.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* FileManager+Paths.swift */; };
@@ -57,6 +60,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		47ED4A0A26CDBF0E00B3058B /* iOS14RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS14RemoteImageView.swift; sourceTree = "<group>"; };
+		47ED4A0C26CDBF5E00B3058B /* ImageProcessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessing.swift; sourceTree = "<group>"; };
+		47ED4A1326CDC6CA00B3058B /* iOS13RemoteImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS13RemoteImageView.swift; sourceTree = "<group>"; };
 		OBJ_10 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		OBJ_12 /* CGImage+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImage+Data.swift"; sourceTree = "<group>"; };
 		OBJ_14 /* FileManager+Paths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Paths.swift"; sourceTree = "<group>"; };
@@ -97,16 +103,43 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		OBJ_11 /* RemoteImage */ = {
+		47ED4A0E26CDBFA300B3058B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_12 /* CGImage+Data.swift */,
+				47ED4A1226CDC01200B3058B /* Public */,
+				47ED4A0A26CDBF0E00B3058B /* iOS14RemoteImageView.swift */,
+				OBJ_22 /* TransitioningImage.swift */,
+				47ED4A0C26CDBF5E00B3058B /* ImageProcessing.swift */,
+				47ED4A1326CDC6CA00B3058B /* iOS13RemoteImageView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		47ED4A1126CDBFDC00B3058B /* Model */ = {
+			isa = PBXGroup;
+			children = (
 				OBJ_13 /* Cache */,
+				OBJ_12 /* CGImage+Data.swift */,
 				OBJ_18 /* ImageLoader.swift */,
 				OBJ_19 /* Downloader.swift */,
 				OBJ_20 /* RemoteImage.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		47ED4A1226CDC01200B3058B /* Public */ = {
+			isa = PBXGroup;
+			children = (
 				OBJ_21 /* RemoteImageView.swift */,
-				OBJ_22 /* TransitioningImage.swift */,
+			);
+			path = Public;
+			sourceTree = "<group>";
+		};
+		OBJ_11 /* RemoteImage */ = {
+			isa = PBXGroup;
+			children = (
+				47ED4A1126CDBFDC00B3058B /* Model */,
+				47ED4A0E26CDBFA300B3058B /* View */,
 			);
 			path = RemoteImage;
 			sourceTree = "<group>";
@@ -274,14 +307,17 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_38 /* Logger.swift in Sources */,
+				47ED4A0B26CDBF0E00B3058B /* iOS14RemoteImageView.swift in Sources */,
 				OBJ_39 /* CGImage+Data.swift in Sources */,
 				OBJ_40 /* FileManager+Paths.swift in Sources */,
+				47ED4A1426CDC6CA00B3058B /* iOS13RemoteImageView.swift in Sources */,
 				OBJ_41 /* ImageCacheType.swift in Sources */,
 				OBJ_42 /* InMemoryImageCache.swift in Sources */,
 				OBJ_43 /* PersistentImageCache.swift in Sources */,
 				OBJ_44 /* ImageLoader.swift in Sources */,
 				OBJ_45 /* Downloader.swift in Sources */,
 				OBJ_46 /* RemoteImage.swift in Sources */,
+				47ED4A0D26CDBF5E00B3058B /* ImageProcessing.swift in Sources */,
 				OBJ_47 /* RemoteImageView.swift in Sources */,
 				OBJ_48 /* TransitioningImage.swift in Sources */,
 				OBJ_49 /* SwURL.swift in Sources */,

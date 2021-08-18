@@ -10,7 +10,6 @@ import CoreGraphics
 import CoreImage
 
 extension CGImage {
-    
     var dataRepresentation: Data? {
         if let mutableData = CFDataCreateMutable(nil, 0),
             let destination = CGImageDestinationCreateWithData(mutableData, "public.png" as CFString, 1, nil) {
