@@ -26,8 +26,7 @@ It's great that Apple now has official support for async images, however:
 Unlike `AsyncImage`,  `RemoteImageView`
 - Is supported from iOS 13
 - Supports caching (in memory, on disk, and custom)
-- Powerful, modular way to 
-- Supports progress indicators
+- Supports progress indicators (including download fraction) and custom transitions
 - Has in depth, customisable logging
 
 
