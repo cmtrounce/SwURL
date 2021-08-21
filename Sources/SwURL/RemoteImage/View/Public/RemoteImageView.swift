@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-public protocol SwURLImageViewType: ImageOutputCustomisable, View {}
+protocol SwURLImageViewType: ImageOutputCustomisable, View {}
 
 public protocol ImageOutputCustomisable {
     func imageProcessing<ProcessedImage: View>(
@@ -18,7 +18,7 @@ public protocol ImageOutputCustomisable {
     func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
 }
 
-enum SwURLImageView: SwURLImageViewType {
+public enum SwURLImageView: SwURLImageViewType {
     case iOS13(iOS13RemoteImageView)
     @available(iOS 14.0, *)
     case iOS14(iOS14RemoteImageView)
@@ -36,7 +36,7 @@ enum SwURLImageView: SwURLImageViewType {
         }
     }
     
-    func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
+    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
         switch self {
         case .iOS13(let view):
             return SwURLImageView.iOS13(view.imageProcessing(processing))  
@@ -49,7 +49,7 @@ enum SwURLImageView: SwURLImageViewType {
         }
     }
     
-    func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
+    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
         switch self {
         case .iOS13(let view):
             return SwURLImageView.iOS13(view.progress(progress))
@@ -62,7 +62,7 @@ enum SwURLImageView: SwURLImageViewType {
         }
     }
     
-    var body: some View {
+    public var body: some View {
         switch self {
         case .iOS13(let view):
             return AnyView(view.body)
@@ -72,23 +72,45 @@ enum SwURLImageView: SwURLImageViewType {
     }
 }
 
-
-public func RemoteImageView(
-    url: URL,
-    placeholderImage: Image? = nil,
-    transition: ImageTransitionType = .none
-) -> some SwURLImageViewType {
-    if #available(iOS 14.0, *) {
-        return SwURLImageView(iOS14RemoteImageView(
-            url: url,
-            placeholderImage: placeholderImage,
-            transition: transition
-        ))
-    } else {
-        return SwURLImageView(iOS13RemoteImageView(
-            url: url,
-            placeholderImage: placeholderImage,
-            transition: transition
-        ))
+public enum RemoteImageView: SwURLImageViewType {
+    case view(SwURLImageView)
+    
+    private var value: SwURLImageView {
+        switch self {
+        case .view(let val):
+            return val
+        }
+    }
+    
+    public init(
+        url: URL,
+        placeholderImage: Image? = nil,
+        transition: ImageTransitionType = .none
+    ) {
+        if #available(iOS 14.0, *) {
+            self = .view(SwURLImageView(iOS14RemoteImageView(
+                url: url,
+                placeholderImage: placeholderImage,
+                transition: transition
+            )))
+        } else {
+            self = .view(SwURLImageView(iOS13RemoteImageView(
+                url: url,
+                placeholderImage: placeholderImage,
+                transition: transition
+            )))
+        }
+    }
+    
+    public var body: some View {
+        return value.body
+    }
+    
+    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> RemoteImageView where ProcessedImage : View {
+        return .view(value.imageProcessing(processing))
+    }
+    
+    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> RemoteImageView where T : View {
+        return .view(value.progress(progress))
     }
 }

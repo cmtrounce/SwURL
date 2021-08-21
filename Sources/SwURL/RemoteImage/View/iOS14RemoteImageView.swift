@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @available(iOS 14.0, *)
-struct iOS14RemoteImageView: SwURLImageViewType {
+public struct iOS14RemoteImageView: SwURLImageViewType {
     var url: URL
     var placeholderImage: Image?
     private var _imageProcessing: ((Image) -> AnyView)
@@ -20,7 +20,7 @@ struct iOS14RemoteImageView: SwURLImageViewType {
     @StateObject
     private var remoteImage: RemoteImage = RemoteImage()
     
-    var body: some View {
+    public var body: some View {
         TransitioningImage(
             placeholder: placeholderImage.process(with: _imageProcessing),
             finalImage: remoteImage.image.process(with: _imageProcessing),
@@ -50,7 +50,7 @@ struct iOS14RemoteImageView: SwURLImageViewType {
         }
     }
     
-    func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
+    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
         var mut = self
         mut._imageProcessing = { image in
             return AnyView(processing(image))
@@ -58,7 +58,7 @@ struct iOS14RemoteImageView: SwURLImageViewType {
         return mut
     }
     
-    func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
+    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
         var mut = self
         mut._loadingIndicator = { percentageComplete in
             return AnyView(progress(percentageComplete))
