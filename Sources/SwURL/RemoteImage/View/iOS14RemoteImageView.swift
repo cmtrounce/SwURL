@@ -12,7 +12,7 @@ import SwiftUI
 public struct iOS14RemoteImageView: SwURLImageViewType {
     var url: URL
     var placeholderImage: Image?
-    private var _imageProcessing: ((Image) -> AnyView)
+    private var _imageProcessing: ((Image) -> AnyView) = ImageProcessing.default()
     private var _loadingIndicator: ((CGFloat) -> AnyView)?
     
     let transitionType: ImageTransitionType
@@ -22,10 +22,12 @@ public struct iOS14RemoteImageView: SwURLImageViewType {
     public var body: some View {
         TransitioningImage(
             placeholder: placeholderImage.process(with: _imageProcessing),
-            finalImage: remoteImage.load(url: url).image.process(with: _imageProcessing),
+            finalImage: remoteImage.image.process(with: _imageProcessing),
             loadingIndicator: _loadingIndicator?(CGFloat(remoteImage.progress)),
             transitionType: transitionType
-        )
+        ).onAppear {
+            remoteImage.load(url: url)
+        }
     }
     
     init(
@@ -36,7 +38,6 @@ public struct iOS14RemoteImageView: SwURLImageViewType {
         self.placeholderImage = placeholderImage
         self.url = url
         self.transitionType = transition
-        self._imageProcessing = ImageProcessing.default()
     }
     
     public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
