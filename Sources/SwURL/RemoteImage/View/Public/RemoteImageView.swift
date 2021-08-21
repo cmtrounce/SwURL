@@ -14,8 +14,8 @@ public protocol SwURLImageViewType: ImageOutputCustomisable, View {}
 public protocol ImageOutputCustomisable {
     func imageProcessing<ProcessedImage: View>(
         _ processing: @escaping (Image) -> ProcessedImage
-    ) -> ImageOutputCustomisable
-    func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> ImageOutputCustomisable
+    ) -> Self
+    func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
 }
 
 enum SwURLImageView: SwURLImageViewType {
@@ -36,21 +36,29 @@ enum SwURLImageView: SwURLImageViewType {
         }
     }
     
-    func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> ImageOutputCustomisable where ProcessedImage : View {
+    func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
         switch self {
         case .iOS13(let view):
-            return view.imageProcessing(processing)
+            return SwURLImageView.iOS13(view.imageProcessing(processing))  
         case .iOS14(let view):
-            return view.imageProcessing(processing)
+            if #available(iOS 14.0, *)  {
+                return SwURLImageView.iOS14(view.imageProcessing(processing))
+            } else {
+                fatalError()
+            }
         }
     }
     
-    func progress<T>(_ progress: @escaping (CGFloat) -> T) -> ImageOutputCustomisable where T : View {
+    func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
         switch self {
         case .iOS13(let view):
-            return view.progress(progress)
+            return SwURLImageView.iOS13(view.progress(progress))
         case .iOS14(let view):
-            return view.progress(progress)
+            if #available(iOS 14.0, *) {
+                return SwURLImageView.iOS14(view.progress(progress))
+            } else {
+                fatalError()
+            }
         }
     }
     
@@ -72,17 +80,15 @@ public func RemoteImageView(
 ) -> some SwURLImageViewType {
     if #available(iOS 14.0, *) {
         return SwURLImageView(iOS14RemoteImageView(
-                url: url,
-                placeholderImage: placeholderImage,
-                transition: transition
-            )
-        )
+            url: url,
+            placeholderImage: placeholderImage,
+            transition: transition
+        ))
     } else {
         return SwURLImageView(iOS13RemoteImageView(
-                url: url,
-                placeholderImage: placeholderImage,
-                transition: transition
-            )
-        )
+            url: url,
+            placeholderImage: placeholderImage,
+            transition: transition
+        ))
     }
 }
