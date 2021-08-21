@@ -44,10 +44,6 @@ public struct iOS14RemoteImageView: SwURLImageViewType {
         self.url = url
         self.transitionType = transition
         self._imageProcessing = ImageProcessing.default()
-        
-        if remoteImage.shouldRequestLoad {
-            remoteImage.load(url: url)
-        }
     }
     
     public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
