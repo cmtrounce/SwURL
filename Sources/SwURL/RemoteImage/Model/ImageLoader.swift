@@ -103,7 +103,11 @@ private extension ImageLoader {
 			create: true
 		).appendingPathComponent(location.lastPathComponent)
 		
-		try fileManager.copyItem(at: location, to: directory)
+        SwURLDebug.log(
+            level: .info,
+            message: "Attempting to copy item from \(location.absoluteString) to directory \(directory.absoluteString)."
+        )
+        try fileManager.copyItem(at: location, to: directory)
 		
 		guard let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
 			SwURLDebug.log(
