@@ -49,7 +49,7 @@ struct iOS13RemoteImageView: SwURLImageViewType {
         }
     }
     
-    func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> iOS13RemoteImageView where ProcessedImage : View {
+    func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> ImageOutputCustomisable where ProcessedImage : View {
         var mut = self
         mut._imageProcessing = { image in
             return AnyView(processing(image))
@@ -57,7 +57,7 @@ struct iOS13RemoteImageView: SwURLImageViewType {
         return mut
     }
     
-    func progress<T>(_ progress: @escaping (CGFloat) -> T) -> iOS13RemoteImageView where T : View {
+    func progress<T>(_ progress: @escaping (CGFloat) -> T) -> ImageOutputCustomisable where T : View {
         var mut = self
         mut._loadingIndicator = { percentageComplete in
             return AnyView(progress(percentageComplete))
