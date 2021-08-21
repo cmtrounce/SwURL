@@ -19,6 +19,10 @@ public struct iOS14RemoteImageView: SwURLImageViewType {
     
     @StateObject private var remoteImage: RemoteImage = RemoteImage()
     
+    private var remoteImageToUse: RemoteImage {
+        return remoteImage
+    }
+    
     public var body: some View {
         TransitioningImage(
             placeholder: placeholderImage.process(with: _imageProcessing),
@@ -40,19 +44,17 @@ public struct iOS14RemoteImageView: SwURLImageViewType {
         self.transitionType = transition
     }
     
-    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
-        var mut = self
-        mut._imageProcessing = { image in
+    public mutating func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
+        _imageProcessing = { image in
             return AnyView(processing(image))
         }
-        return mut
+        return self
     }
     
-    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
-        var mut = self
-        mut._loadingIndicator = { percentageComplete in
+    public mutating func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
+        _loadingIndicator = { percentageComplete in
             return AnyView(progress(percentageComplete))
         }
-        return mut
+        return self
     }
 }

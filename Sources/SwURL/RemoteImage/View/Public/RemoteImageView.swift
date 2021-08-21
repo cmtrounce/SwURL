@@ -12,10 +12,10 @@ import SwiftUI
 protocol SwURLImageViewType: ImageOutputCustomisable, View {}
 
 public protocol ImageOutputCustomisable {
-    func imageProcessing<ProcessedImage: View>(
+    mutating func imageProcessing<ProcessedImage: View>(
         _ processing: @escaping (Image) -> ProcessedImage
     ) -> Self
-    func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
+    mutating func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
 }
 
 public enum SwURLImageView: SwURLImageViewType {
@@ -40,7 +40,7 @@ public enum SwURLImageView: SwURLImageViewType {
         switch self {
         case .iOS13(let view):
             return SwURLImageView.iOS13(view.imageProcessing(processing))  
-        case .iOS14(let view):
+        case .iOS14(var view):
             if #available(iOS 14.0, *)  {
                 return SwURLImageView.iOS14(view.imageProcessing(processing))
             } else {
@@ -53,7 +53,7 @@ public enum SwURLImageView: SwURLImageViewType {
         switch self {
         case .iOS13(let view):
             return SwURLImageView.iOS13(view.progress(progress))
-        case .iOS14(let view):
+        case .iOS14(var view):
             if #available(iOS 14.0, *) {
                 return SwURLImageView.iOS14(view.progress(progress))
             } else {
@@ -106,11 +106,11 @@ public enum RemoteImageView: SwURLImageViewType {
         return value.body
     }
     
-    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> RemoteImageView where ProcessedImage : View {
+    public mutating func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> RemoteImageView where ProcessedImage : View {
         return .view(value.imageProcessing(processing))
     }
     
-    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> RemoteImageView where T : View {
+    public mutating func progress<T>(_ progress: @escaping (CGFloat) -> T) -> RemoteImageView where T : View {
         return .view(value.progress(progress))
     }
 }
