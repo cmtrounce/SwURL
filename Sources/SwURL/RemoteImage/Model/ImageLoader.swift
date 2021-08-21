@@ -96,23 +96,10 @@ private extension ImageLoader {
 	/// - Throws: When the function fails to create and store the downloaded image
 	/// - Returns: A created CGImage
 	private func createAndStoreImage(at location: URL, requestURL: URL) throws -> CGImage {
-		let directory = try fileManager.url(
-			for: searchPathDirectory,
-			in: .userDomainMask,
-			appropriateFor: nil,
-			create: true
-		).appendingPathComponent(location.lastPathComponent)
-		
-        SwURLDebug.log(
-            level: .info,
-            message: "Attempting to copy item from \(location.absoluteString) to directory \(directory.absoluteString)."
-        )
-        try fileManager.copyItem(at: location, to: directory)
-		
-		guard let imageSource = CGImageSourceCreateWithURL(directory as NSURL, nil) else {
+		guard let imageSource = CGImageSourceCreateWithURL(location as NSURL, nil) else {
 			SwURLDebug.log(
 				level: .error,
-				message: "failed to create an image source at directory: " + directory.absoluteString
+				message: "failed to create an image source for location: " + location.absoluteString
 			)
 			throw ImageLoadError.cacheError
 		}
@@ -120,7 +107,7 @@ private extension ImageLoader {
 		guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
 			SwURLDebug.log(
 				level: .error,
-				message: "failed to create an image from source at directory" + directory.absoluteString
+				message: "failed to create an image from source for location" + location.absoluteString
 			)
 			throw ImageLoadError.cacheError
 		}
