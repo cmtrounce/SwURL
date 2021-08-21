@@ -20,9 +20,16 @@ class RemoteImage: ObservableObject {
 	@Published var imageStatus: RemoteImageStatus = .pending
 	
 	private var request: Cancellable?
-	
-	@discardableResult
-	func load(url: URL) -> Self {
+    
+    init() {
+        SwURLDebug.log(
+            level: .info,
+            message: "RemoteImage initialized"
+        )
+    }
+    
+    @discardableResult
+    func load(url: URL) -> Self {
         if request != nil {
             return self
         }
