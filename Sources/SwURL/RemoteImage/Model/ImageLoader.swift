@@ -96,7 +96,7 @@ private extension ImageLoader {
 	/// - Throws: When the function fails to create and store the downloaded image
 	/// - Returns: A created CGImage
 	private func createAndStoreImage(at location: URL, requestURL: URL) throws -> CGImage {
-		guard let imageSource = CGImageSourceCreateWithURL(location as CFURL, nil) else {
+        guard let imageSource = CGImageSourceCreateWithData(location.dataRepresentation as CFData, nil) else {
 			SwURLDebug.log(
 				level: .error,
 				message: "failed to create an image source for location: " + location.absoluteString
