@@ -25,7 +25,7 @@ class ImageLoader {
     
     static let shared = ImageLoader()
     
-    private let fileManager = FileManager()
+    private let fileManager = FileManager.default
     
     var cache: ImageCacheType = InMemoryImageCache()
     
