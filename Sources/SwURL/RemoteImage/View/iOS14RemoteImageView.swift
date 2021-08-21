@@ -16,25 +16,18 @@ public struct iOS14RemoteImageView: SwURLImageViewType {
     private var _loadingIndicator: ((CGFloat) -> AnyView)?
     
     let transitionType: ImageTransitionType
-
-    @StateObject
-    private var remoteImage: RemoteImage = RemoteImage()
+    
+    @StateObject private var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
         TransitioningImage(
             placeholder: placeholderImage.process(with: _imageProcessing),
-            finalImage: remoteImage.image.process(with: _imageProcessing),
+            finalImage: remoteImage.load(url: url).image.process(with: _imageProcessing),
             loadingIndicator: _loadingIndicator?(CGFloat(remoteImage.progress)),
             transitionType: transitionType
-        ).onAppear {
-            // bug in swift ui when onAppear called multiple times
-            // resulting in duplicate requests.
-            if self.remoteImage.shouldRequestLoad {
-                self.remoteImage.load(url: self.url)
-            }
-        }
+        )
     }
-
+    
     init(
         url: URL,
         placeholderImage: Image? = nil,

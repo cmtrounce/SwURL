@@ -23,6 +23,10 @@ class RemoteImage: ObservableObject {
 	
 	@discardableResult
 	func load(url: URL) -> Self {
+        if request != nil {
+            return self
+        }
+        
 		imageStatus = .progress(fraction: 0)
 		request = ImageLoader.shared
 			.load(url: url).catch { error -> Just<RemoteImageStatus> in
@@ -46,8 +50,8 @@ class RemoteImage: ObservableObject {
 		}, receiveValue: { [weak self] value in
 			self?.imageStatus = value
 		})
-
-		return self
+        
+        return self
 	}
 }
 
