@@ -59,7 +59,7 @@ extension Downloader: URLSessionDownloadDelegate {
 		downloadTask: URLSessionDownloadTask,
 		didFinishDownloadingTo location: URL
 	) {
-        queue.async { [weak self] in
+        queue.sync { [weak self] in
             guard
                 let self = self,
                 var downloadInfo = self.tasks[downloadTask]?.value
