@@ -12,6 +12,7 @@
 		47BEB5822A41EBAF0037B7A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47BEB5812A41EBAF0037B7A1 /* Assets.xcassets */; };
 		47BEB5862A41EBAF0037B7A1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 47BEB5852A41EBAF0037B7A1 /* Preview Assets.xcassets */; };
 		47BEB58E2A41EC340037B7A1 /* SwURL in Frameworks */ = {isa = PBXBuildFile; productRef = 47BEB58D2A41EC340037B7A1 /* SwURL */; };
+		47C20FB72A422A6B00051E2B /* SwURL in Frameworks */ = {isa = PBXBuildFile; productRef = 47C20FB62A422A6B00051E2B /* SwURL */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47C20FB72A422A6B00051E2B /* SwURL in Frameworks */,
 				47BEB58E2A41EC340037B7A1 /* SwURL in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +99,7 @@
 			name = SwURLExample;
 			packageProductDependencies = (
 				47BEB58D2A41EC340037B7A1 /* SwURL */,
+				47C20FB62A422A6B00051E2B /* SwURL */,
 			);
 			productName = SwURLExample;
 			productReference = 47BEB57A2A41EBAF0037B7A1 /* SwURLExample.app */;
@@ -126,6 +129,9 @@
 				Base,
 			);
 			mainGroup = 47BEB5712A41EBAF0037B7A1;
+			packageReferences = (
+				47C20FB52A422A6B00051E2B /* XCRemoteSwiftPackageReference "SwURL" */,
+			);
 			productRefGroup = 47BEB57B2A41EBAF0037B7A1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -368,9 +374,25 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		47C20FB52A422A6B00051E2B /* XCRemoteSwiftPackageReference "SwURL" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/cmtrounce/SwURL";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		47BEB58D2A41EC340037B7A1 /* SwURL */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = SwURL;
+		};
+		47C20FB62A422A6B00051E2B /* SwURL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 47C20FB52A422A6B00051E2B /* XCRemoteSwiftPackageReference "SwURL" */;
 			productName = SwURL;
 		};
 /* End XCSwiftPackageProductDependency section */

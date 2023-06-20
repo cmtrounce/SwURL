@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "swurl",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cmtrounce/SwURL",
+      "state" : {
+        "revision" : "6babfacd1df7adc4b9b418d84535d4598bc8effc",
+        "version" : "0.4.2"
+      }
+    }
+  ],
+  "version" : 2
+}

@@ -15,6 +15,7 @@ let package = Package(
             name: "SwURL",
             targets: ["SwURL"]),
     ],
+    dependencies: [],
     targets: [
         .target(
             name: "SwURL",
