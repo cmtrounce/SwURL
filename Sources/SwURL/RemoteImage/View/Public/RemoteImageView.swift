@@ -18,99 +18,60 @@ public protocol ImageOutputCustomisable {
     mutating func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
 }
 
-public enum SwURLImageView: SwURLImageViewType {
-    case iOS13(iOS13RemoteImageView)
-    @available(iOS 14.0, *)
-    case iOS14(iOS14RemoteImageView)
+public struct RemoteImageView: SwURLImageViewType {
+    var url: URL
+    var placeholderImage: Image?
+    private var _imageProcessing: ((Image) -> AnyView)
+    private var _loadingIndicator: ((CGFloat) -> AnyView)?
     
-    init<Base: SwURLImageViewType>(_ base: Base) {
-        if let iOS13 = base as? iOS13RemoteImageView {
-            self = .iOS13(iOS13)
-        } else if
-            #available(iOS 14.0, *),
-            let iOS14 = base as? iOS14RemoteImageView
-        {
-            self = .iOS14(iOS14)
-        } else {
-            fatalError()
-        }
-    }
-    
-    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
-        switch self {
-        case .iOS13(let view):
-            return SwURLImageView.iOS13(view.imageProcessing(processing))  
-        case .iOS14(var view):
-            if #available(iOS 14.0, *)  {
-                return SwURLImageView.iOS14(view.imageProcessing(processing))
-            } else {
-                fatalError()
-            }
-        }
-    }
-    
-    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
-        switch self {
-        case .iOS13(let view):
-            return SwURLImageView.iOS13(view.progress(progress))
-        case .iOS14(var view):
-            if #available(iOS 14.0, *) {
-                return SwURLImageView.iOS14(view.progress(progress))
-            } else {
-                fatalError()
-            }
-        }
-    }
+    let transitionType: ImageTransitionType
+
+    @ObservedObject
+    private var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
-        switch self {
-        case .iOS13(let view):
-            return AnyView(view.body)
-        case .iOS14(let view):
-            return AnyView(view.body)
+        TransitioningImage(
+            placeholder: placeholderImage.process(with: _imageProcessing),
+            finalImage: remoteImage.image.process(with: _imageProcessing),
+            loadingIndicator: _loadingIndicator?(CGFloat(remoteImage.progress)),
+            transitionType: transitionType
+        ).onAppear {
+            // bug in swift ui when onAppear called multiple times
+            // resulting in duplicate requests.
+            if self.remoteImage.shouldRequestLoad {
+                self.remoteImage.load(url: self.url)
+            }
         }
     }
-}
 
-public enum RemoteImageView: SwURLImageViewType {
-    case view(SwURLImageView)
-    
-    private var value: SwURLImageView {
-        switch self {
-        case .view(let val):
-            return val
-        }
-    }
-    
     public init(
         url: URL,
         placeholderImage: Image? = nil,
         transition: ImageTransitionType = .none
     ) {
-        if #available(iOS 14.0, *) {
-            self = .view(SwURLImageView(iOS14RemoteImageView(
-                url: url,
-                placeholderImage: placeholderImage,
-                transition: transition
-            )))
-        } else {
-            self = .view(SwURLImageView(iOS13RemoteImageView(
-                url: url,
-                placeholderImage: placeholderImage,
-                transition: transition
-            )))
+        self.placeholderImage = placeholderImage
+        self.url = url
+        self.transitionType = transition
+        self._imageProcessing = ImageProcessing.default()
+        
+        if remoteImage.shouldRequestLoad {
+            remoteImage.load(url: url)
         }
     }
     
-    public var body: some View {
-        return value.body
+    public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
+        var mut = self
+        mut._imageProcessing = { image in
+            return AnyView(processing(image))
+        }
+        return mut
     }
     
-    public mutating func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> RemoteImageView where ProcessedImage : View {
-        return .view(value.imageProcessing(processing))
-    }
-    
-    public mutating func progress<T>(_ progress: @escaping (CGFloat) -> T) -> RemoteImageView where T : View {
-        return .view(value.progress(progress))
+    public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
+        var mut = self
+        mut._loadingIndicator = { percentageComplete in
+            return AnyView(progress(percentageComplete))
+        }
+        return mut
     }
 }
