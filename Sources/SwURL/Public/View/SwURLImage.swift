@@ -18,27 +18,45 @@ public protocol ImageOutputCustomisable {
 public typealias RemoteImageView = SwURLImage
 
 public struct SwURLImage: SwURLImageViewType {
-    var url: URL
-    var placeholderImage: Image?
+    private let url: URL
+    private let placeholderImage: Image?
+    private let transitionType: ImageTransitionType
+    
     private var _imageProcessing: ((Image) -> AnyView)
     private var _loadingIndicator: ((CGFloat) -> AnyView)?
+   
+    private var placeholderView: AnyView? {
+        return placeholderImage.process(with: _imageProcessing)
+    }
     
-    let transitionType: ImageTransitionType
+    private var finalImage: AnyView? {
+        return remoteImage.image.process(with: _imageProcessing)
+    }
+    
+    private var loadingIndicator: AnyView? {
+        return _loadingIndicator?(CGFloat(remoteImage.progress))
+    }
     
     @ObservedObject
     private var remoteImage: RemoteImage = RemoteImage()
     
     public var body: some View {
-        TransitioningImage(
-            placeholder: placeholderImage.process(with: _imageProcessing),
-            finalImage: remoteImage.image.process(with: _imageProcessing),
-            loadingIndicator: _loadingIndicator?(CGFloat(remoteImage.progress)),
-            transitionType: transitionType
-        ).onAppear {
+        ZStack {
+            if finalImage == nil {
+                placeholderView
+                    .transition(transitionType.t)
+                    .animation(transitionType.animation)
+                loadingIndicator
+            }
+            
+            finalImage?
+                .transition(transitionType.t)
+                .animation(transitionType.animation)
+        }.onAppear {
             // bug in swift ui when onAppear called multiple times
             // resulting in duplicate requests.
-            if self.remoteImage.shouldRequestLoad {
-                self.remoteImage.load(url: self.url)
+            if remoteImage.shouldRequestLoad {
+                remoteImage.load(url: url)
             }
         }
     }
@@ -78,5 +96,27 @@ public struct SwURLImage: SwURLImageViewType {
             return AnyView(progress(percentageComplete))
         }
         return mut
+    }
+}
+
+// MARK: - ImageTransitionType helpers.
+
+extension ImageTransitionType {
+    fileprivate var t: AnyTransition {
+        switch self {
+        case .custom(let transition, _):
+            return transition
+        case .none:
+            return .identity
+        }
+    }
+    
+    fileprivate var animation: Animation? {
+        switch self {
+        case .custom(_, let animation):
+            return animation
+        case .none:
+            return nil
+        }
     }
 }

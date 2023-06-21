@@ -55,9 +55,7 @@ class RemoteImage: ObservableObject {
                     )
                 }
             }, receiveValue: { [weak self] value in
-                withAnimation {
-                    self?.imageStatus = value
-                }
+                self?.imageStatus = value
             })
         
         return self
