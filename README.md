@@ -2,7 +2,7 @@
   <img src="https://i.imgur.com/iHgsHBs.png" alt="SwURL"/>
 </p>
 
-[![Build Status](https://app.bitrise.io/app/0cc93118a793b6f9/status.svg?token=6ITVosjDjjYgfYcVRGMuUw&branch=master)](https://app.bitrise.io/app/0cc93118a793b6f9/status.svg?token=6ITVosjDjjYgfYcVRGMuUw&branch=master)
+[![Build Status](https://app.bitrise.io/app/0cc93118a793b6f9/status.svg?token=6ITVosjDjjYgfYcVRGMuUw&branch=master)](https://app.bitrise.io/app/0cc93118a793b6f9)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
 
