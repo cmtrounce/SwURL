@@ -1,9 +1,5 @@
 //
-//  RemoteImageView.swift
-//  Landmarks
-//
 //  Created by Callum Trounce on 06/06/2019.
-//  Copyright © 2019 Apple. All rights reserved.
 //
 
 import Foundation
