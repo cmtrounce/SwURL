@@ -152,4 +152,4 @@ SwURL is available only through `Swift Package Manager`
 
 Join the SwURL Gitter community at https://gitter.im/SwURL-package/community and message me directly. Recommended for quicker response time.
 
-You can also follow/message me on Twitter at https://twitter.com/ctrounce94
+You can also follow/message me on Twitter at https://twitter.com/cmtrounce
