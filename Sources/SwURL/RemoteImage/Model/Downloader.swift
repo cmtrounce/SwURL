@@ -11,7 +11,7 @@ import Combine
 struct DownloadInfo {
     enum State {
         case progress(Float)
-        case result(URL)
+        case result(Data)
     }
     
     let url: URL
@@ -59,21 +59,58 @@ extension Downloader: URLSessionDownloadDelegate {
         downloadTask: URLSessionDownloadTask,
         didFinishDownloadingTo location: URL
     ) {
+        SwURLDebug.log(
+            level: .info,
+            message: "[Downloader] Image download task of \(downloadTask.debugDescription) did finish and downloaded to \(location)"
+        )
+        
+        var resultData: Data?
+        queue.sync(flags: .barrier) {
+            do {
+                resultData = try Data(contentsOf: location)
+            } catch {
+                SwURLDebug.log(
+                    level: .info,
+                    message: "[Downloader] Encountered error while trying to convert downloaded content to Data for task \(downloadTask.debugDescription), location: \(location)"
+                )
+                resultData = nil
+            }
+        }
+        
         queue.async { [weak self] in
             guard
-                let self = self,
-                var downloadInfo = self.tasks[downloadTask]?.value
+                let resultData = resultData
             else {
+                SwURLDebug.log(
+                    level: .error,
+                    message: "[Downloader] Failed to retrieve data downloaded for task \(downloadTask.debugDescription). Unable to send finished event."
+                )
                 return
             }
             
-            downloadInfo.state = .result(location)
+            guard
+                let self = self,
+                let valueSubject = self.tasks[downloadTask]
+            else {
+                SwURLDebug.log(
+                    level: .error,
+                    message: "[Downloader] Failed to retrieve finished download info for task \(downloadTask.debugDescription). Unable to send finished event."
+                )
+                return
+            }
             
-            self.tasks[downloadTask]?.send(downloadInfo)
-            self.tasks[downloadTask]?.send(completion: .finished)
+            let downloadURL = valueSubject.value.url
+            let finishedInfo = DownloadInfo(
+                url: downloadURL,
+                state: .result(resultData)
+            )
+            
+            valueSubject.send(finishedInfo)
+            valueSubject.send(completion: .finished)
+            
             SwURLDebug.log(
                 level: .info,
-                message: "Download of \(downloadInfo.url) finished download to \(location)"
+                message: "[Downloader] Sent event of \(downloadURL) finishing download to data"
             )
         }
     }
@@ -88,19 +125,26 @@ extension Downloader: URLSessionDownloadDelegate {
         queue.async { [weak self] in
             guard
                 let self = self,
-                var downloadInfo = self.tasks[downloadTask]?.value
+                let valueSubject = self.tasks[downloadTask]
             else {
+                SwURLDebug.log(
+                    level: .error,
+                    message: "[Downloader] Failed to retrieve progressing download info for task \(downloadTask.debugDescription). Unable to send progress event."
+                )
                 return
             }
             
             let fractionDownloaded = Float(Double(totalBytesWritten) / Double(totalBytesExpectedToWrite))
-            
-            downloadInfo.state = .progress(fractionDownloaded)
-            self.tasks[downloadTask]?.send(downloadInfo)
+            let url = valueSubject.value.url
+            let progressInfo = DownloadInfo(
+                url: url,
+                state: .progress(fractionDownloaded)
+            )
+            valueSubject.send(progressInfo)
             
             SwURLDebug.log(
                 level: .info,
-                message: "Download of \(downloadInfo.url) reached progress: \(fractionDownloaded)"
+                message: "[Downloader] Download of \(url) reached progress: \(fractionDownloaded)"
             )
         }
     }

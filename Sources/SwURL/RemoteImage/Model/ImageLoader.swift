@@ -35,11 +35,11 @@ class ImageLoader {
     }
 }
 
-private extension ImageLoader {
+extension ImageLoader {
     
     /// Retrieves image from URL
     /// - Parameter url: url at which you require the image.
-    func retrieve(url: URL) -> ImageLoadPromise {
+    private func retrieve(url: URL) -> ImageLoadPromise {
         let asyncLoad = Deferred { [unowned self] in
             self.downloader.download(from: url)
                 .tryMap(self.handleDownload)
@@ -66,7 +66,7 @@ private extension ImageLoader {
     /// Handles response of successful download response
     /// - Parameter response: data response from request
     /// - Parameter location: the url fthat was in the request.
-    func handleDownload(downloadInfo: DownloadInfo) throws -> RemoteImageStatus {
+    private func handleDownload(downloadInfo: DownloadInfo) throws -> RemoteImageStatus {
         switch downloadInfo.state {
         case .progress(let fractionCompleted):
             SwURLDebug.log(
@@ -74,9 +74,12 @@ private extension ImageLoader {
                 message: "Image download progress: \(fractionCompleted)"
             )
             return .progress(fraction: fractionCompleted)
-        case .result(let downloadLocationURL):
+        case .result(let data):
             do {
-                let image = try createAndStoreImage(at: downloadLocationURL, requestURL: downloadInfo.url)
+                let image = try createAndStoreImage(
+                    from: data,
+                    requestURL: downloadInfo.url
+                )
                 return .complete(result: image)
             } catch {
                 SwURLDebug.log(
@@ -94,11 +97,14 @@ private extension ImageLoader {
     ///   - requestURL: the original url used to request the resource
     /// - Throws: When the function fails to create and store the downloaded image
     /// - Returns: A created CGImage
-    private func createAndStoreImage(at location: URL, requestURL: URL) throws -> CGImage {
-        guard let imageSource = CGImageSourceCreateWithData(try Data(contentsOf: location) as CFData, nil) else {
+    private func createAndStoreImage(
+        from data: Data,
+        requestURL: URL
+    ) throws -> CGImage {
+        guard let imageSource = CGImageSourceCreateWithData(data as CFData, nil) else {
             SwURLDebug.log(
                 level: .error,
-                message: "failed to create an image source for location: " + location.absoluteString
+                message: "failed to create an image source for request: " + requestURL.absoluteString
             )
             throw ImageLoadError.cacheError
         }
@@ -106,7 +112,7 @@ private extension ImageLoader {
         guard let image = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else {
             SwURLDebug.log(
                 level: .error,
-                message: "failed to create an image from source for location" + location.absoluteString
+                message: "failed to create an image from source for request" + requestURL.absoluteString
             )
             throw ImageLoadError.cacheError
         }
