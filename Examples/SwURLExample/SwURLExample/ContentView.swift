@@ -11,7 +11,9 @@ import SwURL
 struct ContentView: View {
     var body: some View {
         VStack {
-            RemoteImageView(url: URL(string: "https://placekitten.com/300/300")!).imageProcessing { image in
+            SwURLImage(
+                url: URL(string: "https://placekitten.com/300/300")!
+            ).imageProcessing { image in
                 return image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
