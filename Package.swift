@@ -13,15 +13,22 @@ let package = Package(
     products: [
         .library(
             name: "SwURL",
-            targets: ["SwURL"]),
+            targets: [
+                "SwURL"
+            ]
+        ),
     ],
     dependencies: [],
     targets: [
         .target(
             name: "SwURL",
-            dependencies: []),
+            dependencies: []
+        ),
         .testTarget(
             name: "SwURLTests",
-            dependencies: ["SwURL"]),
+            dependencies: [
+                "SwURL"
+            ]
+        ),
     ]
 )
