@@ -45,19 +45,19 @@ public struct SwURLImage: SwURLImageViewType {
             if finalImage == nil {
                 placeholderView
                     .transition(transitionType.t)
-                    .animation(transitionType.animation, value: remoteImage.imageStatus.index)
                 loadingIndicator
             }
             finalImage
                 .transition(transitionType.t)
-                .animation(transitionType.animation, value: remoteImage.imageStatus.index)
-        }.onAppear {
+        }
+        .onAppear {
             // bug in swift ui when onAppear called multiple times
             // resulting in duplicate requests.
             if remoteImage.shouldRequestLoad {
                 remoteImage.load(url: url)
             }
         }
+        .animation(transitionType.animation, value: remoteImage.imageStatus.index)
     }
     
     public init(
