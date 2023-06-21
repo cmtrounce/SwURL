@@ -44,7 +44,6 @@ public struct SwURLImage: SwURLImageViewType {
         ZStack {
             if finalImage == nil {
                 placeholderView
-                    .transition(transitionType.t)
                 loadingIndicator
             }
             finalImage
@@ -57,7 +56,7 @@ public struct SwURLImage: SwURLImageViewType {
                 remoteImage.load(url: url)
             }
         }
-        .animation(transitionType.animation, value: remoteImage.imageStatus.index)
+        .animation(transitionType.animation, value: remoteImage.imageStatus.identifier)
     }
     
     public init(

@@ -15,7 +15,7 @@ enum RemoteImageStatus: Equatable {
     case complete(result: CGImage)
     case progress(fraction: Float)
     
-    var index: Int {
+    var identifier: Int {
         switch self {
         case .pending:
             return 0
