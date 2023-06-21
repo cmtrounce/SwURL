@@ -379,8 +379,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cmtrounce/SwURL";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.4.2;
+				kind = exactVersion;
+				version = 0.4.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
