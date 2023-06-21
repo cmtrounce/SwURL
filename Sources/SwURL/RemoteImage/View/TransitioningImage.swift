@@ -17,26 +17,25 @@ struct TransitioningImage: View {
     
     public var body: some View {
         ZStack {
-            if self.finalImage == nil {
-                self.placeholder
-                    .transition(self.transitionType.t)
-                    .animation(self.transitionType.animation)
+            if finalImage == nil {
+                placeholder
+                    .transition(transitionType.t)
+                    .animation(transitionType.animation)
                 
                 loadingIndicator
             }
             
-            self.finalImage?
-                .transition(self.transitionType.t)
-                .animation(self.transitionType.animation)
+            finalImage?
+                .transition(transitionType.t)
+                .animation(transitionType.animation)
         }
     }
 }
 
-public enum ImageTransitionType {
-    case custom(transition: AnyTransition, animation: Animation)
-    case none
-    
-    var t: AnyTransition {
+// MARK: - ImageTransitionType helpers.
+
+extension ImageTransitionType {
+    fileprivate var t: AnyTransition {
         switch self {
         case .custom(let transition, _):
             return transition
@@ -45,7 +44,7 @@ public enum ImageTransitionType {
         }
     }
     
-    var animation: Animation? {
+    fileprivate var animation: Animation? {
         switch self {
         case .custom(_, let animation):
             return animation

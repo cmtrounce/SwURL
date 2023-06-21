@@ -11,12 +11,17 @@ import CoreGraphics
 
 public protocol ImageCacheType {
     func store(image: CGImage, for url: URL)
-    func image(for url: URL) -> Future<CGImage, ImageLoadError>
+    func image(for url: URL) -> Future<CGImage, Error>
 }
 
-public enum ImageCache {
+/// Strategy to use when storing and retrieving cached images.
+public enum ImageCacheStrategy {
+    /// Cache images for the duration of the app session. Storage will be invalidated between app launches.
     case inMemory
+    /// Persist images between app sessions. Storage will be invalidated by the operating system.
     case persistent
+    /// Provide your own `ImageCacheType` to handle storage and retrieval of images.
+    /// Use this if you want fine grained control over cache size, cache invalidation, data retrieval.
     case custom(ImageCacheType)
     
     var cache: ImageCacheType {

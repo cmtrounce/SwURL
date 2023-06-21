@@ -42,10 +42,10 @@ public class PersistentImageCache: ImageCacheType {
         }
     }
     
-    public func image(for url: URL) -> Future<CGImage, ImageLoadError> {
-        return Future<CGImage, ImageLoadError>.init { [weak self] seal in
+    public func image(for url: URL) -> Future<CGImage, Error> {
+        return Future<CGImage, Error>.init { [weak self] seal in
             guard let self = self else {
-                seal(.failure(.loaderDeallocated))
+                seal(.failure(ImageLoadError.loaderDeallocated))
                 return
             }
             
@@ -60,7 +60,7 @@ public class PersistentImageCache: ImageCacheType {
                         shouldInterpolate: false,
                         intent: .defaultIntent
                     ) else {
-                    seal(.failure(.invalidImageData))
+                    seal(.failure(ImageLoadError.invalidImageData))
                     return
                 }
                 
@@ -68,7 +68,7 @@ public class PersistentImageCache: ImageCacheType {
                 seal(.success(image))
             } catch {
                 SwURLDebug.log(level: .info, message: "Image not found in persistent cache for resource at URL: " + url.absoluteString)
-                seal(.failure(.generic(underlying: error)))
+                seal(.failure(ImageLoadError.generic(underlying: error)))
             }
         }
     }

@@ -10,7 +10,7 @@ import CoreGraphics
 import CoreImage
 import Combine
 
-public enum ImageLoadError: Error {
+enum ImageLoadError: Error {
     case loaderDeallocated
     case malformedResponse
     case invalidImageData
@@ -19,9 +19,8 @@ public enum ImageLoadError: Error {
     case generic(underlying: Error)
 }
 
-
 class ImageLoader {
-    public typealias ImageLoadPromise = AnyPublisher<RemoteImageStatus, ImageLoadError>
+    typealias ImageLoadPromise = AnyPublisher<RemoteImageStatus, ImageLoadError>
     
     static let shared = ImageLoader()
     
