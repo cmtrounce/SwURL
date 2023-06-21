@@ -8,29 +8,37 @@
 import SwiftUI
 import SwURL
 
-struct ContentView: View {
+struct RowView: View {
+    let value: String
+    
     var body: some View {
-        VStack {
+        HStack {
             SwURLImage(
-                url: URL(string: "https://placekitten.com/300/300")!
+                url: URL(string: "https://picsum.photos/200")!,
+                transition: .custom(
+                    transition: .opacity,
+                    animation: .easeIn(duration: 2000)
+                )
             ).imageProcessing { image in
                 return image
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 100, height: 100)
+                    .frame(width: 50, height: 50)
                     .clipShape(Circle())
                     .overlay {
                         Circle().stroke(.blue, lineWidth: 4)
                     }
             }
-            Text("Hello, world!")
+            .frame(width: 50, height: 50)
+            Text("Hello, \(value)!")
+                .padding()
         }
         .padding()
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct RowView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        RowView(value: "world")
     }
 }

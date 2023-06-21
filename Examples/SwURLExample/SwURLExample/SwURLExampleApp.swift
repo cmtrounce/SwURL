@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import SwURL
 
 @main
 struct SwURLExampleApp: App {
+    init() {
+        SwURLDebug.loggingEnabled = true
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ListView()
         }
     }
 }
