@@ -18,8 +18,7 @@ public protocol ImageOutputCustomisable {
     mutating func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
 }
 
-public typealias SwURLImage = RemoteImageView
-
+@available(*, deprecated, renamed: "SwURLImage")
 public struct RemoteImageView: SwURLImageViewType {
     var url: URL
     var placeholderImage: Image?

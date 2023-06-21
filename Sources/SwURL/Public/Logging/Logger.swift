@@ -29,7 +29,6 @@ enum LogLevel {
 }
 
 public struct SwURLDebug {
-    
     public static var loggingEnabled = false
     
     static func log(level: LogLevel, message: String) {
@@ -39,5 +38,4 @@ public struct SwURLDebug {
             fatalError(message)
         }
     }
-    
 }

@@ -10,9 +10,7 @@ import CoreGraphics
 import CoreImage
 import Combine
 
-
 public class PersistentImageCache: ImageCacheType {
-    
     /// Specific queue to assist with concurrency.
     private let queue = DispatchQueue.init(label: "cacheQueue", qos: .userInteractive)
     
