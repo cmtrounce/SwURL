@@ -25,7 +25,7 @@ public struct RemoteImageView: SwURLImageViewType {
     private var _loadingIndicator: ((CGFloat) -> AnyView)?
     
     let transitionType: ImageTransitionType
-
+    
     @ObservedObject
     private var remoteImage: RemoteImage = RemoteImage()
     
@@ -43,7 +43,7 @@ public struct RemoteImageView: SwURLImageViewType {
             }
         }
     }
-
+    
     public init(
         url: URL,
         placeholderImage: Image? = nil,

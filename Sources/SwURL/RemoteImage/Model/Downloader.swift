@@ -9,13 +9,13 @@ import Foundation
 import Combine
 
 struct DownloadInfo {
-	enum State {
-		case progress(Float)
-		case result(URL)
-	}
-	
-	let url: URL
-	var state: State
+    enum State {
+        case progress(Float)
+        case result(URL)
+    }
+    
+    let url: URL
+    var state: State
 }
 
 final class Downloader: NSObject {
@@ -27,16 +27,16 @@ final class Downloader: NSObject {
     
     private var tasks: [URLSessionDownloadTask: CurrentValueSubject<DownloadInfo, Error>] = [:]
     
-	private lazy var session: URLSession = { [weak self] in
-		let urlSession = URLSession.init(
-			configuration: .default,
-			delegate: self,
-			delegateQueue: OperationQueue()
-		)
-		return urlSession
-	}()
-	
-	func download(from url: URL) -> CurrentValueSubject<DownloadInfo, Error> {
+    private lazy var session: URLSession = { [weak self] in
+        let urlSession = URLSession.init(
+            configuration: .default,
+            delegate: self,
+            delegateQueue: OperationQueue()
+        )
+        return urlSession
+    }()
+    
+    func download(from url: URL) -> CurrentValueSubject<DownloadInfo, Error> {
         // Only place where `tasks` is written to, therefore place barrier flag.
         queue.sync(flags: .barrier) {
             let task = session.downloadTask(with: url)
@@ -50,15 +50,15 @@ final class Downloader: NSObject {
             task.resume()
             return subject
         }
-	}
+    }
 }
 
 extension Downloader: URLSessionDownloadDelegate {
-	func urlSession(
-		_ session: URLSession,
-		downloadTask: URLSessionDownloadTask,
-		didFinishDownloadingTo location: URL
-	) {
+    func urlSession(
+        _ session: URLSession,
+        downloadTask: URLSessionDownloadTask,
+        didFinishDownloadingTo location: URL
+    ) {
         queue.async { [weak self] in
             guard
                 let self = self,
@@ -76,15 +76,15 @@ extension Downloader: URLSessionDownloadDelegate {
                 message: "Download of \(downloadInfo.url) finished download to \(location)"
             )
         }
-	}
-	
-	func urlSession(
-		_ session: URLSession,
-		downloadTask: URLSessionDownloadTask,
-		didWriteData bytesWritten: Int64,
-		totalBytesWritten: Int64,
-		totalBytesExpectedToWrite: Int64
-	) {
+    }
+    
+    func urlSession(
+        _ session: URLSession,
+        downloadTask: URLSessionDownloadTask,
+        didWriteData bytesWritten: Int64,
+        totalBytesWritten: Int64,
+        totalBytesExpectedToWrite: Int64
+    ) {
         queue.async { [weak self] in
             guard
                 let self = self,
@@ -103,5 +103,5 @@ extension Downloader: URLSessionDownloadDelegate {
                 message: "Download of \(downloadInfo.url) reached progress: \(fractionDownloaded)"
             )
         }
-	}
+    }
 }
