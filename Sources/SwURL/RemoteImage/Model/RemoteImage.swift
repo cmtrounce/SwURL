@@ -14,6 +14,17 @@ enum RemoteImageStatus: Equatable {
     case pending
     case complete(result: CGImage)
     case progress(fraction: Float)
+    
+    var index: Int {
+        switch self {
+        case .pending:
+            return 0
+        case .complete:
+            return 1
+        case .progress:
+            return 2
+        }
+    }
 }
 
 class RemoteImage: ObservableObject {
