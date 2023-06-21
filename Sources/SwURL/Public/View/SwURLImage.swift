@@ -47,25 +47,18 @@ public struct SwURLImage: SwURLImageViewType {
         ZStack {
             if finalImage == nil {
                 placeholderView
-                    .transition(transitionType.t)
-                    .animation(transitionType.animation)
                 loadingIndicator
             }
-            
-            finalImage?
-                .transition(transitionType.t)
-                .animation(transitionType.animation)
+            finalImage
         }.onAppear {
             // bug in swift ui when onAppear called multiple times
             // resulting in duplicate requests.
             if remoteImage.shouldRequestLoad {
                 remoteImage.load(url: url)
             }
-        }.onReceive(remoteImage.$imageStatus) { status in
-            withAnimation {
-                imageStatus = status
-            }
         }
+        .transition(transitionType.t)
+        .animation(transitionType.animation)
     }
     
     public init(

@@ -15,7 +15,7 @@ struct RowView: View {
         HStack(alignment: .center) {
             SwURLImage(
                 url: URL(string: "https://picsum.photos/200")!,
-                transition: .custom(transition: .opacity, animation: .easeInOut(duration: 1))
+                transition: .custom(transition: .opacity, animation: .easeIn(duration: 5))
             ).imageProcessing { image in
                 return image
                     .resizable()
