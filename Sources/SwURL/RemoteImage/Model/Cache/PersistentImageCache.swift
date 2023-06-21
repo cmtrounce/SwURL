@@ -25,7 +25,7 @@ public class PersistentImageCache: ImageCacheType {
             guard let self = self else { return }
             do {
                 let directory = try self.storageURL(for: url)
-                guard let ssdata = image.dataRepresentation else {
+                guard let data = image.dataRepresentation else {
                     SwURLDebug.log(level: .error, message: "UNABLE TO RETRIEVE IMAGE DATA FOR URL: " + url.absoluteString)
                     return
                 }
