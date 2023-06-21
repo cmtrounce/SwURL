@@ -14,16 +14,13 @@ Asyncrounously download and display images declaratively. Supports progress indi
 
 Flexible caching and image fetching done in background. Currently tested with basic `List` as seen in Example
 
-This is an evolving project, if you have any ideas or feedback - feel free to create an issue or get in touch.
-
-![Fading Transition!](https://media.giphy.com/media/kFCKkcURNhI0AVG19y/giphy.gif)
-
+<img width="250" src="https://github.com/cmtrounce/SwURL/assets/10603129/7c3d517d-b85e-4127-ae59-009a1e5c2229" />
 
 ## "But, `AsyncImage`"
 
 It's great that Apple now has official support for async images, however:
 
-Unlike `AsyncImage`,  `SwURLImage`
+Unlike `AsyncImage`,  `SwURLImage`:
 - Is supported from iOS 13
 - Supports caching (in memory, on disk, and custom)
 - Supports progress indicators (including download fraction) and custom transitions
