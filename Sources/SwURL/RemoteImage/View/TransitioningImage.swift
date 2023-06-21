@@ -16,20 +16,18 @@ struct TransitioningImage: View {
     let transitionType: ImageTransitionType
     
     public var body: some View {
-        withAnimation {
-            ZStack {
-                if finalImage == nil {
-                    placeholder
-                        .transition(transitionType.t)
-                        .animation(transitionType.animation)
-                    
-                    loadingIndicator
-                }
-                
-                finalImage?
+        ZStack {
+            if finalImage == nil {
+                placeholder
                     .transition(transitionType.t)
                     .animation(transitionType.animation)
+                
+                loadingIndicator
             }
+            
+            finalImage?
+                .transition(transitionType.t)
+                .animation(transitionType.animation)
         }
     }
 }
