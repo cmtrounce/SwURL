@@ -13,7 +13,7 @@ struct ListView: View {
     
     var body: some View {
         List(range, id: \.self) { item in
-            RowView(value: "Row \(item)")
+            RowView(index: item)
         }
     }
 }

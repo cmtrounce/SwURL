@@ -9,13 +9,18 @@ import SwiftUI
 import SwURL
 
 struct RowView: View {
-    let value: String
+    let index: Int
+    
+    var url: String {
+        let thing = 200 + index
+        return "https://picsum.photos/\(thing)"
+    }
     
     var body: some View {
         HStack(alignment: .center) {
             SwURLImage(
-                url: URL(string: "https://picsum.photos/200")!,
-                transition: .custom(transition: .opacity, animation: .easeIn(duration: 5))
+                url: URL(string: url)!,
+                transition: .custom(transition: .opacity, animation: .easeIn)
             ).imageProcessing { image in
                 return image
                     .resizable()
@@ -27,7 +32,7 @@ struct RowView: View {
                     }
             }
             .frame(width: 50, height: 50)
-            Text("Hello, \(value)!")
+            Text("Hello, Row \(index)!")
                 .padding()
         }
         .padding()
@@ -36,6 +41,6 @@ struct RowView: View {
 
 struct RowView_Previews: PreviewProvider {
     static var previews: some View {
-        RowView(value: "world")
+        RowView(index: 2)
     }
 }
