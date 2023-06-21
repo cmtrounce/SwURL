@@ -4,7 +4,4 @@
    <FileRef
       location = "group:">
    </FileRef>
-   <FileRef
-      location = "group:SwURLExample/SwURLExample.xcodeproj">
-   </FileRef>
 </Workspace>

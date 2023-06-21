@@ -1,6 +1,6 @@
 import XCTest
-@testable import SwURL
 
+@testable import SwURL
 
 final class SwURLTests: XCTestCase {
     
