@@ -40,6 +40,9 @@ public struct SwURLImage: SwURLImageViewType {
     @ObservedObject
     private var remoteImage: RemoteImage = RemoteImage()
     
+    @State
+    private var imageStatus: RemoteImageStatus = .pending
+    
     public var body: some View {
         ZStack {
             if finalImage == nil {
@@ -57,6 +60,10 @@ public struct SwURLImage: SwURLImageViewType {
             // resulting in duplicate requests.
             if remoteImage.shouldRequestLoad {
                 remoteImage.load(url: url)
+            }
+        }.onReceive(remoteImage.$imageStatus) { status in
+            withAnimation {
+                imageStatus = status
             }
         }
     }

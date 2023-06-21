@@ -12,13 +12,10 @@ struct RowView: View {
     let value: String
     
     var body: some View {
-        HStack {
+        HStack(alignment: .center) {
             SwURLImage(
                 url: URL(string: "https://picsum.photos/200")!,
-                transition: .custom(
-                    transition: .opacity,
-                    animation: .easeIn(duration: 2000)
-                )
+                transition: .custom(transition: .opacity, animation: .easeInOut(duration: 1))
             ).imageProcessing { image in
                 return image
                     .resizable()
