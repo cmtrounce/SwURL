@@ -8,7 +8,7 @@
 
 Asyncrounously download and display images in Swift UI. Supports progress indicators, placeholders and image transitions.
 
-# RemoteImageView
+# `SwURLImage`
 
 Asyncrounously download and display images declaratively. Supports progress indicators, placeholders and image transitions. Flexible caching options. 
 
@@ -23,7 +23,7 @@ This is an evolving project, if you have any ideas or feedback - feel free to cr
 
 It's great that Apple now has official support for async images, however:
 
-Unlike `AsyncImage`,  `RemoteImageView`
+Unlike `AsyncImage`,  `SwURLImage`
 - Is supported from iOS 13
 - Supports caching (in memory, on disk, and custom)
 - Supports progress indicators (including download fraction) and custom transitions
@@ -57,7 +57,7 @@ Choose between **global** persistent or in-memory (default) caching
 
 ## Usage
 
-`RemoteImageView` is initialised with a `URL`, placeholder `Image` (default nil)  and a `.custom` `ImageTransitionType` (default `.none`). 
+`SwURLImage` is initialised with a `URL`, placeholder `Image` (default nil)  and a `.custom` `ImageTransitionType` (default `.none`). 
 
 Upon initialisation, a resized image will be downloaded in the background and placeholder displayed as the image is loading, transitioning to the downloaded image when complete.
 
@@ -71,7 +71,7 @@ struct LandmarkRow: View {
 	
 	var body: some View {
 		HStack {
-			RemoteImageView(
+			SwURLImage(
 				url: landmark.imageURL,
 				placeholderImage: Image.init("placeholder_avatar"),
 				transition: .custom(transition: .opacity, animation: .easeOut(duration: 0.5))
@@ -103,7 +103,7 @@ struct LandmarkRow: View {
 Using function `.progress` . 
 Display a loading indicator on top of the placeholder as the image loads.
 Once the image has finished downloading, the supplied loading indicator will hide
-Call `progress` on your `RemoteImageView` and return `some View` 
+Call `progress` on your `SwURLImage` and return `some View` 
 
 ### Example
 
@@ -119,7 +119,7 @@ Call `progress` on your `RemoteImageView` and return `some View`
 
 Using function `.imageProcessing` . 
 Process your placeholder and loaded images once they've been loaded. Apply resizing, aspect ratio, clipping and more!
-Call `imageProcessing` on your `RemoteImageView` and return `some View` 
+Call `imageProcessing` on your `SwURLImage` and return `some View` 
 
 ### Example
 
@@ -135,7 +135,7 @@ Call `imageProcessing` on your `RemoteImageView` and return `some View`
 ```
 
 This gives you the power to return any `View` you want.
-`RemoteImageView` applies `resizable()` on all images by default.
+`SwURLImage` applies `resizable()` on all images by default.
 
 # Get it
 
