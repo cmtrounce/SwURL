@@ -19,7 +19,9 @@ public protocol ImageOutputCustomisable {
 }
 
 @available(*, deprecated, renamed: "SwURLImage")
-public struct RemoteImageView: SwURLImageViewType {
+public typealias RemoteImageView = SwURLImage
+
+public struct SwURLImage: SwURLImageViewType {
     var url: URL
     var placeholderImage: Image?
     private var _imageProcessing: ((Image) -> AnyView)
@@ -62,7 +64,7 @@ public struct RemoteImageView: SwURLImageViewType {
     
     /// Apply additional processing to the final image. This is where you can set the aspect ratio, size, borders, and more.
     /// - Parameter processing: The transformation to the final image. Can return any View type, not just an image.
-    /// - Returns: A copy of the current RemoteImageView with the modifications applied.
+    /// - Returns: A copy with the modifications applied.
     public func imageProcessing<ProcessedImage>(_ processing: @escaping (Image) -> ProcessedImage) -> Self where ProcessedImage : View {
         var mut = self
         mut._imageProcessing = { image in
@@ -73,7 +75,7 @@ public struct RemoteImageView: SwURLImageViewType {
     
     /// Observe the current download progress of the specific image, and present another view. i.e. a loading bar.
     /// - Parameter progress:A fractional indication of download progress of the image, returns a view to render based on the download progress of the image.
-    /// - Returns: A copy of the current RemoteImageView with the modifications applied.
+    /// - Returns: A copy with the modifications applied.
     public func progress<T>(_ progress: @escaping (CGFloat) -> T) -> Self where T : View {
         var mut = self
         mut._loadingIndicator = { percentageComplete in
