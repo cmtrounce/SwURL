@@ -10,6 +10,7 @@ import CoreGraphics
 import CoreImage
 import Combine
 
+/// Persist images between app sessions. Storage will be invalidated by the operating system.
 public class PersistentImageCache: ImageCacheType {
     /// Specific queue to assist with concurrency.
     private let queue = DispatchQueue.init(label: "cacheQueue", qos: .userInteractive)

@@ -7,27 +7,7 @@
 
 import Foundation
 
-enum LogLevel {
-    case info
-    case warning
-    case error
-    case fatal
-    
-    var label: String {
-        switch self {
-            
-        case .info:
-            return "INFO ℹ️"
-        case .warning:
-            return "WARNING ⚠️"
-        case .error:
-            return "ERROR 🚨"
-        case .fatal:
-            return "FATAL ☢️"
-        }
-    }
-}
-
+/// Manage debug settings.
 public struct SwURLDebug {
     public static var loggingEnabled = false
     
@@ -36,6 +16,26 @@ public struct SwURLDebug {
         print("[SwURLDebug \(level.label)]\n\(message)\n----------------")
         if level == .fatal {
             fatalError(message)
+        }
+    }
+}
+
+enum LogLevel {
+    case info
+    case warning
+    case error
+    case fatal
+    
+    var label: String {
+        switch self {
+        case .info:
+            return "INFO ℹ️"
+        case .warning:
+            return "WARNING ⚠️"
+        case .error:
+            return "ERROR 🚨"
+        case .fatal:
+            return "FATAL ☢️"
         }
     }
 }
