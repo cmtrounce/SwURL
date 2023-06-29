@@ -145,6 +145,10 @@ SwURL is available only through `Swift Package Manager`
 * Choose the branch/version you want to clone. The most recent release is the most stable but you can choose branches  `master` and `develop` for the most up to date changes.
 * Confirm and enjoy!
 
+# Documentation
+
+Read the documentation in your browser [here](https://cmtrounce.github.io/documentation/swurl/).
+
 # Contact
 
 Join the SwURL Gitter community at https://gitter.im/SwURL-package/community and message me directly. Recommended for quicker response time.
