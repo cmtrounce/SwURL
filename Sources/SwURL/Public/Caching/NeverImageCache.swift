@@ -6,7 +6,7 @@ import Foundation
 import Combine
 import CoreGraphics
 
-// Never store images. Never attempt to retrieve images from cache.
+/// Never store images. Never attempt to retrieve images from cache.
 final class NeverImageCache: ImageCacheType {
     struct CacheNotImplemented: Error {}
     
