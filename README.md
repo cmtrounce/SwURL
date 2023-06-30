@@ -26,115 +26,9 @@ Unlike `AsyncImage`,  `SwURLImage`:
 - Supports progress indicators (including download fraction) and custom transitions
 - Has in depth, customisable logging
 
+# Getting Started
 
-## Configuration
-
-Enable or disable debug logging 
-
-```swift 
-SwURLDebug.loggingEnabled = true
-```
-
-
-Choose between **global** persistent or in-memory (default) caching
-
- ```swift
- SwURL.setImageCache(type: .inMemory)
- ```
-
- ```swift
- SwURL.setImageCache(type: .persistent)
- ```
- 
- ... or provide your own caching implementation by using `ImageCacheType`
- 
-  ```swift
- SwURL.setImageCache(type: .custom(ImageCacheType))
- ```
-
-## Usage
-
-`SwURLImage` is initialised with a `URL`, placeholder `Image` (default nil)  and a `.custom` `ImageTransitionType` (default `.none`). 
-
-Upon initialisation, a resized image will be downloaded in the background and placeholder displayed as the image is loading, transitioning to the downloaded image when complete.
-
-`LandmarkRow` is used in a `List`
-
-## Example
-
-```swift
-struct LandmarkRow: View {
-	var landmark: Landmark
-	
-	var body: some View {
-		HStack {
-			SwURLImage(
-				url: landmark.imageURL,
-				placeholderImage: Image.init("placeholder_avatar"),
-				transition: .custom(transition: .opacity, animation: .easeOut(duration: 0.5))
-			).imageProcessing({ image in
-				return image
-					.resizable()
-					.renderingMode(.template)
-					.aspectRatio(contentMode: .fit)
-			}).progress({ progress in    
-    				return MyProgressBarView(progress: progress)
-			})
-			Text(verbatim: landmark.name)
-			Spacer()
-		}
-	}
-}
-```
-
-## Available Parameters
-
-| Name | Description |Default|
-| :--- | :--- | :--- |
-| url | `URL` of the remote source image. | _none_ |
-| placeholderImage | _(optional)_<br />`Image` to display whilst remote image data is being fetched and decoded. | `nil` |
-| transition | _(optional)_<br />transition to occur when showing the loaded image. | `nil` |
-
-## Progress / Loading Indicators
-
-Using function `.progress` . 
-Display a loading indicator on top of the placeholder as the image loads.
-Once the image has finished downloading, the supplied loading indicator will hide
-Call `progress` on your `SwURLImage` and return `some View` 
-
-### Example
-
-```swift
-
-).progress({ progress in    
-    return MyProgressBarView(progress: progress)
-})
-
-```
-
-## Image Processing
-
-Using function `.imageProcessing` . 
-Process your placeholder and loaded images once they've been loaded. Apply resizing, aspect ratio, clipping and more!
-Call `imageProcessing` on your `SwURLImage` and return `some View` 
-
-### Example
-
-```swift
-
-).imageProcessing({ image in    
-    return image
-        .resizable()
-        .renderingMode(.template)
-        .aspectRatio(contentMode: .fit)
-})
-
-```
-
-This gives you the power to return any `View` you want.
-`SwURLImage` applies `resizable()` on all images by default.
-
-# Get it
+## Get it
 
 SwURL is available only through `Swift Package Manager`
 
@@ -145,9 +39,14 @@ SwURL is available only through `Swift Package Manager`
 * Choose the branch/version you want to clone. The most recent release is the most stable but you can choose branches  `master` and `develop` for the most up to date changes.
 * Confirm and enjoy!
 
-# Documentation
+## Read the Documentation
 
-Read the documentation in your browser [here](https://cmtrounce.github.io/documentation/swurl/).
+Get started by reading the documentation in your browser [here](https://cmtrounce.github.io/documentation/swurl/).
+
+The documentation includes usage examples and makes the code easier to explore.
+
+There is also an example project in this repo that you can give a try.
+
 
 # Contact
 
