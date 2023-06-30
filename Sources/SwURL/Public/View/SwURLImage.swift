@@ -9,7 +9,7 @@ import SwiftUI
 public typealias RemoteImageView = SwURLImage
 
 /// A view that asynchronously loads and displays an image. Supports custom placeholders, transitions and progress indicators.
-public struct SwURLImage {
+public struct SwURLImage: View {
     private let url: URL
     private let placeholderImage: Image?
     private let transitionType: ImageTransitionType
