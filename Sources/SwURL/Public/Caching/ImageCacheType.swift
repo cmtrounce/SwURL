@@ -31,6 +31,8 @@ public enum ImageCacheStrategy {
     /// Provide your own `ImageCacheType` to handle storage and retrieval of images.
     /// Use this if you want fine grained control over cache size, cache invalidation, data retrieval.
     case custom(ImageCacheType)
+    /// No cache, always retrieve images from network
+    case noCache
     
     var cache: ImageCacheType {
         switch self {
@@ -40,6 +42,8 @@ public enum ImageCacheStrategy {
             return PersistentImageCache.shared
         case .custom(let cache):
             return cache
+        case .noCache:
+            return NoCache()
         }
     }
 }
