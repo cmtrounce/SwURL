@@ -11,7 +11,7 @@ import SwURL
 @main
 struct SwURLExampleApp: App {
     init() {
-        SwURLDebug.loggingEnabled = true
+        SwURLDebug.isLoggingEnabled = true
     }
     
     var body: some Scene {

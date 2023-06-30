@@ -30,8 +30,7 @@ struct RowView: View {
                     .overlay {
                         Circle().stroke(.blue, lineWidth: 4)
                     }
-            }
-            .frame(width: 50, height: 50)
+            }.cache(.persistent)
             Text("Hello, Row \(index)!")
                 .padding()
         }
