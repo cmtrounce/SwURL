@@ -1,26 +1,8 @@
 //
-//  File.swift
-//  
-//
-//  Created by Callum Trounce on 14/07/2019.
+//  Created by Callum Trounce on 30/06/2023.
 //
 
 import Foundation
-import Combine
-import CoreGraphics
-
-/// Provide a custom implementation for retrieval and storage of downloaded images.
-public protocol ImageCacheType {
-    /// Store image for a given URL.
-    /// - Parameters:
-    ///   - image: The downloaded image.
-    ///   - url: The URL used to retrieve the image.
-    func store(image: CGImage, for url: URL)
-    /// Retrieve a stored image for the given URL
-    /// - Parameter url: The URL for the image resource
-    /// - Returns: The request for the image.
-    func image(for url: URL) -> Future<CGImage, Error>
-}
 
 /// Strategy to use when storing and retrieving cached images.
 public enum ImageCacheStrategy {
@@ -28,14 +10,14 @@ public enum ImageCacheStrategy {
     case inMemory
     /// Persist images between app sessions. Storage will be invalidated by the operating system.
     case persistent
-    /// Provide your own `ImageCacheType` to handle storage and retrieval of images.
+    /// Provide your own `ImageCacheProvider` to handle storage and retrieval of images.
     /// Use this if you want fine grained control over cache size, cache invalidation, data retrieval.
-    case custom(ImageCacheType)
+    case custom(ImageCacheProvider)
     /// Never store images. Never attempt to retrieve images from cache.
     /// Always attempt to load images from network.
     case never
     
-    var cache: ImageCacheType {
+    var cache: ImageCacheProvider {
         switch self {
         case .inMemory:
             return InMemoryImageCache.shared

@@ -16,7 +16,7 @@ public struct SwURLImage: View {
     
     private var _imageProcessing: ((Image) -> AnyView)
     private var _loadingIndicator: ((CGFloat) -> AnyView)?
-    private var _overrideCacheType: ImageCacheType?
+    private var _overrideCache: ImageCacheProvider?
    
     private var placeholderView: AnyView? {
         return placeholderImage.process(with: _imageProcessing)
@@ -46,7 +46,7 @@ public struct SwURLImage: View {
             // bug in swift ui when onAppear called multiple times
             // resulting in duplicate requests.
             if remoteImage.shouldRequestLoad {
-                remoteImage.load(url: url, cacheType: _overrideCacheType)
+                remoteImage.load(url: url, cache: _overrideCache)
             }
         }
         .animation(transitionType.animation, value: remoteImage.imageStatus.identifier)
@@ -63,7 +63,7 @@ public struct SwURLImage: View {
         self._imageProcessing = ImageProcessing.default()
         
         if remoteImage.shouldRequestLoad {
-            remoteImage.load(url: url, cacheType: _overrideCacheType)
+            remoteImage.load(url: url, cache: _overrideCache)
         }
     }
     
@@ -94,7 +94,7 @@ public struct SwURLImage: View {
     /// - Returns: A copy of this image with the cache applied.
     public func cache(_ imageCacheStrategy: ImageCacheStrategy) -> Self {
         var mut = self
-        mut._overrideCacheType = imageCacheStrategy.cache
+        mut._overrideCache = imageCacheStrategy.cache
         return mut
     }
 }

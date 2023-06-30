@@ -26,26 +26,26 @@ class ImageLoader {
     
     private let fileManager = FileManager.default
     
-    var defaultCacheType: ImageCacheType = InMemoryImageCache.shared
+    var defaultCache: ImageCacheProvider = InMemoryImageCache.shared
     
     private let downloader = Downloader()
     
     func load(
         url: URL,
-        cacheType: ImageCacheType?
+        cache: ImageCacheProvider?
     ) -> ImageLoadPromise {
-        return retrieve(url: url, cacheType: cacheType)
+        return retrieve(url: url, cache: cache)
     }
 }
 
 extension ImageLoader {
-    private func retrieve(url: URL, cacheType: ImageCacheType?) -> ImageLoadPromise {
+    private func retrieve(url: URL, cache: ImageCacheProvider?) -> ImageLoadPromise {
         let asyncLoad = Deferred { [unowned self] in
             self.downloader.download(from: url)
                 .tryMap { downloadInfo in
                     try self.handleDownload(
                         downloadInfo: downloadInfo,
-                        cacheType: cacheType ?? self.defaultCacheType
+                        cache: cache ?? self.defaultCache
                     )
                 }
                 .mapError { error -> ImageLoadError in
@@ -58,7 +58,7 @@ extension ImageLoader {
         }
         
         return Deferred { [unowned self] in
-            let cacheTypeForRequest = cacheType ?? self.defaultCacheType
+            let cacheTypeForRequest = cache ?? self.defaultCache
             return cacheTypeForRequest.image(for: url)
                 .map(RemoteImageStatus.complete)
                 .catch { error in
@@ -71,7 +71,7 @@ extension ImageLoader {
     
     private func handleDownload(
         downloadInfo: DownloadInfo,
-        cacheType: ImageCacheType
+        cache: ImageCacheProvider
     ) throws -> RemoteImageStatus {
         switch downloadInfo.state {
         case .progress(let fractionCompleted):
@@ -85,7 +85,7 @@ extension ImageLoader {
                 let image = try createAndStoreImage(
                     from: data,
                     requestURL: downloadInfo.url,
-                    using: cacheType
+                    using: cache
                 )
                 return .complete(result: image)
             } catch {
@@ -107,7 +107,7 @@ extension ImageLoader {
     private func createAndStoreImage(
         from data: Data,
         requestURL: URL,
-        using cacheType: ImageCacheType
+        using cacheType: ImageCacheProvider
     ) throws -> CGImage {
         guard let imageSource = CGImageSourceCreateWithData(data as CFData, nil) else {
             SwURLDebug.log(

@@ -40,14 +40,14 @@ class RemoteImage: ObservableObject {
     }
     
     @discardableResult
-    func load(url: URL, cacheType: ImageCacheType?) -> Self {
+    func load(url: URL, cache: ImageCacheProvider?) -> Self {
         if request != nil {
             return self
         }
         
         imageStatus = .progress(fraction: 0)
         request = ImageLoader.shared
-            .load(url: url, cacheType: cacheType).catch { error -> Just<RemoteImageStatus> in
+            .load(url: url, cache: cache).catch { error -> Just<RemoteImageStatus> in
                 SwURLDebug.log(
                     level: .warning,
                     message: "Failed to load image from url: " + url.absoluteString + "\nReason: " + error.localizedDescription

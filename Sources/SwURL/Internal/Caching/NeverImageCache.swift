@@ -7,7 +7,7 @@ import Combine
 import CoreGraphics
 
 /// Never store images. Never attempt to retrieve images from cache.
-final class NeverImageCache: ImageCacheType {
+final class NeverImageCache: ImageCacheProvider {
     struct CacheNotImplemented: Error {}
     
     func store(image: CGImage, for url: URL) {

@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 /// Cache images for the duration of the app session. Storage will be invalidated between app sessions.
-public final class InMemoryImageCache: ImageCacheType {
+final class InMemoryImageCache: ImageCacheProvider {
     static let shared = InMemoryImageCache()
     
     private let cache = NSCache<NSURL, CGImage>()

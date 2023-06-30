@@ -8,6 +8,6 @@ public struct SwURL {
     /// Image cache strategy can be overriden on a `SwURLImage` basis.
     /// - Parameter type: Caching strategy. See `ImageCacheStrategy`
     public static func setImageCache(type: ImageCacheStrategy) {
-        ImageLoader.shared.defaultCacheType = type.cache
+        ImageLoader.shared.defaultCache = type.cache
     }
 }

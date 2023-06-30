@@ -11,7 +11,7 @@ import CoreImage
 import Combine
 
 /// Persist images between app sessions. Storage will be invalidated by the operating system.
-public final class PersistentImageCache: ImageCacheType {
+final class PersistentImageCache: ImageCacheProvider {
     static let shared = PersistentImageCache()
     
     /// Specific queue to assist with concurrency.

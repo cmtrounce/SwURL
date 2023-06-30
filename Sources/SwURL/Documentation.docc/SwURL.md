@@ -17,13 +17,10 @@ A library that provides lightweight and customisable async image loading in Swif
 ### Caching
 
 Provides a flexible API to control how `SwURL` stores and accesses downloaded images.
-Make use of an out of a box solution or create your own custom caching strategy using ``ImageCacheType``.
+Make use of an out of a box solution or create your own custom caching strategy using ``ImageCacheProvider``.
 
 - ``ImageCacheStrategy``
-- ``InMemoryImageCache``
-- ``PersistentImageCache``
-- ``NeverImageCache``
-- ``ImageCacheType``
+- ``ImageCacheProvider``
 
 ### Debug Settings
 
