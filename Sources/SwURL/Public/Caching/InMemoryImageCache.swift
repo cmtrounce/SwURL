@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 /// Cache images for the duration of the app session. Storage will be invalidated between app sessions.
-public class InMemoryImageCache: ImageCacheType {
+public final class InMemoryImageCache: ImageCacheType {
     private let cache = NSCache<NSURL, CGImage>()
     
     /// Specific queue to assist with concurrency.

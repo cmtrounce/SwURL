@@ -26,23 +26,28 @@ class ImageLoader {
     
     private let fileManager = FileManager.default
     
-    var cache: ImageCacheType = InMemoryImageCache()
+    var defaultCacheType: ImageCacheType = InMemoryImageCache()
     
     private let downloader = Downloader()
     
-    public func load(url: URL) -> ImageLoadPromise {
-        return retrieve(url: url)
+    func load(
+        url: URL,
+        cacheType: ImageCacheType?
+    ) -> ImageLoadPromise {
+        return retrieve(url: url, cacheType: cacheType)
     }
 }
 
 extension ImageLoader {
-    
-    /// Retrieves image from URL
-    /// - Parameter url: url at which you require the image.
-    private func retrieve(url: URL) -> ImageLoadPromise {
+    private func retrieve(url: URL, cacheType: ImageCacheType?) -> ImageLoadPromise {
         let asyncLoad = Deferred { [unowned self] in
             self.downloader.download(from: url)
-                .tryMap(self.handleDownload)
+                .tryMap { downloadInfo in
+                    try self.handleDownload(
+                        downloadInfo: downloadInfo,
+                        cacheType: cacheType ?? self.defaultCacheType
+                    )
+                }
                 .mapError { error -> ImageLoadError in
                     if let error = error as? ImageLoadError {
                         return error
@@ -53,7 +58,8 @@ extension ImageLoader {
         }
         
         return Deferred { [unowned self] in
-            self.cache.image(for: url)
+            let cacheTypeForRequest = cacheType ?? self.defaultCacheType
+            return cacheTypeForRequest.image(for: url)
                 .map(RemoteImageStatus.complete)
                 .catch { error in
                     return asyncLoad
@@ -63,10 +69,10 @@ extension ImageLoader {
         .eraseToAnyPublisher()
     }
     
-    /// Handles response of successful download response
-    /// - Parameter response: data response from request
-    /// - Parameter location: the url fthat was in the request.
-    private func handleDownload(downloadInfo: DownloadInfo) throws -> RemoteImageStatus {
+    private func handleDownload(
+        downloadInfo: DownloadInfo,
+        cacheType: ImageCacheType
+    ) throws -> RemoteImageStatus {
         switch downloadInfo.state {
         case .progress(let fractionCompleted):
             SwURLDebug.log(
@@ -78,7 +84,8 @@ extension ImageLoader {
             do {
                 let image = try createAndStoreImage(
                     from: data,
-                    requestURL: downloadInfo.url
+                    requestURL: downloadInfo.url,
+                    using: cacheType
                 )
                 return .complete(result: image)
             } catch {
@@ -99,7 +106,8 @@ extension ImageLoader {
     /// - Returns: A created CGImage
     private func createAndStoreImage(
         from data: Data,
-        requestURL: URL
+        requestURL: URL,
+        using cacheType: ImageCacheType
     ) throws -> CGImage {
         guard let imageSource = CGImageSourceCreateWithData(data as CFData, nil) else {
             SwURLDebug.log(
@@ -117,7 +125,7 @@ extension ImageLoader {
             throw ImageLoadError.cacheError
         }
         
-        cache.store(image: image, for: requestURL)
+        cacheType.store(image: image, for: requestURL)
         return image
     }
     
