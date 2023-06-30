@@ -9,10 +9,11 @@ import Foundation
 
 /// Manage debug settings.
 public struct SwURLDebug {
-    public static var loggingEnabled = false
+    /// Enable SwURL internal logging
+    public static var isLoggingEnabled = false
     
     static func log(level: LogLevel, message: String) {
-        guard loggingEnabled else { return }
+        guard isLoggingEnabled else { return }
         print("[SwURLDebug \(level.label)]\n\(message)\n----------------")
         if level == .fatal {
             fatalError(message)

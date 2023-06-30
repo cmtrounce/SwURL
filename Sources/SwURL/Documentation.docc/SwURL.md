@@ -11,6 +11,7 @@ A library that provides lightweight and customisable async image loading in Swif
 
 ### Essentials
 
+- ``SwURLImage``
 - <doc:GettingStarted>
 
 ### Caching
@@ -23,7 +24,6 @@ Make use of an out of a box solution or create your own custom caching strategy 
 - ``PersistentImageCache``
 - ``ImageCacheType``
 
-### Main Types
+### Debug Settings
 
-- ``SwURLImage``
 - ``SwURLDebug``

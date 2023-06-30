@@ -5,20 +5,11 @@
 import Foundation
 import SwiftUI
 
-protocol SwURLImageViewType: ImageOutputCustomisable, View {}
-
-public protocol ImageOutputCustomisable {
-    mutating func imageProcessing<ProcessedImage: View>(
-        _ processing: @escaping (Image) -> ProcessedImage
-    ) -> Self
-    mutating func progress<T: View>(_ progress: @escaping (CGFloat) -> T) -> Self
-}
-
 @available(*, deprecated, renamed: "SwURLImage")
 public typealias RemoteImageView = SwURLImage
 
 /// A view that asynchronously loads and displays an image. Supports custom placeholders, transitions and progress indicators.
-public struct SwURLImage: SwURLImageViewType {
+public struct SwURLImage {
     private let url: URL
     private let placeholderImage: Image?
     private let transitionType: ImageTransitionType
