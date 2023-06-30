@@ -11,10 +11,14 @@ import Combine
 
 /// Cache images for the duration of the app session. Storage will be invalidated between app sessions.
 public final class InMemoryImageCache: ImageCacheType {
+    static let shared = InMemoryImageCache()
+    
     private let cache = NSCache<NSURL, CGImage>()
     
     /// Specific queue to assist with concurrency.
     private let queue = DispatchQueue.init(label: "cacheQueue", qos: .userInteractive)
+    
+    private init() {}
     
     /// Asyncronously stores an image in the cache
     /// - Parameter image: the image which you wish to store

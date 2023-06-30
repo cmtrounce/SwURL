@@ -89,12 +89,12 @@ public struct SwURLImage: View {
         return mut
     }
     
-    /// Specify caching type for this specific image.
-    /// - Parameter imageCacheType: Cache type
-    /// - Returns: A copy with the specific cache type applied.
-    public func cacheType(_ imageCacheType: ImageCacheType) -> Self {
+    /// Applies a particular image cache to this specific image.
+    /// - Parameter imageCacheStrategy: Cache strategy for this image
+    /// - Returns: A copy of this image with the cache applied.
+    public func cache(_ imageCacheStrategy: ImageCacheStrategy) -> Self {
         var mut = self
-        mut._overrideCacheType = imageCacheType
+        mut._overrideCacheType = imageCacheStrategy.cache
         return mut
     }
 }

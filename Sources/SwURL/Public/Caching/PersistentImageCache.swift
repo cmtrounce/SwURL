@@ -12,12 +12,16 @@ import Combine
 
 /// Persist images between app sessions. Storage will be invalidated by the operating system.
 public final class PersistentImageCache: ImageCacheType {
+    static let shared = PersistentImageCache()
+    
     /// Specific queue to assist with concurrency.
     private let queue = DispatchQueue.init(label: "cacheQueue", qos: .userInteractive)
     
     private let fileManager = FileManager.default
     
     private let cachesDirectory = FileManager.cachesDir()
+    
+    private init() {}
     
     public func store(image: CGImage, for url: URL) {
         queue.async { [weak self] in

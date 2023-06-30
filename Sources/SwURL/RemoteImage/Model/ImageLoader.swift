@@ -26,7 +26,7 @@ class ImageLoader {
     
     private let fileManager = FileManager.default
     
-    var defaultCacheType: ImageCacheType = InMemoryImageCache()
+    var defaultCacheType: ImageCacheType = InMemoryImageCache.shared
     
     private let downloader = Downloader()
     

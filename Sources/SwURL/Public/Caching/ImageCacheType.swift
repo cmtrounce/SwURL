@@ -35,9 +35,9 @@ public enum ImageCacheStrategy {
     var cache: ImageCacheType {
         switch self {
         case .inMemory:
-            return InMemoryImageCache()
+            return InMemoryImageCache.shared
         case .persistent:
-            return PersistentImageCache()
+            return PersistentImageCache.shared
         case .custom(let cache):
             return cache
         }
