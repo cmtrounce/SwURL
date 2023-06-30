@@ -22,6 +22,7 @@ Make use of an out of a box solution or create your own custom caching strategy 
 - ``ImageCacheStrategy``
 - ``InMemoryImageCache``
 - ``PersistentImageCache``
+- ``NeverImageCache``
 - ``ImageCacheType``
 
 ### Debug Settings

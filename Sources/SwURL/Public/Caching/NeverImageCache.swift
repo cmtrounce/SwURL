@@ -6,10 +6,9 @@ import Foundation
 import Combine
 import CoreGraphics
 
-final class NoCache: ImageCacheType {
-    enum NoCacheError: Error {
-        case notImplemented
-    }
+// Never store images. Never attempt to retrieve images from cache.
+final class NeverImageCache: ImageCacheType {
+    struct CacheNotImplemented: Error {}
     
     func store(image: CGImage, for url: URL) {
     
@@ -17,7 +16,7 @@ final class NoCache: ImageCacheType {
     
     func image(for url: URL) -> Future<CGImage, Error> {
         return Future { promise in
-            promise(.failure(NoCacheError.notImplemented))
+            promise(.failure(CacheNotImplemented()))
         }
     }
 }
