@@ -21,6 +21,7 @@ Make use of an out of a box solution or create your own custom caching strategy 
 
 - ``ImageCacheStrategy``
 - ``ImageCacheProvider``
+- ``SwURL/setImageCache(type:)-type.func``
 
 ### Debug Settings
 
