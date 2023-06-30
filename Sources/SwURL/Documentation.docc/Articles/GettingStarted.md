@@ -36,7 +36,7 @@ struct UserAvatarView: View {
 
     var body: some View {
         SwURLImage(
-            url: imageURL
+            url: imageURL,
             placeholderImage: Image("placeholder-avatar-image")
         )
     }
@@ -56,7 +56,7 @@ struct UserAvatarView: View {
 
     var body: some View {
         SwURLImage(
-            url: imageURL
+            url: imageURL,
             placeholderImage: Image("placeholder-avatar-image"),
             transition: .custom(transition: .opacity, animation: .easeIn)
         )
