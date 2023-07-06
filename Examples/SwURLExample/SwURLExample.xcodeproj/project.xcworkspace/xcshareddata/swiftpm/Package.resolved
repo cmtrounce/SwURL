@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/cmtrounce/SwURL",
       "state" : {
-        "revision" : "4fcf99f596238e46d72441a15c0d1bb8ca3d7d0c",
-        "version" : "0.5.0"
+        "revision" : "a3031159fde503989b3d83b514d24293d606b89d",
+        "version" : "0.6.0"
       }
     }
   ],
